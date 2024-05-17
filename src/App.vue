@@ -3,9 +3,16 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <div class="app">
+    <router-view></router-view>
+  </div>
 </template>
 
-<style scoped lang="scss">
-
+<style lang="scss">
+.app{
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden
+}
 </style>

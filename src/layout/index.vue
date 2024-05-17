@@ -1,24 +1,23 @@
 <template >
-    <div>
+    <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;">
         <header></header>
 
-        <!-- 非模块页面 -->
-        <router-view v-slot="{ Component, route}">
-          <transition :name="transitionName" mode="out-in">
+        <router-view v-slot="{ Component, route}" >
+          <transition :name="transitionName">
             <keep-alive>
-              <component :is="Component" :key="route.name"/>
+              <component :is="Component"/>
             </keep-alive>
           </transition>
         </router-view>
         
         <!-- 底部的菜单栏 -->
         <footer v-show="$route.meta.modulePage" class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white">
-        <div class="w-full h-full flex justify-around">
-            <div @click="navigateTo(item.pathName)" class="flex flex-col justify-center items-center" v-for="(item, index) in menuList" :key="index">
-            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="black"><path stroke-linejoin="round" d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="7" r="3"/></g></svg>
-            <span class=" text-sm font-bold">{{ item.name }}</span>
-            </div>
-        </div>
+          <div class="w-full h-full flex justify-around">
+              <div @click="navigateTo(item.pathName)" class="flex flex-col justify-center items-center" v-for="(item, index) in menuList" :key="index">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="black"><path stroke-linejoin="round" d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="7" r="3"/></g></svg>
+              <span class=" text-sm font-bold">{{ item.name }}</span>
+              </div>
+          </div>
         </footer>
     </div>
 </template>
@@ -68,44 +67,30 @@ const menuList = ref([
 </script>
 <style>
 
-.go-enter-from {
-  transform: translate3d(100%, 0, 0);
-}
-
-/* //最终状态 */
-.back-enter-to,
-.back-enter-from,
-.go-enter-to,
-.go-leave-from {
-  transform: translate3d(0, 0, 0);
-}
-
-.go-leave-to {
-  transform: translate3d(-100%, 0, 0);
-}
-
 .go-enter-active,
 .go-leave-active,
 .back-enter-active,
 .back-leave-active {
-  transition: all 0.3s;
+  transition: all 0.25s ease-out;
+}
+
+.go-enter-from {
+  opacity: 0;
+  transform: translateX(100vw);
+}
+
+.go-leave-to {
+  opacity: 0;
+  transform: translateX(-100vw);
 }
 
 .back-enter-from {
-  transform: translate3d(-100%, 0, 0);
+  opacity: 0;
+  transform: translateX(-100vw);
 }
 
 .back-leave-to {
-  transform: translate3d(100%, 0, 0);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
   opacity: 0;
+  transform: translateX(100vw);
 }
 </style>

@@ -1,5 +1,5 @@
 <template lang="">
-    <div class=" w-screen h-screen bg-gradient-to-b from-blue-300 text-black">
+    <div style="position:absolute; z-index:999" class=" h-full w-full bg-gradient-to-b from-blue-300 to-white-900">
         你好
     </div>
 </template>

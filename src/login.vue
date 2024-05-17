@@ -1,6 +1,6 @@
 <template lang="">
-    <div>
-        
+    <div class="bg-gradient-to-b from-blue-300">
+        登入
     </div>
 </template>
 <script>

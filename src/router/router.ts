@@ -25,7 +25,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: { modulePage: true },
             },
             { //不是模块页面，以从右向左进行覆盖动画方式加载页面，只有顶部退回栏
-                path: 'profile/pageMe',
+                path: 'pageMe',
                 component: () => import('@/views/user/pages/me.vue'),
                 name: 'profile_pageMe',
                 meta: { modulePage: false },
@@ -36,6 +36,7 @@ export const routes: RouteRecordRaw[] = [
         path: '/login', 
         component: login,
         name: 'login',
+        
     },
     { 
         path: '/register', 

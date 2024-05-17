@@ -1,5 +1,5 @@
 <template lang="">
-    <div class=" h-screen w-screen p-3 bg-slate-100 bg-gradient-to-b from-blue-300 to-white-500">
+    <div style="position:absolute" class=" h-full w-full p-3 bg-slate-100 bg-gradient-to-b from-blue-300 to-white">
         <!-- 头部的介绍 -->
         <div>
             <div class=" px-6 py-3 w-full mx-auto flex items-center space-x-4">
@@ -85,17 +85,17 @@ const settingsList = ref([
   {
     title: "设置",
     icon: "el-icon-s-tools",
-    path: "/profile/settings",
+    pathName: "login",
   },
   {
     title: "我发布的",
     icon: "el-icon-s-help",
-    path: "/profile/about",
+    pathName: "/profile/about",
   },
   {
     title: "关于我们",
     icon: "el-icon-s-help",
-    path: "/profile/about",
+    pathName: "/profile/about",
   },
 ]);
 
