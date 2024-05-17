@@ -1,42 +1,15 @@
 import { createWebHistory, createRouter } from 'vue-router'
-
-import layout from '@/layout/index.vue'
-import home from "@/home.vue"
-import login from '@/user/login.vue'
-import register from '@/user/register.vue'
-import profile from "@/user/profile.vue"
-
-const routes = [
-    { 
-        path: '/', 
-        component: layout ,
-        children:[
-            {
-                path: 'home',
-                component: home,
-                name: 'home'
-            },
-            {
-                path: 'profile',
-                component: profile,
-                name: 'profile'
-            },
-        ]
-    },
-    { 
-        path: '/login', 
-        component: login,
-        name: 'login',
-    },
-    { 
-        path: '/register', 
-        component: register,
-        name: 'register',
-    }
-
-]
+import {routes} from "./router"
 
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    //savedPosition，当在浏览器的历史记录中前进或后退时，这将是一个包含 x 和 y 属性的对象，表示滚动的位置
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })

@@ -14,3 +14,29 @@ declare module "*.vue" {
   export default component
 }
 ```
+
+## 布局问题
+
+原则：
+（1）底部的菜单决定各大模块
+（2）每个模块产生的新的页面，通过顶部的返回按钮，回去上一次的页面，最终回到的是模块页面，主要是页面转场动画
+
+核心步骤：
+（1）watch监听路由对象变化
+（2）修改transition这个vue组件
+
+
+```typescript
+export default {
+  activated() {
+    console.log('Component is activated!');
+  },
+  deactivated() {
+    console.log('Component is deactivated!');
+  }
+}
+```
+
+## 页面回退时回到之前浏览的位置
+
+
