@@ -3,7 +3,7 @@
   padding: 0%;
   margin: 0%;
   box-sizing: border-box;
-  overflow: hidden;
+
   
 }
 
@@ -13,5 +13,6 @@ body {
   height: 100vh;
   font-family: 'Roboto', sans-serif;
   background-color: #fff;
-  
+  overflow: hidden;
 }
+
