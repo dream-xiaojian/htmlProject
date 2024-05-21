@@ -11,13 +11,22 @@ export const routes: RouteRecordRaw[] = [
     { 
         path: '/', 
         component: layout ,
+        redirect: '/home/find',
         children:[
             {
                 path: 'home',
                 component: home,
                 name: 'home',
                 //传递一个数据
-                meta: { modulePage: true}
+                meta: { modulePage: true},
+                children:[
+                    {
+                        path: 'find',
+                        component: () => import('@/views/index/pages/findPage.vue'),
+                        name: 'findHomePage',
+                        meta: { modulePage: true, showName: '发现页'},
+                    }
+                ]
             },
             { 
                 path: 'profile',
@@ -41,7 +50,19 @@ export const routes: RouteRecordRaw[] = [
                 path: 'chatDetail',
                 component: () => import('@/views/chat/pages/chatDetail.vue'),
                 name: 'chatDetail',
-                meta: { modulePage: false, showName: '聊天详情'},
+                meta: { modulePage: false, showName: 'AI助手'},
+            },
+            { 
+                path: 'blogDetail',
+                component: () => import('@/views/index/pages/blogDetail.vue'),
+                name: 'blogDetail',
+                meta: { modulePage: false, isBlog: true, showName: '详情'},
+            },
+            { 
+                path: 'createPage',
+                component: () => import('@/views/creation/index.vue'),
+                name: 'createPage',
+                meta: { modulePage: true},
             },
         ]
     },

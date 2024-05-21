@@ -1,5 +1,5 @@
 <template >
-    <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;" class=" bg-gradient-to-b from-blue-300 to-white-900">
+    <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;" class="">
         <!-- 在非模块页面时，显示顶部的导航栏 -->
 
           <!-- <transition :name="transitionName"> -->
@@ -71,10 +71,20 @@ const menuList = ref([
     {
         name: '首页',
         icon: 'user',
-        pathName: 'home'
+        pathName: 'findHomePage'
     },
     {
         name: '对话',
+        icon: 'user',
+        pathName: 'chat'
+    },
+    {
+        name: '创作',
+        icon: 'user',
+        pathName: 'createPage'
+    },
+    {
+        name: '消息',
         icon: 'user',
         pathName: 'chat'
     },
