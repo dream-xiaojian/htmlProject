@@ -38,7 +38,7 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute(); //当前路由对象，Url, 参数
 const router = useRouter(); //路由实例，操作路由
 
-const transitionName = ref('')
+let transitionName = ref('go')
 
 watch(
   () => route.meta,

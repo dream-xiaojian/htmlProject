@@ -36,18 +36,22 @@
                 <input v-model="form.rePassword" class="pl-2 w-full outline-none border-none" type="password" name="password" id="password" placeholder="再次输入您的密码" />
                 <p v-show="errors.rePassword" class="text-red-500 absolute top-11">{{ errors.rePassword }}</p>
               </div>
-              <button @click="register" type="submit" class="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2">下一步</button>
+              <span @click="register" class="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2 text-center">注册</span>
               <div class="flex justify-between mb-5">
-                <a href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">已经有账号?</a>
+                <a @click="navigation('login')"href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">已经有账号?</a>
               </div>  
             </form>
         </div>
       </div>
     </div>
 </template>
-<script setup>
-import {ref, watch, reactive, watchEffect} from 'vue'
+<script lang="ts" setup>
+import {reactive, watchEffect} from 'vue'
 import {validateEmail, validatePassword, validateTwoPassword} from "@/utils/valid.ts"
+import { userTableStore, User } from '@/stores/user'
+import {navigation} from '@/router/index'
+
+const store = userTableStore()
 
 const form = reactive({
     email:'',
@@ -57,16 +61,16 @@ const form = reactive({
 })
 
 const errors = reactive({
-    email: false,
-    username:false,
-    password: false,
-    rePassword:false,
+    email: false as String | Boolean,
+    username:false as String | Boolean,
+    password: false as String | Boolean,
+    rePassword:false as String | Boolean,
 })
 
 watchEffect(() => {
   if (form.email != '' && !validateEmail(form.email)) {
     errors.email = '请输入有效的邮箱地址';
-  } else {
+  } else { //表示通过了验证
     errors.email = false;
   }
 
@@ -84,7 +88,25 @@ watchEffect(() => {
 });
 
 const register = () => {
-    
+  //不为空
+  if (form.email.length == 0 || form.username.length == 0 || form.password.length == 0) {
+    throw new Error('请填写完整信息')
+    return
+  }
+  if (!Object.values(errors).every(value => value === false)) {
+    return
+  }
+
+  const user: Omit<User, 'id'>  = {
+    email: form.email,
+    username: form.username,
+    password: form.password,
+  }
+  try {
+    store.register(user)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 

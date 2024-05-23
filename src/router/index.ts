@@ -13,3 +13,7 @@ export const router = createRouter({
     }
   }
 })
+
+export function navigation(pathName:string) {
+  router.push(pathName)
+}

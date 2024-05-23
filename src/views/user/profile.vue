@@ -1,80 +1,118 @@
 <template lang="">
-    <div style="position:absolute" class=" h-full w-full p-3 bg-slate-100 bg-gradient-to-b from-blue-300 to-white">
-        <!-- 头部的介绍 -->
-        <div>
-            <div class=" px-6 py-3 w-full mx-auto flex items-center space-x-4">
-                <div class="shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 128 128"><path fill="#ffc022" d="M114.11 70.76C112.31 44.78 94.44 26.3 64 26.3S15.69 44.78 13.89 70.76c-1.05 15.14 5.05 28.01 17.09 36.21c0 0 12.21 9.88 33.02 10.14c20.81-.26 33.02-10.14 33.02-10.14c12.03-8.2 18.14-21.07 17.09-36.21"/><path fill="#ff7043" d="M54.12 45.02c1.13.96 3.42.82 4.75-.72c1.61-1.87 3.29-8.17 2.24-17.91c-4.67.17-9.09.84-13.21 1.97c3.33 5.46 4.13 14.88 6.22 16.66m19.76 0c-1.13.96-3.42.82-4.75-.72c-1.61-1.87-3.29-8.17-2.24-17.91c4.67.17 9.09.84 13.21 1.97c-3.33 5.46-4.13 14.88-6.22 16.66" opacity="0.47"/><path fill="#ffc022" d="M16.38 60.19c-5.26-36.84 8.59-52.2 15.33-55.51c2.13-1.04 4.36-.91 6.1.6c3.19 2.77 1.55 11.99 9.96 23.09"/><path fill="#ffd1d1" d="M25.37 44.52c-1.13 1.34-2.29.17-2.36-1.58c-.49-12.24 3.45-21.32 6.7-25.58c1.13-1.48 3.48-.96 3.86.87c.73 3.54 2.17 8.62 4.88 12.86c.56.87.33 2.03-.53 2.6c-1.89 1.27-5.1 3.51-7.64 5.71c-1.76 1.51-3.51 3.45-4.91 5.12"/><path fill="#ffc022" d="M111.62 60.19c5.26-36.84-8.59-52.2-15.33-55.51c-2.13-1.04-4.36-.91-6.1.6c-3.19 2.77-1.55 11.99-9.96 23.09"/><path fill="#ffd1d1" d="M102.63 44.52c1.13 1.34 2.29.17 2.36-1.58c.49-12.24-3.45-21.32-6.7-25.58c-1.13-1.48-3.48-.96-3.86.87c-.73 3.54-2.17 8.62-4.88 12.86c-.56.87-.33 2.03.53 2.6c1.89 1.27 5.1 3.51 7.64 5.71c1.76 1.51 3.51 3.45 4.91 5.12"/><path d="M55.96 68.97c-.05-2.86 4.06-4.24 7.95-4.3s8.07 1.2 8.12 4.06c.05 2.86-4.86 6.64-7.95 6.64c-3.08 0-8.07-3.54-8.12-6.4"/><path fill="#fffde7" d="M86.82 68.76c-5.2 0-9.65-3.87-10.59-9.21c-.51-2.92.1-5.85 1.73-8.26c1.62-2.39 4.04-3.97 6.82-4.46c.59-.1 1.18-.15 1.77-.15c5.2 0 9.65 3.87 10.59 9.21c.51 2.92-.1 5.85-1.73 8.26c-1.62 2.39-4.04 3.97-6.82 4.46c-.58.1-1.17.15-1.77.15"/><path fill="#ef6c00" d="M86.56 48.18c4.47 0 8.3 3.35 9.11 7.97c.44 2.53-.09 5.07-1.5 7.16c-1.39 2.05-3.46 3.41-5.84 3.82c-.5.09-1.01.13-1.51.13c-4.47 0-8.3-3.35-9.11-7.97c-.44-2.53.09-5.07 1.5-7.16c1.39-2.05 3.46-3.41 5.84-3.82c.5-.08 1.01-.13 1.51-.13m0-3c-.67 0-1.35.06-2.03.18c-6.59 1.15-10.97 7.62-9.77 14.45c1.07 6.12 6.25 10.45 12.06 10.45c.67 0 1.35-.06 2.03-.18c6.59-1.15 10.97-7.62 9.77-14.45c-1.06-6.12-6.25-10.45-12.06-10.45"/><path fill="#fffde7" d="M40.62 68.76c-.59 0-1.19-.05-1.77-.15c-2.78-.49-5.21-2.07-6.82-4.46c-1.63-2.41-2.24-5.34-1.73-8.26c.93-5.34 5.39-9.21 10.59-9.21c.59 0 1.19.05 1.77.15c5.77 1.01 9.6 6.71 8.55 12.72c-.94 5.34-5.39 9.21-10.59 9.21"/><path fill="#ef6c00" d="M40.88 48.18c.5 0 1.01.04 1.51.13c2.38.42 4.45 1.77 5.84 3.82c1.41 2.08 1.94 4.62 1.5 7.16c-.81 4.62-4.64 7.97-9.11 7.97c-.5 0-1.01-.04-1.51-.13c-4.95-.87-8.24-5.79-7.33-10.98c.8-4.62 4.63-7.97 9.1-7.97m0-3c-5.81 0-10.99 4.33-12.06 10.45c-1.19 6.83 3.18 13.3 9.77 14.45c.68.12 1.36.18 2.03.18c5.81 0 10.99-4.33 12.06-10.45c1.19-6.83-3.18-13.3-9.77-14.45c-.68-.12-1.36-.18-2.03-.18"/><path d="m65.98 80.55l-3.95.03c0 2.82-1.22 4.86-3.23 7c-2.84 3.02-5.48 6.59-5.48 12c0 7.96 4.79 12.59 10.68 12.59s10.68-4.63 10.68-12.59c0-5.42-2.61-8.84-5.5-12.01c-1.83-2.01-3.2-4.19-3.2-7.02"/><path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M64 70.02v19.82"/><path fill="none" stroke="#9e9e9e" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="m108.72 83.22l14.48 1.67m-17.66-15.63l14.08-14.51m-11.6 20.62l16.48-6.11M19.28 83.22L4.8 84.89m17.66-15.63L8.38 54.75m11.6 20.62L3.5 69.26"/><path fill="#ff9b17" d="M105.06 87.29c-.08 1.08-.24 2.15-.46 3.2c-1.63 7.66-2.96 13.88-.47 21.49c1.36 4.16 3.19 8.31 5.53 12.02H84.37s-6.18-26.67-7.56-33.66c-2.38-12.09 14.16-23.38 24.04-14.94c3.55 3.04 4.54 7.5 4.21 11.89"/><path fill="#ef6c00" d="M81.11 91.67c-2.36-11.16 8.34-18.79 19.01-15.12c.84.29 2.14.91 2.31.83c.35-.16-.71-1.24-1.58-1.97c-9.88-8.45-26.43 2.84-24.04 14.94c1.38 6.98 7.56 33.66 7.56 33.66h4.38c-1.27-5.25-6.36-26.27-7.64-32.34"/><path fill="#ff9b17" d="M22.94 87.29c.08 1.08.24 2.15.46 3.2c1.63 7.66 2.96 13.88.47 21.49c-1.36 4.16-3.19 8.31-5.53 12.02h25.29s6.18-26.67 7.56-33.66c2.38-12.09-14.16-23.38-24.04-14.94c-3.55 3.04-4.54 7.5-4.21 11.89"/><path fill="#ef6c00" d="M46.89 91.67c2.36-11.16-8.34-18.79-19.01-15.12c-.84.29-2.14.91-2.31.83c-.35-.16.71-1.24 1.58-1.97c9.88-8.45 26.43 2.84 24.04 14.94c-1.37 6.98-7.56 33.65-7.56 33.65h-4.38c1.27-5.24 6.36-26.26 7.64-32.33"/></svg>
+    <div class=" relative h-screen w-full bg-slate-100 overflow-y-auto">
+
+        <!-- 任务栏 -->
+        <div class="w-full fixed left-0 top-0" style="z-index:999" :style="{ backgroundColor: backgroundColor }"> 
+            <div class="flex items-center justify-between p-3">
+                <div>
+                    <svg @click="router.go(-1)" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
                 </div>
                 <div>
-                    <div class="text-xl font-medium text-black">咖啡猫</div>
-                    <p class="text-slate-500">你撸过咖啡色的猫咪吗？</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm-2-6h4v4h-4v-4z"/></svg>
                 </div>
             </div>
         </div>
 
-        <!-- 我的账户 主要是积分 -->
-        <div> 
-            <div class="mt-3"> 
-                <div class="text-slate-600 text-base p-4 w-full mx-auto bg-white rounded-xl shadow-lg flex flex-col gap-2">
-                    <h2 class="font-bold">我的账户</h2>
-                    <div class="flex justify-between">
-                        <div class="flex items-center gap-2">
-                            <div>
-                                <span class="text-2xl font-bold">100</span>
-                                <span class="text-slate-500">积分</span>
-                            </div>
-                            <div>
-                                <span class="text-2xl font-bold">10</span>
-                                <span class="text-slate-500">免费次数</span>
-                            </div>
+
+
+        <!-- 头部的介绍: 背景(可以切换背景图) 和基本信息 -->
+        <header class="text-white" id="meHeader"> 
+
+            <!-- 基本信息 -->
+            <div class="pt-12 px-6 w-full mx-auto flex items-center space-x-4">
+                <!-- 头像 -->
+                <img style="width:104px; height:104px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
+                <div>
+                    <div class="text-xl font-medium text-white" >咖啡猫</div>
+                    <p class= "text-gray-200">你撸过咖啡色的猫咪吗？</p>
+                </div>
+            </div>
+
+            <!-- 内容 -->
+            <div class=" py-3 px-4 pb-3">
+                <div class=" flex justify-between">
+                    <div class="flex items-center gap-6">
+                        <div class="flex flex-col items-center">
+                             <span class=" text-lg font-bold">100</span>
+                            <span class="text-gray-200 text-xs">关注</span>
                         </div>
-                        <div>
-                            <button class="bg-red-500 text-white px-3 py-1 rounded-2xl">充值</button>
+                        <div class="flex flex-col items-center">
+                           <span class=" text-lg font-bold">0</span>
+                           <span class="text-gray-200 text-xs">粉丝</span>
+                       </div>
+                       <div class="flex flex-col items-center">
+                           <span class=" text-lg font-bold">100</span>
+                           <span class="text-gray-200 text-xs">积分</span>
+                       </div>
+                       <div class="flex flex-col items-center">
+                           <span class=" text-lg font-bold">100</span>
+                          <span class="text-gray-200 text-xs">获赞和收藏</span>
                         </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class=" border border-white text-white px-3 py-1 rounded-2xl text-sm">编辑资料</button>
+                        <span class=" border border-white text-white px-2 py-1 rounded-2xl text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2"/></svg></span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 签到中心 -->
-        <div class="mt-3"> 
-            <div class="text-slate-600 text-base p-4 w-full mx-auto bg-white rounded-xl shadow-lg flex flex-col gap-2">
-                <h2 class="font-bold">连续签到领积分 - <span class="text-slate-400 text-sm">每日签到可以领取10积分</span> </h2>
-                <div class="flex gap-1 flex-wrap">
-                    <div class="flex items-center gap-2" v-for="(item, index) in checkList" :key="index">
-                        <div class=" flex flex-col items-center">
-                            <div v-if="!item.flag" class=" p-2 rounded-full bg-slate-100 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"/></svg>
-                            </div>
-                            <div v-else class=" p-2 rounded-full bg-red-100 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z"/></svg>
-                            </div>
-                            <span class="text-slate-500">{{item.time}}</span>
-                        </div>
-                     </div>
+
+            <!-- 大块栏 -->
+            <div class="flex items-center pb-8 px-4 gap-5">
+                <div class="text-container rounded-md flex flex-col px-5 py-1"> 
+                    <div class="text-center flex items-center text-white">
+                        <span ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="white" d="m51.34 23.63l-6.68 16.72l80.04 32.01l6.6-16.72zm409.36.01l-80 32l6.6 16.72l80-32zM256 25c-29 0-50 14.08-64.7 34.29C176.6 79.51 169 106 169 128c0 13 7 27.8 14.5 39s14.9 18.6 14.9 18.6l1.5 1.5l9.3 27.9H228L194.7 98.07L256 118.5l61.3-20.43L284 215h18.8l9.3-27.9l1.5-1.5s7.4-7.4 14.9-18.6s14.5-26 14.5-39c0-22-7.6-48.49-22.3-68.71C306 39.08 285 25 256 25m128 94v18h96v-18zm-352 .1v18h96v-18zm189.3 6.8l25.5 89.1h18.4l25.5-89.1l-34.7 11.6zm166 57.7l-6.6 16.8l80 32l6.6-16.8zm-262.6.1l-80.04 32l6.68 16.8l79.96-32zM217 233v14h78v-14zm0 32v14h78v-14zm-46.9 2.6c-27.1.5-52.6 5-66.9 11.1L29.8 484.1c71.1-14.1 143.9-26 217.2-.9V297h-48v-28.3c-7.9-.7-16-1.1-23.9-1.1zm166.8 0c-7.9 0-16 .4-23.9 1.1V297h-48v186.2c73.3-25.1 146.1-13.2 217.2.9l-73.4-205.4c-14.3-6.1-39.8-10.6-66.9-11.1z"/></svg></span>
+                        <span class="">创造灵感</span>
+                    </div>
+                    <span class="text-sm text-gray-300">AI助手找灵感</span>
                 </div>
-                <button class="bg-gradient-to-r from-sky-500 to-indigo-500 text-white px-3 py-1 rounded-2xl">签到日历</button>
+                <div class="text-container rounded-md flex flex-col px-5 py-1"> 
+                    <div class="text-center flex items-center">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="white" d="M12 21q-3.45 0-6.012-2.287T3.05 13H5.1q.35 2.6 2.313 4.3T12 19q2.925 0 4.963-2.037T19 12t-2.037-4.962T12 5q-1.725 0-3.225.8T6.25 8H9v2H3V4h2v2.35q1.275-1.6 3.113-2.475T12 3q1.875 0 3.513.713t2.85 1.924t1.925 2.85T21 12t-.712 3.513t-1.925 2.85t-2.85 1.925T12 21m2.8-4.8L11 12.4V7h2v4.6l3.2 3.2z"/></svg></span>
+                        <span class="">浏览记录</span>
+                    </div>
+                    <span class="text-sm text-gray-300">AI助手找灵感</span>
+                </div>
             </div>
-        </div>
+        </header>
 
-        <!-- 设置栏部分 -->
-        <div class=" mt-3  "> 
-            <div class="text-slate-600 text-base p-4 w-full mx-auto bg-white rounded-xl shadow-lg flex flex-col gap-2">
-                 <div @click="navigateTo(item.pathName)" class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-100" v-for="(item, index) in settingsList" :key="index">
-                    <span class="flex gap-1 items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><path stroke-linejoin="round" d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="7" r="3"/></g></svg>
-                        <span>{{item.title}}</span>
-                    </span>
-                    <span> <svg xmlns="http://www.w3.org/2000/svg" width="0.44em" height="1em" viewBox="0 0 7 16"><path fill="currentColor" d="M1.5 13a.47.47 0 0 1-.35-.15c-.2-.2-.2-.51 0-.71L5.3 7.99L1.15 3.85c-.2-.2-.2-.51 0-.71s.51-.2.71 0l4.49 4.51c.2.2.2.51 0 .71l-4.5 4.49c-.1.1-.23.15-.35.15"/></svg></span>
-                 </div>
+        <!-- 创作的内容部分 笔记，收藏，赞过-->
+        <section class="bg-white" style="border-radius: 1rem 1rem 0 0; transform: translateY(-1rem);"> 
+            <!-- tab部分 -->
+            <div class="w-full flex justify-center gap-8 p-3 bg-white" style="border-radius: 1rem 1rem 0 0;"> 
+                <span class=" text-black font-bold">笔记</span>
+                <span class="text-gray-500">收藏</span>
+                <span class="text-gray-500">赞过</span>
             </div>
-        </div>
+            <!-- 对应的部分：动画使用vueTransition-->
+            <noteCom> </noteCom>
+        </section>
     </div>
 </template>
-<script setup>
-import { ref } from "vue";
-import { router } from '@/router/index';
+<script setup lang="ts">
+import { ref, onActivated, onDeactivated} from "vue";
+import { router, navigation } from '@/router/index';
+import noteCom from "./components/note.vue"
+import { userTableStore } from '@/stores/user'
+const userDb = userTableStore()
+
+const backgroundColor = ref('transparent');
+
+const handleScroll = () => {
+    console.log('滑动了吗？');
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    backgroundColor.value = scrollTop > 100 ? 'rgba(0, 0, 0, 0.5)' : 'transparent';
+};
+
+onActivated(() => {
+    console.log('当前的用户信息', userDb.getCurrentUserMessage())
+    document.addEventListener('scroll', handleScroll);
+     
+});
+
+onDeactivated(() => {
+    document.removeEventListener('scroll', handleScroll);
+})
 
 const settingsList = ref([
   {
@@ -114,9 +152,17 @@ const checkList = ref([
   },
 ]);
 
-const navigateTo = (pathName) => {
-  router.push({ name: pathName });
-};
+
 
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+#meHeader{
+    background-image: url(../../assets/image/meback.png)
+
+}
+
+.text-container{
+  background-color: rgba(0, 0, 0, 0.3); /* 黑色背景，50% 不透明度 */
+  color: white; /* 白色文字 */
+}
+</style>
