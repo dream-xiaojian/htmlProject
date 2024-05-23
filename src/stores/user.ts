@@ -40,13 +40,19 @@ export const userTableStore = defineStore('userTable', {
             }
             return user
         },
+        
+        /**
+         * @returns 
+         * 问题：这里返回的数据是否也是相应式数据？
+         * 
+         */
         getCurrentUserMessage(): result<User> | null {
             const result = {} as result<User>;
             try {
                 let {id} = verifyUser()
                 //注意这里要从userTableStore中获取用户信息，因为cookie中的某些信息可能被修改，比如用户名等等
                 let user = this.userTable.find(user => user.id === id) as User;
-                result.data = user; //由于userTable是相应式数据那么返回的数据条数也式响应式的数据
+                result.data = user; 
             } catch (error) {
                 result.code = -1;
                 result.message = "用户未登录";
