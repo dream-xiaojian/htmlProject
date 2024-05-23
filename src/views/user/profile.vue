@@ -1,14 +1,14 @@
 <template lang="">
-    <div class=" relative h-screen w-full bg-slate-100 overflow-y-auto">
+    <div class="relative h-screen w-full bg-slate-100 overflow-y-auto" ref="profileContent">
 
         <!-- 任务栏 -->
-        <div class="w-full fixed left-0 top-0" style="z-index:999" :style="{ backgroundColor: backgroundColor }"> 
+        <div class="w-full fixed left-0 top-0" style="z-index:999; transition: all 0.25s ease-out;" :style="{ backgroundColor: backgroundColor }"> 
             <div class="flex items-center justify-between p-3">
                 <div>
-                    <svg @click="router.go(-1)" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
+                    <svg @click="router.go(-1)" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
                 </div>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm-2-6h4v4h-4v-4z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm-2-6h4v4h-4v-4z"/></svg>
                 </div>
             </div>
         </div>
@@ -23,8 +23,9 @@
                 <!-- 头像 -->
                 <img style="width:104px; height:104px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
                 <div>
-                    <div class="text-xl font-medium text-white" >咖啡猫</div>
-                    <p class= "text-gray-200">你撸过咖啡色的猫咪吗？</p>
+                    <div class="text-xl font-medium text-white" >{{curUser.username}}</div>
+                    <p  v-if="curUser.resume != null" class= "text-gray-200">{{curUser.resume}}</p>
+                    <p  v-else class= "text-gray-200">点击编辑个人简介</p>
                 </div>
             </div>
 
@@ -77,9 +78,9 @@
         </header>
 
         <!-- 创作的内容部分 笔记，收藏，赞过-->
-        <section class="bg-white" style="border-radius: 1rem 1rem 0 0; transform: translateY(-1rem);"> 
+        <section class="bg-white" style="border-radius: 10px 10px 0 0; transform: translateY(-1rem);"> 
             <!-- tab部分 -->
-            <div class="w-full flex justify-center gap-8 p-3 bg-white" style="border-radius: 1rem 1rem 0 0;"> 
+            <div class="sticky top-16 w-full flex justify-center gap-8 p-3 bg-white" style="border-radius: 10px 10px 0 0;"> 
                 <span class=" text-black font-bold">笔记</span>
                 <span class="text-gray-500">收藏</span>
                 <span class="text-gray-500">赞过</span>
@@ -90,29 +91,38 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onActivated, onDeactivated} from "vue";
+import { ref, onActivated, onMounted, onUnmounted, reactive} from "vue";
 import { router, navigation } from '@/router/index';
 import noteCom from "./components/note.vue"
-import { userTableStore } from '@/stores/user'
+import { User, userTableStore } from '@/stores/user'
 const userDb = userTableStore()
 
-const backgroundColor = ref('transparent');
+let backgroundColor = ref('transparent');
+const profileContent = ref();
 
-const handleScroll = () => {
-    console.log('滑动了吗？');
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    backgroundColor.value = scrollTop > 100 ? 'rgba(0, 0, 0, 0.5)' : 'transparent';
+let curUser = reactive<User>({} as User)
+
+const handleScroll = (event) => {
+     const scrollTop = profileContent.value.scrollTop || document.body.scrollTop;
+     backgroundColor.value = scrollTop > 20 ? 'rgba(0, 0, 0, 0.9)' : 'transparent'; 
 };
 
 onActivated(() => {
-    console.log('当前的用户信息', userDb.getCurrentUserMessage())
-    document.addEventListener('scroll', handleScroll);
-     
+    initData();
 });
 
-onDeactivated(() => {
-    document.removeEventListener('scroll', handleScroll);
-})
+
+const initData = () =>{
+    let res =  userDb.getCurrentUserMessage()
+    if (res?.code != -1) {
+        //对于一个curUser是指向一个响应式对象
+        //如果直接curUser = res.data,则curUser不是响应式对象，指向的就不是相应式对象
+        //通过assign给curUser的每一个属性赋值，这样curUser就是一个响应式对象
+        Object.assign(curUser, res!.data);
+    }else {
+        navigation('login')
+    }
+}
 
 const settingsList = ref([
   {
@@ -153,15 +163,23 @@ const checkList = ref([
 ]);
 
 
+//监听滚动事件
+onMounted(() => {
+    profileContent.value.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+    profileContent.value.addEventListener('scroll', handleScroll)
+})
+
 
 </script>
 <style scoped lang="scss">
-#meHeader{
-    background-image: url(../../assets/image/meback.png)
-
+#meHeader {
+  background-image: url(../../assets/image/meback.png);
 }
 
-.text-container{
+.text-container {
   background-color: rgba(0, 0, 0, 0.3); /* 黑色背景，50% 不透明度 */
   color: white; /* 白色文字 */
 }

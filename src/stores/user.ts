@@ -43,7 +43,8 @@ export const userTableStore = defineStore('userTable', {
         
         /**
          * @returns 
-         * 问题：这里返回的数据是否也是相应式数据？
+         * 问题：这里返回的数据是否也是相应式数据
+         * 也就是说如果返回的数据在组件中被修改了，store中的数据也发生了变化
          * 
          */
         getCurrentUserMessage(): result<User> | null {

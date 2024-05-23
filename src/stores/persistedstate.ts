@@ -1,5 +1,7 @@
 const KEY_PREFIX = "PINIA_STORE_"
 export function persistedPlugin (context: any) {
+     console.log('持久化插件调用', context);
+     
     /**
      * 插件
      * 在运行的页面中使用过的Pinia的store都会进行触发这个函数
@@ -11,7 +13,6 @@ export function persistedPlugin (context: any) {
     */
    const { store } = context
    const key = KEY_PREFIX + store.$id
-   console.log(key, context);
    
    //存
    window.addEventListener('beforeunload', () => {

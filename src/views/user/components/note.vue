@@ -10,10 +10,17 @@
             </div>
         </div>
         <!-- 有内容进行展示 -->
+        <div class="w-full">
+            <waterfulLayoutVue> 
+                <span>你好</span>
+                <span>你好</span>
+            </waterfulLayoutVue>
+
+        </div>
     </div>
 </template>
 <script setup lang="ts">
-
+import waterfulLayoutVue from "@/components/waterfulLayout.vue";
 </script>
 <style lang="">
     
