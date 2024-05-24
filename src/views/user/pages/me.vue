@@ -43,9 +43,10 @@
 </template>
 <script setup lang="ts">
 import {ref, reactive, onActivated} from "vue"
-import { User, userTableStore } from '@/stores/user'
+import { User, userTableStore, IndexDB} from '@/stores/index'
 import { navigation } from '@/router/index';
-
+import { inject } from 'vue'
+const db: IndexDB = inject('db') as IndexDB;
 
 const userDb = userTableStore()
 const keyMap = {
@@ -71,7 +72,7 @@ const tips = {
 let curUser = reactive<User>({} as User)
 let keyList = ref<String[]>([])
 let editData = reactive({
-    showDrawer: "",
+    showDrawer: false,
     editTittle: "",
     type: ""
 })
@@ -95,6 +96,14 @@ onActivated(() => {
 })
 
 const initData = () =>{
+    
+    //头像的获取
+    db.getImage(1).then((res) => {
+      console.log(res);
+    }).catch((err:DOMException) => {
+      console.log("获取数据失败", err);
+    });
+
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         //对于一个curUser是指向一个响应式对象

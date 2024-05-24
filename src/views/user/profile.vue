@@ -141,6 +141,7 @@ const beProudNumber = computed(() => {
 const score = computed(() => {
     return curUser.score || 0
 });
+const db: IndexDB = inject('db') as IndexDB;
 
 
 
@@ -149,14 +150,16 @@ onActivated(() => {
 });
 
 const initData = () =>{
-    const db: IndexDB = inject('db') as IndexDB;
-    console.log(db);
-        // 使用 db 实例的方法
-    db.getImage(1).then(() => {
-      console.log("获取数据");
+    
+
+    //头像的获取
+    db.getImage(1).then((res) => {
+      console.log(res);
     }).catch((err:DOMException) => {
       console.log("获取数据失败", err);
     });
+
+    //基本信息的获取
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         //对于一个curUser是指向一个响应式对象

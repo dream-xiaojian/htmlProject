@@ -20,27 +20,37 @@ export class IndexDB {
     }
 
     openDB() {
-        const request = indexedDB.open(this.dbName, this.version);
-        request.onerror = (event) => new Error('Database error: ' + event.target!);
-        request.onsuccess = () => {
-          this.db = request.result;
-        };
-        request.onupgradeneeded = () => {
-            this.db = request.result;
+        return new Promise<void>((resolve, reject) => {
+            const request = indexedDB.open(this.dbName, this.version);
+            request.onerror = (event) =>  new Error('Database error: ' + event.target!);
+            request.onsuccess = () => {
+              this.db = request.result;
+              resolve();
+            };
+            request.onupgradeneeded = () => {
+                this.db = request.result;
+                resolve();
+                //建立表 图片表  blog分享表
+                if (!this.db.objectStoreNames.contains('images_table')) {
+                    const store = this.db.createObjectStore('images_table', { keyPath: 'id', autoIncrement: true });
+                    store.createIndex('id', 'id'); //建立索引
+                }
 
-            //建立表 图片表  blog分享表
-            if (this.db.objectStoreNames.contains('images_table')) {
-                const store = this.db.createObjectStore('images_table', { keyPath: 'id', autoIncrement: true });
-                store.createIndex('id', 'id'); //建立索引
-            }
+                // 创建 blogShares 表
+                if (!this.db.objectStoreNames.contains('blogShares')) {
+                    const blogShareStore = this.db.createObjectStore('blogShares', { keyPath: 'id', autoIncrement: true });
+                    blogShareStore.createIndex('id', 'id', { unique: true }); //建立索引
+                    // blogShareStore.createIndex('title', 'title', { unique: false });
+                    // blogShareStore.createIndex('author', 'author', { unique: false });
+                    //检索用的索引
+                    blogShareStore.createIndex('titleAndVisibility', ['title', 'visible']); 
+                    //个人数据的索引
+                    blogShareStore.createIndex('authorAndVisibility', ['title', 'visible']); 
 
-            // 创建 blogShares 表
-            if (!this.db.objectStoreNames.contains('blogShares')) {
-                const blogShareStore = this.db.createObjectStore('blogShares', { keyPath: 'id', autoIncrement: true });
-                blogShareStore.createIndex('id', 'id'); //建立索引
-                blogShareStore.createIndex('title', 'title', { unique: false });
-            }
-        };
+                }
+            };
+        });
+        
     }
 
     //图片存储
@@ -53,7 +63,11 @@ export class IndexDB {
         });
     }
 
-    //图片表的操作
+    /**
+     * 
+     * @param file 
+     * @returns id 这个表项的唯一的id，将放在用户数据中
+     */
     async storeImage(file: File) {
         const dataUrl = await this.readImage(file);
         return new Promise<number>((resolve, reject) => {
@@ -66,11 +80,14 @@ export class IndexDB {
         });
     }
 
-    
+    /**
+     * 
+     * @param id 
+     * @returns 
+     */
     async getImage(id: number) {
-        console.log('获取图片');
         return new Promise<string>((resolve, reject) => {
-        const transaction = this.db.transaction('images_table', 'readonly');
+          const transaction = this.db.transaction('images_table', 'readonly');
           const store = transaction.objectStore('images_table');
           const index = store.index('id');
           const request = index.get(id);
@@ -91,15 +108,28 @@ export class IndexDB {
         });
     }
 
-    async getBlog(id: number) {
+    //搜索操作
+    async searchBlog(title: string, visible: boolean) {
         return new Promise<string>((resolve, reject) => {
         const transaction = this.db.transaction('blogShares', 'readonly');
           const store = transaction.objectStore('blogShares');
-          const index = store.index('id');
-          const request = index.get(id);
+          const index = store.index('titleAndVisibility');
+          const request = index.get([title, visible ? 1 : 0]);
           request.onerror = () => reject(request.error);
           request.onsuccess = () => resolve(request.result);
         });
     }
+    
+    //获取作者的blog
+    async getMyBlog(author: string, visible: boolean) {
+      return new Promise<string>((resolve, reject) => {
+      const transaction = this.db.transaction('blogShares', 'readonly');
+        const store = transaction.objectStore('blogShares');
+        const index = store.index('titleAndVisibility');
+        const request = index.get([author, visible ? 1 : 0]);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+      });
+  }
 }
 

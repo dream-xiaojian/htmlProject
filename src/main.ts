@@ -10,10 +10,8 @@ import './style.css'
 const pinia = createPinia()
 pinia.use(persistedPlugin)
 
-const db = new IndexDB('coffeeCatDatabase', 1);
+const db = new IndexDB('coffeeCatDatabase', 2);
 await db.openDB();
-console.log(db);
-
 
 const app = createApp(App)
 app.use(router)
