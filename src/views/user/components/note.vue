@@ -10,10 +10,12 @@
             </div>
         </div>
         <!-- 有内容进行展示 -->
-        <div class="w-full">
-            <waterfulLayoutVue :items="myItems" :columnsCount="3"> 
+        <div class="w-full p-3">
+            <waterfulLayoutVue :items="myItems" :columnsCount="2"> 
                 <template #default="{ item }">
-                    <div>{{ item.name }}</div>
+                    <div>
+                        <itemBlogVue :imgUrl="item.imgUrl" :tittle="item.tittle" :autorImgurl="item.autorImgurl" :likeNum="item.likeNum"> </itemBlogVue>
+                    </div>
                 </template>
             </waterfulLayoutVue>
         </div>
@@ -22,13 +24,20 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import waterfulLayoutVue from "@/components/waterfulLayout.vue";
+import itemBlogVue from "@/components/itemBlog.vue";
 
 
 let myItems = ref([
-    { id: 1, name: 'Item 1' },
-    { id: 2, name: 'Item 2' },
-    { id: 2, name: 'Item 3' },
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪", likeNum:20},
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
 
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
+
+    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
 ])
 
 </script>

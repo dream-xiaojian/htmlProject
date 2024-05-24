@@ -14,7 +14,7 @@ export function persistedPlugin (context: any) {
    const { store } = context
    const key = KEY_PREFIX + store.$id
    
-   //存
+   //存 --- 是否需要全局存取要权衡一下
    window.addEventListener('beforeunload', () => {
          localStorage.setItem(key, JSON.stringify(store.$state))
    })
@@ -27,7 +27,31 @@ export function persistedPlugin (context: any) {
         }
    } catch (error) {
         console.log('localStorage error', error);
-        
    }
-
 }
+
+// // 读取图片并转换为 Base64
+// function readImage(file) {
+//      return new Promise((resolve, reject) => {
+//        const reader = new FileReader();
+//        reader.onloadend = () => resolve(reader.result);
+//        reader.onerror = reject;
+//        reader.readAsDataURL(file);
+//      });
+//    }
+   
+//    // 存储图片
+//    async function storeImage(file) {
+//      const dataUrl = await readImage(file);
+//      localStorage.setItem('myImage', dataUrl);
+//    }
+   
+//    // 获取图片
+//    function getImage() {
+//      const dataUrl = localStorage.getItem('myImage');
+//      if (dataUrl) {
+//        const img = new Image();
+//        img.src = dataUrl;
+//        document.body.appendChild(img);
+//      }
+// }

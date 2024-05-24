@@ -25,7 +25,7 @@
                 <div>
                     <div class="text-xl font-medium text-white" >{{curUser.username}}</div>
                     <p  v-if="curUser.resume != null" class= "text-gray-200">{{curUser.resume}}</p>
-                    <p  v-else class= "text-gray-200">点击编辑个人简介</p>
+                    <p  v-else class= "text-gray-200" @click="navigation('profile_pageMe')">点击编辑个人简介</p>
                 </div>
             </div>
 
@@ -34,25 +34,25 @@
                 <div class=" flex justify-between">
                     <div class="flex items-center gap-6">
                         <div class="flex flex-col items-center">
-                             <span class=" text-lg font-bold">100</span>
+                             <span class=" text-lg font-bold">{{InterestListNumber}}</span>
                             <span class="text-gray-200 text-xs">关注</span>
                         </div>
                         <div class="flex flex-col items-center">
-                           <span class=" text-lg font-bold">0</span>
+                           <span class=" text-lg font-bold">{{fansListNumber}}</span>
                            <span class="text-gray-200 text-xs">粉丝</span>
                        </div>
                        <div class="flex flex-col items-center">
-                           <span class=" text-lg font-bold">100</span>
+                           <span class=" text-lg font-bold">{{score}}</span>
                            <span class="text-gray-200 text-xs">积分</span>
                        </div>
                        <div class="flex flex-col items-center">
-                           <span class=" text-lg font-bold">100</span>
+                           <span class=" text-lg font-bold">{{beProudNumber}}</span>
                           <span class="text-gray-200 text-xs">获赞和收藏</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button class=" border border-white text-white px-3 py-1 rounded-2xl text-sm">编辑资料</button>
-                        <span class=" border border-white text-white px-2 py-1 rounded-2xl text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2"/></svg></span>
+                        <button class=" border border-white text-white px-3 py-1 rounded-2xl text-sm" @click="navigation('profile_pageMe')">编辑资料</button>
+                        <span @click="showDrawer=true" class=" border border-white text-white px-2 py-1 rounded-2xl text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2"/></svg></span>
                     </div>
                 </div>
             </div>
@@ -87,30 +87,63 @@
             </div>
             <!-- 对应的部分：动画使用vueTransition-->
             <noteCom> </noteCom>
+
+        <!-- //弹框设置页面 -->
         </section>
+
+        <transition name="slide-up">
+            <div v-if="showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2">
+                <!-- 顶部栏 -->
+                <header class=" text-lg flex items-center justify-between px-2 py-1">
+                    <span class=" text-gray-400" @click="showDrawer=false"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M8.293 12.707a1 1 0 0 1 0-1.414l5.657-5.657a1 1 0 1 1 1.414 1.414L10.414 12l4.95 4.95a1 1 0 0 1-1.414 1.414z"/></g></svg></span>
+                    <span class=" font-bold">设置</span>
+                    <span class=" text-red-400" @click="updataUser"><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 256 256"><path fill="black" d="M224 40v40a8 8 0 0 1-16 0V48h-32a8 8 0 0 1 0-16h40a8 8 0 0 1 8 8M80 208H48v-32a8 8 0 0 0-16 0v40a8 8 0 0 0 8 8h40a8 8 0 0 0 0-16m136-40a8 8 0 0 0-8 8v32h-32a8 8 0 0 0 0 16h40a8 8 0 0 0 8-8v-40a8 8 0 0 0-8-8M40 88a8 8 0 0 0 8-8V48h32a8 8 0 0 0 0-16H40a8 8 0 0 0-8 8v40a8 8 0 0 0 8 8m40-16h96a8 8 0 0 1 8 8v96a8 8 0 0 1-8 8H80a8 8 0 0 1-8-8V80a8 8 0 0 1 8-8m8 96h80V88H88Z"/></svg></span>
+                </header>
+
+                <!-- 设置选项区 -->
+                <div class="mt-6">
+                    <!-- 我的账户 主要是积分 -->
+                    <div class=" text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
+                            <div class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList" :key="index">
+                                <span>{{item.title}}</span>
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onActivated, onMounted, onUnmounted, reactive} from "vue";
+import { ref, onActivated, onMounted, onUnmounted, reactive, computed} from "vue";
 import { router, navigation } from '@/router/index';
 import noteCom from "./components/note.vue"
 import { User, userTableStore } from '@/stores/user'
 const userDb = userTableStore()
 
+let showDrawer = ref(false);
 let backgroundColor = ref('transparent');
 const profileContent = ref();
-
 let curUser = reactive<User>({} as User)
+const InterestListNumber = computed(() => {
+    return curUser.interestList?.length || 0;
+});
+const fansListNumber = computed(() => {
+    return curUser.fansList?.length || 0;
+});
+const beProudNumber = computed(() => {
+    return curUser.beProud?.length || 0;
+});
+const score = computed(() => {
+    return curUser.score?.length || 0;
+});
 
-const handleScroll = (event:any) => {
-     const scrollTop = profileContent.value.scrollTop || document.body.scrollTop;
-     backgroundColor.value = scrollTop > 20 ? 'rgba(0, 0, 0, 0.9)' : 'transparent'; 
-};
+
 
 onActivated(() => {
     initData();
 });
-
 
 const initData = () =>{
     let res =  userDb.getCurrentUserMessage()
@@ -126,22 +159,27 @@ const initData = () =>{
 
 const settingsList = ref([
   {
-    title: "基本信息",
+    title: "账号与安全",
     icon: "el-icon-s-operation",
     pathName: "profile_pageMe",
   },
   {
-    title: "设置",
+    title: "隐私设置",
     icon: "el-icon-s-tools",
     pathName: "login",
   },
   {
-    title: "我发布的",
+    title: "深色模式",
     icon: "el-icon-s-help",
     pathName: "/profile/about",
   },
   {
-    title: "关于我们",
+    title: "通用设置",
+    icon: "el-icon-s-help",
+    pathName: "/profile/about",
+  },
+  {
+    title: "少年猫模式",
     icon: "el-icon-s-help",
     pathName: "/profile/about",
   },
@@ -168,9 +206,14 @@ onMounted(() => {
     profileContent.value.addEventListener('scroll', handleScroll)
 })
 
-onUnmounted(() => {
-    profileContent.value.addEventListener('scroll', handleScroll)
-})
+// onUnmounted(() => {
+//     profileContent.value.removeEventListener('scroll', handleScroll)
+// })
+
+const handleScroll = (event:any) => {
+     const scrollTop = profileContent.value.scrollTop || document.body.scrollTop;
+     backgroundColor.value = scrollTop > 20 ? 'rgba(0, 0, 0, 0.9)' : 'transparent'; 
+};
 
 
 </script>
@@ -183,4 +226,27 @@ onUnmounted(() => {
   background-color: rgba(0, 0, 0, 0.3); /* 黑色背景，50% 不透明度 */
   color: white; /* 白色文字 */
 }
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(100vh);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(200vh);
+}
+
 </style>

@@ -11,7 +11,7 @@
     </div>
 </template>
 <script setup>
-import itemBlogVue from "../components/itemBlog.vue";
+import itemBlogVue from "@/components/itemBlog.vue";
 
 </script>
 <style lang="">

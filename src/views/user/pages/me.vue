@@ -1,60 +1,133 @@
 <template lang="">
-    <div style="position:absolute; z-index:999" class="p-2 w-full flex flex-col gap-3">
+    <div style="z-index:999" class="relative p-2 h-screen overflow-y-auto w-full flex flex-col gap-3">
         <!-- 头像部分 -->
         <div class="w-full flex justify-center items-center"> 
-            <div class="flex flex-col items-center justify-center gap-2"> 
-                <img class="inline-block h-16 w-16 rounded-full ring-2 ring-white" src="../../../assets/image/th.jpg" alt="" />
-                <span>点击更换图片</span>
+            <div class=" relative flex flex-col items-center justify-center gap-2"> 
+                <img style="width:104px; height:104px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
+                <span class="absolute bottom-0 right-0 "><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2"/></svg></span>
             </div>
         </div>
         <!-- 基本信息部分 -->
-        <div class="text-slate-600 text-base p-4 w-full mx-auto bg-white rounded-xl shadow-lg flex flex-col gap-4">
-               <div class="flex justify-between items-center" v-for="(item, index) in keyList" :key="index"> 
+        <div class="text-slate-600 text-base p-4 w-full mx-auto flex flex-col gap-4">
+               <div @click="editSome(item)" class="flex justify-between items-center border-b-2 text-base py-2" v-for="(item, index) in keyList" :key="index"> 
                     <div style="max-width:20%">{{keyMap[item]}}</div>
-                    <div class="flex justify-between items-center gap-2" style="max-width:80%">
-                         <span><input v-model="person[item]" type="text" name="first-name" id="first-name" class="block w-full border-0 border-b py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:text-sm sm:leading-6" /></span>
+                    <div class="flex justify-between items-center gap-2 "  style="max-width:80%">
+                         <span class="" v-if="curUser[item] != null">{{curUser[item]}}</span>
+                         <span v-else class="text-gray-400">{{tips[item]}}</span>
                          <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 7 16"><path fill="currentColor" d="M1.5 13a.47.47 0 0 1-.35-.15c-.2-.2-.2-.51 0-.71L5.3 7.99L1.15 3.85c-.2-.2-.2-.51 0-.71s.51-.2.71 0l4.49 4.51c.2.2.2.51 0 .71l-4.5 4.49c-.1.1-.23.15-.35.15"/></svg></span>
                     </div>
                </div>
         </div>
 
-               
-        <div class="w-full flex justify-center items-center">
-            <button class="px-6 py-2 text-lg text-white duration-150 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700"> 保存编辑</button></div>
+        <!-- 修改区 -->
+        <transition name="slide-up">
+            <div v-if="editData.showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2">
+                <!-- 顶部栏 -->
+                <header class=" text-lg flex items-center justify-between px-2 py-1">
+                    <span class=" text-gray-400" @click="editData.showDrawer=false">取消</span>
+                    <span class=" font-bold">{{editData.editTittle}}</span>
+                    <span class=" text-red-400" @click="updataUser">保存</span>
+                </header>
+
+                <!-- 修改区域 根据不同的类型显示不同的修改内容 -->
+                <div class="mt-4">
+                    <div> 
+                        <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
+                    </div>
+                </div>
+
+
+            </div>
+        </transition>
     </div>
 </template>
 <script setup lang="ts">
 import {ref, reactive, onActivated} from "vue"
+import { User, userTableStore } from '@/stores/user'
+import { navigation } from '@/router/index';
 
+
+const userDb = userTableStore()
 const keyMap = {
-    name: "姓名",
+    username: "姓名",
+    email: "邮箱",
     resume: "简介",
+    sex: "性别",
     age: "年龄",
     place: "所在地",
+    backgroundImg: "背景图"
 }
 
-const person = reactive(
-    {
-        name: "咖啡猫🐯",
-        resume: "你撸过咖啡色的猫咪吗？",
-        age: 18,
-        place: "北京",
-
-    }
-)
-
-const keyList = ref<String[]>([])
-
-onActivated(() => {
-    keyList.value = Object.keys(person)
+//空的情况的提示
+const tips = {
+    username: "请您输入您的姓名",
+    email: "请您编辑你的邮箱",
+    resume: "有趣的简历可以吸引其它小猫",
+    sex: "请您选择您的性别吧",
+    age: "选择年龄",
+    place: "选择你所在的地区",
+    backgroundImg: "背景图",
+}
+let curUser = reactive<User>({} as User)
+let keyList = ref<String[]>([])
+let editData = reactive({
+    showDrawer: "",
+    editTittle: "",
+    type: ""
 })
 
+//启动编辑页
+const editSome = (type: string) => {
+    editData.showDrawer = true;
+    editData.editTittle = "编辑" + keyMap[type as keyof typeof keyMap];
+    editData.type = type;
+}
 
+//更新数据
+const updataUser = () => {
+    userDb.updataUserMessage(curUser)
+    editData.showDrawer = false;
+    initData();
+}
 
+onActivated(() => {
+    initData();
+})
 
-
-
+const initData = () =>{
+    let res =  userDb.getCurrentUserMessage()
+    if (res?.code != -1) {
+        //对于一个curUser是指向一个响应式对象
+        //如果直接curUser = res.data,则curUser不是响应式对象，指向的就不是相应式对象
+        //通过assign给curUser的每一个属性赋值，这样curUser就是一个响应式对象
+        Object.assign(curUser, res!.data);
+        keyList.value = Object.keys(keyMap) as any
+    }else {
+        navigation('login')
+    }
+}
 </script>
-<style lang="">
-    
+<style lang="scss" scoped>
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(100vh);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(200vh);
+}
 </style>
