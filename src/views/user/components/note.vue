@@ -11,16 +11,26 @@
         </div>
         <!-- 有内容进行展示 -->
         <div class="w-full">
-            <waterfulLayoutVue> 
-                <span>你好</span>
-                <span>你好</span>
+            <waterfulLayoutVue :items="myItems" :columnsCount="3"> 
+                <template #default="{ item }">
+                    <div>{{ item.name }}</div>
+                </template>
             </waterfulLayoutVue>
-
         </div>
     </div>
 </template>
 <script setup lang="ts">
+import {ref} from 'vue';
 import waterfulLayoutVue from "@/components/waterfulLayout.vue";
+
+
+let myItems = ref([
+    { id: 1, name: 'Item 1' },
+    { id: 2, name: 'Item 2' },
+    { id: 2, name: 'Item 3' },
+
+])
+
 </script>
 <style lang="">
     

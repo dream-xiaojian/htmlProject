@@ -102,7 +102,7 @@ const profileContent = ref();
 
 let curUser = reactive<User>({} as User)
 
-const handleScroll = (event) => {
+const handleScroll = (event:any) => {
      const scrollTop = profileContent.value.scrollTop || document.body.scrollTop;
      backgroundColor.value = scrollTop > 20 ? 'rgba(0, 0, 0, 0.9)' : 'transparent'; 
 };
