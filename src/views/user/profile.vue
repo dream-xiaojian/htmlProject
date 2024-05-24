@@ -119,15 +119,18 @@
 import { ref, onActivated, onMounted, onUnmounted, reactive, computed} from "vue";
 import { router, navigation } from '@/router/index';
 import noteCom from "./components/note.vue"
-import { User, userTableStore } from '@/stores/user'
+import { User, userTableStore, IndexDB} from '@/stores/index'
+import { inject } from 'vue'
+
 const userDb = userTableStore()
 
 let showDrawer = ref(false);
 let backgroundColor = ref('transparent');
 const profileContent = ref();
 let curUser = reactive<User>({} as User)
+
 const InterestListNumber = computed(() => {
-    return curUser.interestList?.length || 0;
+    return curUser.InterestList?.length || 0;
 });
 const fansListNumber = computed(() => {
     return curUser.fansList?.length || 0;
@@ -136,7 +139,7 @@ const beProudNumber = computed(() => {
     return curUser.beProud?.length || 0;
 });
 const score = computed(() => {
-    return curUser.score?.length || 0;
+    return curUser.score || 0
 });
 
 
@@ -146,6 +149,14 @@ onActivated(() => {
 });
 
 const initData = () =>{
+    const db: IndexDB = inject('db') as IndexDB;
+    console.log(db);
+        // 使用 db 实例的方法
+    db.getImage(1).then(() => {
+      console.log("获取数据");
+    }).catch((err:DOMException) => {
+      console.log("获取数据失败", err);
+    });
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         //对于一个curUser是指向一个响应式对象

@@ -9,10 +9,28 @@ export interface User {
     username: string
     password: string
     email: string
+    sex?: number //性别 0-男 1-女
     score?: number
     place?: string
     age?: number
+
+    
+    InterestList?: string[] //关注列表
+    fansList?: string[] //粉丝列表
+    beProud?: string//获得的赞和收藏
     resume?: string // 简介
+    
+    /**
+     * 背景图片，实际上存储的是一个图片库中数据id，
+     * 保证说不会所有的图片（大数据）的都加载到内存中
+     * 按需从IndexDb中加载（索引）
+     */
+    backgroundImg?: string
+
+    /**
+     * 头像图片，和背景图片同理
+     */
+    headerImg?: string 
 }
 
 
@@ -59,6 +77,19 @@ export const userTableStore = defineStore('userTable', {
                 result.message = "用户未登录";
             }
             return result;
+        },
+
+        /**
+         * 修改信息 
+         * 传入一个用户信息对象
+         * 匹配到userTable中的哪一条数据，然后修改
+         */
+        updataUserMessage(user: User): void {
+            let index = this.userTable.findIndex(item => item.id === user.id);
+            if (index === -1) {
+                throw new Error("用户不存在");
+            }
+            this.userTable[index] = user;
         }
     }
 })

@@ -32,12 +32,6 @@ let myItems = ref([
     { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
 
     { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
-    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
-    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
-    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
-    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
-
-    { id: 1, name: 'Item 1', imgUrl: 'https://cdn.seovx.com/d/?mom=302', autorImgurl:"", tittle:"小猫同志请开枪，不要犹豫,dwdwadwadwadwdwadwa", likeNum:20},
 ])
 
 </script>

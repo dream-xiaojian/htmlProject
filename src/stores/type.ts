@@ -3,3 +3,18 @@ export interface result<T>{
     message: string
     data: T
 }
+
+export interface imagesTable {
+    
+}
+
+export interface blogSharesTable {
+    title: string
+    content: string
+    imagesData: string[]
+    author: string
+    date: string
+    place: string
+    likeList: number[]
+    commentList: number[]
+}
