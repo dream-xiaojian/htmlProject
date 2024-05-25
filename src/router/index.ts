@@ -15,5 +15,7 @@ export const router = createRouter({
 })
 
 export function navigation(pathName:string) {
+  console.log('跳转页面', pathName);
+  
   router.push({name: pathName})
 }

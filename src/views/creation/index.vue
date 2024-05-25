@@ -125,7 +125,7 @@ const handleFileChanged = (index:number,  file:File) => {
         curUser.noteList.push(res);
         userDb.updataUserMessage(curUser);
         reset();
-        navigation('profile');
+        
     }).catch((err:DOMException) => {
         console.log("发布失败", err);
     })
@@ -158,7 +158,24 @@ onActivated(() => {
 
 //重置数据
 const reset = () => {
-    blogImagesList.value = [null]
+    console.log('数据清空');
+    let obj = {
+        title: "",
+        content: "",    
+        visible: 1,
+        imagesDataList: [],
+        author: 0,
+        date: "",
+        place: "",
+        likeList: [],
+        commentList: [],
+        headImageId: 0,
+    }
+    Object.assign(blogNote, obj);
+    
+    blogImagesList.value.splice(0, blogImagesList.value.length);
+    blogImagesList.value.push(null);
+    navigation('profile');
 }
 
 </script>
