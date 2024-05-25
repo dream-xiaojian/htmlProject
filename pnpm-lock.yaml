@@ -20,6 +20,9 @@ importers:
       vue-router:
         specifier: '4'
         version: 4.3.2(vue@3.4.27(typescript@5.4.5))
+      vue3-draggable-resizable:
+        specifier: ^1.6.5
+        version: 1.6.5
     devDependencies:
       '@types/node':
         specifier: ^20.12.12
@@ -947,6 +950,9 @@ packages:
     peerDependencies:
       typescript: '*'
 
+  vue3-draggable-resizable@1.6.5:
+    resolution: {integrity: sha512-31142E31fGNnq3HKqvmFLSsqIbhck7TyGuQWhUKrDw6DOcGAuRx4ddRjaxvT6fe7dgeKH53qAh+i0ZlWtPLl2g==}
+
   vue@3.4.27:
     resolution: {integrity: sha512-8s/56uK6r01r1icG/aEOHqyMVxd1bkYcSe9j8HcKtr/xTOFWvnzIVTehNW+5Yt89f+DLBe4A569pnZLS5HzAMA==}
     peerDependencies:
@@ -1748,6 +1754,8 @@ snapshots:
       '@vue/language-core': 2.0.19(typescript@5.4.5)
       semver: 7.6.2
       typescript: 5.4.5
+
+  vue3-draggable-resizable@1.6.5: {}
 
   vue@3.4.27(typescript@5.4.5):
     dependencies:

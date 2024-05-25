@@ -38,9 +38,9 @@ const columns = computed(() => {
   justify-content: space-between;
 }
 .waterfall-column {
-  width: calc(100% / 2 - 1px);
+  width: calc(100% / 2 - 4px);
 }
 .waterfall-item {
-  margin-bottom: 1px;
+  margin-bottom: 4px;
 }
 </style>

@@ -1,12 +1,14 @@
 <template lang="">
     <div style="z-index:999" class="relative p-2 h-screen overflow-y-auto w-full flex flex-col gap-3">
+
         <!-- 头像部分 -->
         <div class="w-full flex justify-center items-center"> 
             <div class=" relative flex flex-col items-center justify-center gap-2"> 
-                <img style="width:104px; height:104px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
-                <span class="absolute bottom-0 right-0 "><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2"/></svg></span>
+                <img ref="headerImage" style="width:104px; height:104px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
+                <span @click="editSome('headerImg')" class="absolute bottom-0 right-0 "><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2"/></svg></span>
             </div>
         </div>
+
         <!-- 基本信息部分 -->
         <div class="text-slate-600 text-base p-4 w-full mx-auto flex flex-col gap-4">
                <div @click="editSome(item)" class="flex justify-between items-center border-b-2 text-base py-2" v-for="(item, index) in keyList" :key="index"> 
@@ -16,7 +18,7 @@
                          <span v-else class="text-gray-400">{{tips[item]}}</span>
                          <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 7 16"><path fill="currentColor" d="M1.5 13a.47.47 0 0 1-.35-.15c-.2-.2-.2-.51 0-.71L5.3 7.99L1.15 3.85c-.2-.2-.2-.51 0-.71s.51-.2.71 0l4.49 4.51c.2.2.2.51 0 .71l-4.5 4.49c-.1.1-.23.15-.35.15"/></svg></span>
                     </div>
-               </div>
+                 </div>
         </div>
 
         <!-- 修改区 -->
@@ -28,15 +30,26 @@
                     <span class=" font-bold">{{editData.editTittle}}</span>
                     <span class=" text-red-400" @click="updataUser">保存</span>
                 </header>
-
                 <!-- 修改区域 根据不同的类型显示不同的修改内容 -->
                 <div class="mt-4">
-                    <div> 
+                    <div v-show="editData.type == 'username' || editData.type == 'email' || editData.type == 'resume'"> 
                         <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
                     </div>
+
+                    <div v-show="editData.type == 'backgroundImg'">
+                        <div class="w-full h-56 bg-white p-4 rounded-lg"> 
+                            <uploadImgCom @file-changed="uploadImg" :tailor="false"> </uploadImgCom>
+                        </div>
+                    </div>
+                    <div v-show="editData.type == 'headerImg'">
+                        <div class="w-full flex justify-center items-center bg-white p-4 rounded-lg"> 
+                            <div class="w-full h-56 "> 
+                                <uploadImgCom @file-changed="uploadImg" :tailor="true"> </uploadImgCom>
+                            </div>
+                        </div>
+                   
+                    </div>
                 </div>
-
-
             </div>
         </transition>
     </div>
@@ -45,11 +58,14 @@
 import {ref, reactive, onActivated} from "vue"
 import { User, userTableStore, IndexDB} from '@/stores/index'
 import { navigation } from '@/router/index';
+import uploadImgCom from "@/components/uploadImg.vue"
 import { inject } from 'vue'
 const db: IndexDB = inject('db') as IndexDB;
 
-const userDb = userTableStore()
+const userDb = userTableStore();
+const headerImage = ref();
 const keyMap = {
+    headerImg: "头像",
     username: "姓名",
     email: "邮箱",
     resume: "简介",
@@ -61,6 +77,7 @@ const keyMap = {
 
 //空的情况的提示
 const tips = {
+    headerImg: "美丽的头像是一个美丽的开始",
     username: "请您输入您的姓名",
     email: "请您编辑你的邮箱",
     resume: "有趣的简历可以吸引其它小猫",
@@ -69,6 +86,7 @@ const tips = {
     place: "选择你所在的地区",
     backgroundImg: "背景图",
 }
+
 let curUser = reactive<User>({} as User)
 let keyList = ref<String[]>([])
 let editData = reactive({
@@ -76,6 +94,12 @@ let editData = reactive({
     editTittle: "",
     type: ""
 })
+let imageFile: File | null = null
+
+//文件上传
+const uploadImg = (file: any) => {
+    imageFile = file  
+}
 
 //启动编辑页
 const editSome = (type: string) => {
@@ -86,8 +110,32 @@ const editSome = (type: string) => {
 
 //更新数据
 const updataUser = () => {
+    //基础数据的更新
     userDb.updataUserMessage(curUser)
+    if (editData.type != 'backgroundImg' && editData.type != 'headerImg')
     editData.showDrawer = false;
+
+    //图片类型的更新
+    if (editData.type == 'backgroundImg' || editData.type == 'headerImg') {
+        if (imageFile == null) return;
+        
+        switch (editData.type) {
+            case 'backgroundImg':
+                db.storeImage(imageFile, curUser.backgroundImg).then(res => {
+                    curUser[editData.type as 'backgroundImg'] = res;
+                    editData.showDrawer = false;
+                    imageDataInit()
+                })
+                break;
+            case 'headerImg':
+                db.storeImage(imageFile, curUser.headerImg).then(res => {
+                    curUser[editData.type as 'headerImg'] = res;
+                    editData.showDrawer = false;
+                    imageDataInit()
+                })
+                break;
+        }
+    }
     initData();
 }
 
@@ -96,14 +144,6 @@ onActivated(() => {
 })
 
 const initData = () =>{
-    
-    //头像的获取
-    db.getImage(1).then((res) => {
-      console.log(res);
-    }).catch((err:DOMException) => {
-      console.log("获取数据失败", err);
-    });
-
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         //对于一个curUser是指向一个响应式对象
@@ -111,8 +151,20 @@ const initData = () =>{
         //通过assign给curUser的每一个属性赋值，这样curUser就是一个响应式对象
         Object.assign(curUser, res!.data);
         keyList.value = Object.keys(keyMap) as any
+        imageDataInit();
     }else {
         navigation('login')
+    }
+}
+
+const imageDataInit = () => {
+    if (curUser.headerImg != null) {
+        //背景图片的获取
+        db.getImage(curUser.headerImg!).then((res) => {
+            headerImage.value.src = res;
+        }).catch((err:DOMException) => {
+            console.log("获取数据失败", err);
+        });
     }
 }
 </script>

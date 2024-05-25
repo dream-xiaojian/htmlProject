@@ -5,32 +5,43 @@ import {verifyUser} from "./rightsVerification"
 import {result} from "./type"
 
 export interface User {
+
     id: number
+
     username: string
+
     password: string
+
     email: string
+
     sex?: number //性别 0-男 1-女
+    
     score?: number
+
     place?: string
+
     age?: number
 
-    
     InterestList?: string[] //关注列表
+
     fansList?: string[] //粉丝列表
+
     beProud?: string//获得的赞和收藏
+
     resume?: string // 简介
-    
+
+    noteList?: number[] //笔记列表
     /**
      * 背景图片，实际上存储的是一个图片库中数据id，
      * 保证说不会所有的图片（大数据）的都加载到内存中
      * 按需从IndexDb中加载（索引）
      */
-    backgroundImg?: string
+    backgroundImg?: number
 
     /**
      * 头像图片，和背景图片同理
      */
-    headerImg?: string 
+    headerImg?: number 
 }
 
 

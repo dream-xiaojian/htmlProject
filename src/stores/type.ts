@@ -27,12 +27,17 @@ export interface blogSharesTable {
     /**
      * 图片数据
      */
-    imagesData: string[]
+    imagesDataList: string[]
 
     /**
-     * 作者
+     * 作者id
      */
-    author: string
+    author: number
+
+    /**
+     * 作者头像
+     */
+    headImageId: number
 
     /**
      * 发布时间
@@ -53,4 +58,6 @@ export interface blogSharesTable {
      * 评论列表
      */
     commentList: number[]
+
+
 }

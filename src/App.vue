@@ -15,4 +15,18 @@
   position: relative;
   overflow: hidden
 }
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(100vh);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(200vh);
+}  
 </style>
