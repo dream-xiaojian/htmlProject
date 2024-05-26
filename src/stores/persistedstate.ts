@@ -1,4 +1,5 @@
 const KEY_PREFIX = "PINIA_STORE_"
+import {User} from "./user"
 export function persistedPlugin (context: any) {
      console.log('持久化插件调用', context);
      
@@ -17,16 +18,40 @@ export function persistedPlugin (context: any) {
    
    //存 --- 是否需要全局存取要权衡一下
    window.addEventListener('beforeunload', () => {
-         localStorage.setItem(key, JSON.stringify(store.$state))
-   })
+          let stateCopy = { ...store.$state };
+          stateCopy.userTable = stateCopy.userTable.map((user: any) => {
+          let userCopy = { ...user };
+          if (userCopy.beProudLike) {
+               userCopy.beProudLike = Array.from(userCopy.beProudLike.entries());
+          }
+          if (userCopy.beProudCon) {
+               userCopy.beProudCon = Array.from(userCopy.beProudCon.entries());
+          }
+          return userCopy;
+          });
+     
+          localStorage.setItem(key, JSON.stringify(stateCopy));
+   });
 
    //取
    try {
-        const localData = localStorage.getItem(key)
-        if (localData) {
-            store.$patch(JSON.parse(localData))
-        }
-   } catch (error) {
+          const localData = localStorage.getItem(key);
+          if (localData) {
+               let parsedData = JSON.parse(localData);
+          
+               parsedData.userTable = parsedData.userTable.map((user: User) => {
+                    if (user.beProudLike) {
+                      user.beProudLike = new Map(user.beProudLike);
+                    }
+                    if (user.beProudCon) {
+                      user.beProudCon = new Map(user.beProudCon);
+                    }
+                    return user;
+               });
+               store.$patch(parsedData);
+          }
+     }
+   catch (error) {
         console.log('localStorage error', error);
    }
 }

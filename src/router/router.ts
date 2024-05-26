@@ -64,6 +64,12 @@ export const routes: RouteRecordRaw[] = [
                 name: 'createPage',
                 meta: { modulePage: false, showName: '笔记编辑'},
             },
+            { 
+                path: 'messageIndex',
+                component: () => import('@/views/message/index.vue'),
+                name: 'messageIndex',
+                meta: { modulePage: true},
+            },
         ]
     },
     { 

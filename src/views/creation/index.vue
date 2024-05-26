@@ -76,7 +76,7 @@
 </template>
 <script setup lang="ts">
 import uploadImgCom from "@/components/uploadImg.vue"
-import { reactive, ref, onActivated} from "vue";
+import { reactive, ref, onMounted} from "vue";
 import { navigation } from '@/router/index';
 import {blogSharesTable, IndexDB, userTableStore, User} from "@/stores/index"
 import {getTime} from "@/utils/time"
@@ -89,6 +89,7 @@ const showDrawer = ref(false);
 const visibleList = ref(['公开可见', '仅自己可见的'])
 
 let blogNote = reactive<blogSharesTable>({
+     id: 0,
      title: "",
      content: "",    
      visible: 1,
@@ -98,7 +99,7 @@ let blogNote = reactive<blogSharesTable>({
      place: "",
      likeList: [],
      commentList: [],
-     headImageId: 0,
+     collectList:[]
 } as blogSharesTable);
 let blogImagesList = ref<(File | null)[]>([null]);
 
@@ -117,7 +118,6 @@ const handleFileChanged = (index:number,  file:File) => {
     blogNote.imagesDataList = await convertFilesToDataUrls(blogImagesList.value) as string[];
     blogNote.author = curUser.id; //绑定唯一的id
     blogNote.date = getTime();
-    blogNote.headImageId = curUser.headerImg ? curUser.headerImg : 0;
 
     blogNote.place = blogNote.place.length == 0 ? '未知喵星' : blogNote.place;
     db.storeBlog(blogNote).then((res: number) => {
@@ -146,7 +146,7 @@ async function convertFilesToDataUrls(files: (File | null)[]) {
   return dataUrls;
 }
 
-onActivated(() => {
+onMounted(() => {
     //个人信息加载
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
@@ -159,7 +159,8 @@ onActivated(() => {
 //重置数据
 const reset = () => {
     console.log('数据清空');
-    let obj = {
+    let obj: blogSharesTable= {
+        id: 0,
         title: "",
         content: "",    
         visible: 1,
@@ -169,7 +170,7 @@ const reset = () => {
         place: "",
         likeList: [],
         commentList: [],
-        headImageId: 0,
+        collectList:[]
     }
     Object.assign(blogNote, obj);
     

@@ -42,7 +42,7 @@ const props = defineProps({
       type: String,
       required: true,
     },
-    headImageId: {
+    author: {
       type: Number,
       required: true,
     },
@@ -52,15 +52,9 @@ const props = defineProps({
     }
 });
 
-const trsNumber = computed(() => {
-
- });
-
+//这里的数据每次都会加载导致，数据显示的很慢
 onMounted(() => {
-    
-    db.getImage(props.headImageId).then((res:any) => {
-        console.log('头像数据', res);
-        
+    db.getImage(userDb.getUserById(props.author)?.headerImg!).then((res:any) => {
         headerImage.value = res
     })
 })

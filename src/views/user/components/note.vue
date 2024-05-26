@@ -35,7 +35,7 @@
                 <waterfulLayoutVue :items="noteList1" :columnsCount="2"> 
                     <template #default="{ item }">
                         <div>
-                            <itemBlogVue :imgUrl="item.imagesDataList" :tittle="item.title" :headImageId="item.headImageId" :likeNum="item.likeList.length"> </itemBlogVue>
+                            <itemBlogVue :imgUrl="item.imagesDataList" :tittle="item.title" :author="item.author" :likeNum="item.likeList.length"> </itemBlogVue>
                         </div>
                     </template>
                 </waterfulLayoutVue>
@@ -46,7 +46,7 @@
                 <waterfulLayoutVue :items="noteList2" :columnsCount="2"> 
                     <template #default="{ item }">
                         <div>
-                            <itemBlogVue :imgUrl="item.imagesDataList" :tittle="item.title" :headImageId="item.headImageId" :likeNum="item.likeList.length"> </itemBlogVue>
+                            <itemBlogVue :imgUrl="item.imagesDataList" :tittle="item.title" :author="item.author" :likeNum="item.likeList.length"> </itemBlogVue>
                         </div>
                     </template>
                 </waterfulLayoutVue>
@@ -55,12 +55,11 @@
     </div>
 </template>
 <script setup lang="ts">
-import {ref, inject, onActivated, reactive} from 'vue';
+import {ref, inject, onMounted, reactive} from 'vue';
 import waterfulLayoutVue from "@/components/waterfulLayout.vue";
 import itemBlogVue from "@/components/itemBlog.vue";
 import { User, userTableStore, IndexDB} from '@/stores/index'
 import { navigation } from '@/router/index';
-import { get } from 'http';
 
 const userDb = userTableStore()
 let curUser = reactive<User>({} as User)
@@ -72,7 +71,7 @@ let noteList1 = ref([])
 let noteList2 = ref([])
 let tabIndex = ref(0); //默认公开的
 
-onActivated(() => {
+onMounted(() => {
     initData()
 })
 
@@ -81,7 +80,6 @@ const initData = () =>{
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         Object.assign(curUser, res!.data);
-
     }else {
         navigation('login')
     }

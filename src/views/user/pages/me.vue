@@ -44,7 +44,7 @@
                     <div v-show="editData.type == 'headerImg'">
                         <div class="w-full flex justify-center items-center bg-white p-4 rounded-lg"> 
                             <div class="w-full h-56 "> 
-                                <uploadImgCom @file-changed="uploadImg" :tailor="true"> </uploadImgCom>
+                                <uploadImgCom @file-tailor-changed="uploadImg" :tailor="true"> </uploadImgCom>
                             </div>
                         </div>
                    
@@ -55,7 +55,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import {ref, reactive, onActivated} from "vue"
+import {ref, reactive, onMounted} from "vue"
 import { User, userTableStore, IndexDB} from '@/stores/index'
 import { navigation } from '@/router/index';
 import uploadImgCom from "@/components/uploadImg.vue"
@@ -110,20 +110,21 @@ const editSome = (type: string) => {
 
 //更新数据
 const updataUser = () => {
+    
     //基础数据的更新
     userDb.updataUserMessage(curUser)
     if (editData.type != 'backgroundImg' && editData.type != 'headerImg')
-    editData.showDrawer = false;
-
+        editData.showDrawer = false;
     //图片类型的更新
     if (editData.type == 'backgroundImg' || editData.type == 'headerImg') {
         if (imageFile == null) return;
-        
+
         switch (editData.type) {
             case 'backgroundImg':
                 db.storeImage(imageFile, curUser.backgroundImg).then(res => {
                     curUser[editData.type as 'backgroundImg'] = res;
                     editData.showDrawer = false;
+                    userDb.updataUserMessage(curUser);
                     imageDataInit()
                 })
                 break;
@@ -131,6 +132,7 @@ const updataUser = () => {
                 db.storeImage(imageFile, curUser.headerImg).then(res => {
                     curUser[editData.type as 'headerImg'] = res;
                     editData.showDrawer = false;
+                    userDb.updataUserMessage(curUser);
                     imageDataInit()
                 })
                 break;
@@ -139,7 +141,7 @@ const updataUser = () => {
     initData();
 }
 
-onActivated(() => {
+onMounted(() => {
     initData();
 })
 

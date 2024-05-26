@@ -15,7 +15,7 @@
             class="mySwiper w-full h-full"
             ref="mySwiper"
         >
-            <swiper-slide class=" w-full h-full" v-for="(item, index) in imgList" :key="index">
+            <swiper-slide class=" w-full h-full" v-for="(item, index) in props.imgList" :key="index">
                 <div class="flex w-full h-full">
                     <img
                         style="  
@@ -39,13 +39,18 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import img1 from "@/assets/image/g1-0.jpg"
-import img2 from "@/assets/image/g1-1.jpg"
-import img3 from "@/assets/image/g1-2.jpg"
+
+const props = defineProps({
+    imgList: {
+      type: Array,
+      required: true,
+    }
+});
+
+
 
 const modules = [Navigation, Pagination, Scrollbar, A11y];
 
-const imgList = ref([img1, img2, img3])
 
 onActivated(() => {
     

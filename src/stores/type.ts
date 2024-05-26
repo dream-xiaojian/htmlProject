@@ -10,6 +10,10 @@ export interface imagesTable {
 
 export interface blogSharesTable {
     /**
+     * 作品id
+     */
+    id: number
+    /**
      * 标题
      */
     title: string
@@ -35,11 +39,6 @@ export interface blogSharesTable {
     author: number
 
     /**
-     * 作者头像
-     */
-    headImageId: number
-
-    /**
      * 发布时间
      */
     date: string
@@ -50,7 +49,7 @@ export interface blogSharesTable {
     place: string
 
     /**
-     * 点赞列表
+     * 该作品收到的点赞列表
      */
     likeList: number[]
 
@@ -59,5 +58,9 @@ export interface blogSharesTable {
      */
     commentList: number[]
 
-
+    /**
+     * 收藏列表
+     * 存储用户id
+     */
+    collectList:number[]
 }

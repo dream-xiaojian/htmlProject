@@ -59,7 +59,9 @@ export default {
 （2）通过image src base64回显图片
 （3）同时通过canvans支持图片的裁剪
 
-
+## 某些数据是否加载一次的问题
+比如首页只有第一次访问时加载数据，路由切换时不进行加载数据
+解决：全局状态管理，isIndexDateLoaded
 
 
 

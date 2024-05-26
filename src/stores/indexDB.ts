@@ -83,7 +83,9 @@ export class IndexDB {
      * 这里还要做一步，如果这个用户之前上传过图片，那么就要删除之前的图片
      */
     async storeImage(file: File, imageId: number | null = null) {
-        if (imageId) { //不为空，删除之前的图片
+       console.log(file, imageId);
+       
+        if (imageId != null) { //不为空，删除之前的图片
           await this.deleteImage(imageId);
         }
 
@@ -117,8 +119,6 @@ export class IndexDB {
 
     //blog分享表的操作
     async storeBlog(note: blogSharesTable) {
-        console.log(note);
-        
         return new Promise<number>((resolve, reject) => {
           const transaction = this.db.transaction('blogShares', 'readwrite');
           const store = transaction.objectStore('blogShares');
@@ -168,5 +168,51 @@ export class IndexDB {
         };
       });
    }
+
+   // 按顺序获取分页下的note数据
+    async getNoteByVisible(visible: boolean, page: number, pageSize: number) {
+      return new Promise<blogSharesTable[]>((resolve, reject) => {
+        const transaction = this.db.transaction('blogShares', 'readonly');
+        const store = transaction.objectStore('blogShares');
+        const index = store.index('visible');
+        const request = index.openCursor(IDBKeyRange.only(visible ? 1 : 0), 'prev');
+    
+        const results:blogSharesTable[] = [];
+        let count = 0;
+    
+        request.onerror = () => reject(request.error);
+        request.onsuccess = (event) => {
+          const cursor = (event.target as IDBRequest).result;
+          if (cursor) {
+            if (count >= (page - 1) * pageSize && count < page * pageSize) {
+              results.push(cursor.value);
+            }
+            count++; //所有的游标数
+            if (count > page * pageSize) resolve(results);
+            cursor.continue();
+          } else {
+            resolve(results);
+          }
+        };
+      });
+    }
+
+    //获取某个id下的note数据
+    async getNoteById(id: string) {
+      return new Promise<blogSharesTable>((resolve, reject) => {
+        const transaction = this.db.transaction('blogShares', 'readonly');
+        const store = transaction.objectStore('blogShares');
+        const index = store.index('id');
+        const request = index.get(parseInt(id));
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+      });
+    }
+
+    //获取多个id下的note数据
+    async getNotesByIds(ids: string[]) {
+      return Promise.all(ids.map(id => this.getNoteById(id)));
+    }
+    
 }
 

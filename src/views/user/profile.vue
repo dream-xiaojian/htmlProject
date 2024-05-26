@@ -86,10 +86,13 @@
                 <span @touchstart="tabIndex=2"  :class="{'font-bold text-black':tabIndex==2, 'text-gray-500':tabIndex!=2}">赞过</span>
             </div>
             <!-- 对应的部分：动画使用vueTransition-->
-            <noteCom></noteCom>
+            <noteCom v-if="tabIndex==0"></noteCom>
+            <collectCom v-if="tabIndex==1"></collectCom>
+            <likeCom v-if="tabIndex==2"></likeCom>
 
-        <!-- //弹框设置页面 -->
         </section>
+        
+        <!-- //弹框设置页面 -->
         <transition name="slide-up">
             <div v-if="showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2">
                 <!-- 顶部栏 -->
@@ -113,9 +116,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onActivated, onMounted, onUnmounted, reactive, computed} from "vue";
+import { ref, onMounted, onUnmounted, reactive, computed} from "vue";
 import { navigation } from '@/router/index';
 import noteCom from "./components/note.vue"
+import collectCom from "./components/collection.vue"
+import likeCom from "./components/like.vue"
+
 import { User, userTableStore, IndexDB} from '@/stores/index'
 import { inject } from 'vue'
 
@@ -133,19 +139,13 @@ const InterestListNumber = computed(() => {
 const fansListNumber = computed(() => {
     return curUser.fansList?.length || 0;
 });
-const beProudNumber = computed(() => {
-    return curUser.beProud?.length || 0;
-});
+//统计获得的赞和收藏数
+let beProudNumber = ref(0);
+
 const score = computed(() => {
     return curUser.score || 0
 });
 const db: IndexDB = inject('db') as IndexDB;
-
-
-
-onActivated(() => {
-    initData();
-});
 
 const initData = () =>{
     //基本信息的获取
@@ -155,6 +155,9 @@ const initData = () =>{
         //如果直接curUser = res.data,则curUser不是响应式对象，指向的就不是相应式对象
         //通过assign给curUser的每一个属性赋值，这样curUser就是一个响应式对象
         Object.assign(curUser, res!.data);
+
+        //统计获得的赞和收藏数
+        beProudNumber.value = mapSum(curUser.beProudCon || null) + mapSum(curUser.beProudLike || null);
         imageDataInit();
 
     }else {
@@ -162,8 +165,14 @@ const initData = () =>{
     }
 }
 
+const mapSum = (map: Map<number, number[]> | null) => {
+    if (map == null) return 0;
+    return Array.from(map.values()).reduce((total, currentArray: number[]) => total + currentArray.length, 0);
+}
+
 const imageDataInit = () => {
     if (curUser.backgroundImg != null) {
+        
         db.getImage(curUser.backgroundImg!).then((res) => {
           meHeader.value.style.backgroundImage = `url(${res})`;
         }).catch((err:DOMException) => {
@@ -225,6 +234,7 @@ const checkList = ref([
 
 //监听滚动事件
 onMounted(() => {
+    initData();
     profileContent.value.addEventListener('scroll', handleScroll)
 })
 

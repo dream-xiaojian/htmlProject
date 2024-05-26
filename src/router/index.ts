@@ -14,8 +14,9 @@ export const router = createRouter({
   }
 })
 
-export function navigation(pathName:string) {
-  console.log('跳转页面', pathName);
+export function navigation(pathName:string, query?:number) {
+  console.log(pathName, query);
   
-  router.push({name: pathName})
+  if (query)  router.push({name: pathName, query: {id: query}})
+  else router.push({name: pathName})
 }

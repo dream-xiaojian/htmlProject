@@ -5,7 +5,6 @@ import {verifyUser} from "./rightsVerification"
 import {result} from "./type"
 
 export interface User {
-
     id: number
 
     username: string
@@ -22,15 +21,27 @@ export interface User {
 
     age?: number
 
-    InterestList?: string[] //关注列表
+    InterestList?: string[] //我的关注列表
 
-    fansList?: string[] //粉丝列表
+    fansList?: string[] //粉丝列表（我的粉丝）
 
-    beProud?: string//获得的赞和收藏
+    /**
+     *  哈希表：
+     *  键是：作品id
+     *  值：所有点赞的用户
+     */
+    beProudLike?: Map<number, number[]>  //获得的赞和收藏
+
+    beProudCon?: Map<number, number[]>  //获得的赞和收藏
+
+    likeList?: number[] //点赞列表
+
+    collectList?: number[]//收藏列表
 
     resume?: string // 简介
 
     noteList?: number[] //笔记列表
+    
     /**
      * 背景图片，实际上存储的是一个图片库中数据id，
      * 保证说不会所有的图片（大数据）的都加载到内存中
@@ -42,6 +53,11 @@ export interface User {
      * 头像图片，和背景图片同理
      */
     headerImg?: number 
+}
+
+export type beProudType = {
+    who: number //谁给我点的
+    noteId: number //作品id
 }
 
 
@@ -96,12 +112,111 @@ export const userTableStore = defineStore('userTable', {
          * 匹配到userTable中的哪一条数据，然后修改
          */
         updataUserMessage(user: User): void {
+            console.log(user);
             let index = this.userTable.findIndex(item => item.id === user.id);
             if (index === -1) {
                 throw new Error("用户不存在");
             }
             this.userTable[index] = user;
-        }
+        },
+
+        /**
+         * 
+         * @param id 
+         */
+        getUserById(id: number): User | null {
+            return this.userTable.find(user => user.id === id) || null;
+        },
+
+        /**
+         * 点赞和收藏功能
+         * 点赞
+         * （1）如果点的是本人发布的作品，不处理
+         * （2）如果点的是其他人发布的作品
+         *      本人：
+         *      1. likeList点赞列表中添加作品id
+         *      
+         *      对于作品的发布人：指的是该人的所有作品收到的点赞和收藏
+         *      1. beProud列表中添加点赞人id和作品id
+         * 
+         *      对于该笔记：
+         *          是否有必要添加一个点赞
+         *       这里有两个处理方案：
+         *          （1）往IndexDB数据库中修改likeNum（动IndexDB）
+         *          （2）从该用户中beProud进行统计该篇笔记的获得的赞（不动IndexDB）
+         *      选第二种吧，因为点赞很频繁的
+         * 添加的时候点赞过了的作品不进行点击了
+         * 
+         * 收藏同理   
+         */
+         likeAndCollect(me:number, who: number, noteId: number, type: "like" | "collect"): void {
+            let meUser = this.getUserById(me) as User;
+            let whoUser = this.getUserById(who) as User;
+            console.log(meUser, whoUser);
+            
+            if (me == who) {
+                console.log('不要给自己点赞哦');
+                new Error("不要给自己点赞哦")
+                return;
+            }
+
+            if (!meUser.likeList) meUser.likeList = [];
+            if (!meUser.collectList) meUser.collectList = [];
+
+            if (type === "like") {
+                //已经点赞过了，取消点赞
+                if(this.isLikeOrColl(meUser.likeList!, noteId)) {
+                    console.log('已经点赞了，取消点赞');
+                    meUser.likeList = meUser.likeList?.filter(item => item !== noteId);
+                    let oldArray = whoUser.beProudLike?.get(noteId);
+                    if (oldArray) {
+                        whoUser.beProudLike?.set(noteId, oldArray.filter(item => item !== me))
+                    }
+                }
+                else{
+                    console.log('没有点赞，点赞');
+                    meUser.likeList!.push(noteId);
+                    
+                    if (!whoUser.beProudLike) whoUser.beProudLike = new Map<number, number[]>();
+                    if (!(whoUser.beProudLike instanceof Map)) {
+                        whoUser.beProudLike = new Map<number, number[]>();
+                    }
+                    
+                    if (!whoUser.beProudLike.has(noteId)) {
+                        whoUser.beProudLike.set(noteId, []);
+                    }
+                    whoUser.beProudLike.get(noteId)!.push(me)
+
+                }
+            } else {
+                //已经收藏过了，取消收藏
+                if(this.isLikeOrColl(meUser.collectList!, noteId)) {
+                    meUser.collectList = meUser.collectList?.filter(item => item !== noteId);
+                    let oldArray = whoUser.beProudCon?.get(noteId);
+                    if (oldArray) {
+                        whoUser.beProudCon?.set(noteId, oldArray.filter(item => item !== me))
+                    }
+                }
+                else{
+                    meUser.collectList?.push(noteId);
+                    if (!whoUser.beProudCon) whoUser.beProudCon = new Map<number, number[]>();
+                    if (!whoUser.beProudCon.has(noteId)) {
+                        whoUser.beProudCon.set(noteId, []);
+                    }
+                    whoUser.beProudCon.get(noteId)!.push(me)
+                }
+            }
+         },
+
+         /**
+          * 是否点赞或者收藏过
+          * @param list 
+          * @param noteId 
+          * @returns 
+          */
+         isLikeOrColl(list: number[],  noteId: number) {
+            return list.includes(noteId)
+         }
     }
 })
 

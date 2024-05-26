@@ -1,40 +1,101 @@
 <template lang="">
     <div class="w-full h-full overflow-y-auto pb-20">
         <div class="w-full" style="height:55vh; position: relative;"> 
-            <carousel></carousel>
+            <carousel :imgList="note.imagesDataList"></carousel>
         </div>
 
         <div class='px-2 mt-2'>
             <!-- 标题 -->
             <div class="font-bold text-lg"> 
-                <p>红白撞色条纹软糯针织上衣女2022年秋季新款甜美减龄短款毛衣开衫 </p>
+                <p>{{note.title}}</p>
             </div>
             <!-- 内容 -->
-            <div class=""> 
-                <p>之前就很想趁着夏天前发一篇保养🦶的分享，毕竟除了瑜伽老师四季都几乎赤足上课、
-                    练习，大部分人夏天都会要穿凉鞋，脚部很多问题就遮不住了，结果拖延症…直到昨天
-                    刷到图一，觉得jio的问题在瑜伽里真的是个不能被忽略的问题！</p>
+            <div class="py-2"> 
+                {{note.content}}
             </div>
-            <span class="text-gray-400 text-sm">编辑于 2024/5/20 江西</span>
+            <span class="text-gray-400 text-sm">编辑于 {{note.date}} {{note.place}}</span>
             <div class=" border-t-2 mt-2"></div>
         </div>
 
         <!-- 评论部分, 先不实现回复 -->
         <div class="p-2">
-            <div class=" text-sm">共 10+ 条评论</div>
-            <div class="flex">
+            <div class=" text-sm py-2">共 {{note.commentList?.length}} 条评论</div>
+            <div class="flex gap-2" v-for="(item, index) in note.commentList">
                 <span class="flex-none"><svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 64 64"><g fill="#3e4347"><path d="M2.3 36.1c-.2-1-.3-2-.2-2.9c0-1.2.3-2.2.9-3.2c.6-1.1 1.6-2 2.7-2.5c1.1-.6 2.5-.8 3.8-.6c1.2.1 2.4.6 3.4 1.3c.9.6 1.7 1.4 2.4 2.3c1.1 1.5 1.9 3.3 2.3 5.4v.3c.2 1.3-.6 2.5-1.9 2.9c-.2.1-.4.1-.6.1c-.8.1-1.5-.1-2.1-.6c-.6-.5-1-1.1-1.1-1.9c-.2-1.4-.5-2.6-1.1-3.5c-.5-.9-1.3-1.6-2.1-1.8c-.3-.1-.7-.1-1 0c-.4.1-.7.4-.9.7c-.3.4-.5.8-.5 1.4c-.1.6-.1 1.2 0 1.8c.2 1.2.6 2.6 1.3 4c.3.6.7 1.3 1.1 2c.4.7.9 1.3 1.3 1.8c1.1 1.3 2.1 2.3 3.2 3.1c1.3.9 2.6 1.5 3.9 1.7c1.3.2 2.8.2 4.3-.3c1.2-.3 1.9.1 2.1.7c.2.5-.1 1.3-1.3 1.7h-.1c-1.8.6-3.7.8-5.4.5c-1.7-.2-3.5-1-5.2-2c-1.4-.9-2.6-2.1-3.9-3.5c-.5-.6-1-1.2-1.4-1.7L6 43c-.6-.7-1.1-1.4-1.5-2.1c-1.2-1.6-1.9-3.2-2.2-4.8m44.4 19.8c1.8 2.3 9.7 0 11-2.6c5.2-10.6 0-15.2 0-15.2l-11 1.5c0 .1-2.2 13.5 0 16.3"/><path d="M31.8 55.9c-1.8 2.3-9.7 0-11-2.6c-5.2-10.6 0-15.2 0-15.2l11 1.5c0 .1 2.3 13.5 0 16.3"/></g><path fill="#fff" d="M34.5 55.2c-.1 1.1-2.6 1.7-5.6 1.4c-3-.3-5.3-1.3-5.3-2.4c.1-1.1 2.4.3 5.4.5c3.1.4 5.6-.5 5.5.5m9.5 0c.1 1.1 2.6 1.7 5.6 1.4c3-.3 5.3-1.3 5.3-2.4c-.1-1.1-2.4.3-5.4.5c-3.1.4-5.6-.5-5.5.5"/><g fill="#4c5359"><path d="M39.2 60.4c2 2.2 8.9 2.1 11.1 0c3-3 2.9-16.7 3-23.3l-13-1.1c.1 0-3.6 21.5-1.1 24.4"/><path d="M39.3 60.4c-2 2.2-8.9 2.1-11.1 0c-3-3-2.9-16.7-3-23.3l13-1.1s3.6 21.5 1.1 24.4"/></g><path fill="#fff" d="m34 43.7l5.3 11.2l5.3-11.2z"/><path fill="#4c5359" d="M59.9 2.2C57.5.8 45.1 7.3 42.6 11.7l17.9 10.6c2.4-4.3 1.7-18.8-.6-20.1"/><path fill="#f7a4a4" d="M56.2 8.8c-.9-.5-8.2 2.8-9.6 5.2l10 5.9c1.3-2.3.4-10.6-.4-11.1"/><path fill="#4c5359" d="M18.7 2.2c-2.4 1.4-3.1 15.7-.6 20.1L36 11.7C33.6 7.4 21 .8 18.7 2.2"/><path fill="#f7a4a4" d="M22.5 8.8c-.9.5-1.8 8.7-.4 11.1L32 14c-1.3-2.3-8.7-5.7-9.5-5.2"/><path fill="#4c5359" d="M39.3 9.4C18.5 9.4 16.5 24 16.5 32.1c0 3.4 10.2 13.9 22.7 13.9C51.8 46 62 35.5 62 32.1C62 24 60 9.4 39.3 9.4"/><path fill="#bfffab" d="M33.5 28.5s-2.4 3.6-6.8 2.5s-4.6-5.4-4.6-5.4s2.4-3.6 6.8-2.5c4.4 1.2 4.6 5.4 4.6 5.4"/><path fill="#93e67f" d="M33 26.7S30.9 29 28 29c-3.1 0-5-4.4-5-4.4s2.1-2.4 5.8-1.4c3.5.8 4.2 3.5 4.2 3.5"/><path fill="#4c5359" d="M29.8 26.6c0 4.9-2.4 4.9-2.4 0s2.4-4.9 2.4 0"/><path fill="#bfffab" d="M45.1 28.5s2.4 3.6 6.8 2.5s4.6-5.4 4.6-5.4s-2.4-3.6-6.8-2.5c-4.4 1.2-4.6 5.4-4.6 5.4"/><path fill="#93e67f" d="M45.5 26.7s2.1 2.3 5 2.3c3.1 0 5-4.4 5-4.4s-2.1-2.4-5.8-1.4c-3.5.8-4.2 3.5-4.2 3.5"/><path fill="#4c5359" d="M48.7 26.6c0 4.9 2.4 4.9 2.4 0c.1-4.9-2.4-4.9-2.4 0"/><path fill="#fff" d="M45.9 32.5c-2-1.5-4.2-6.5-6.6-6.5s-4.7 5-6.6 6.5c-3.1 2.4-11.5 5.1-11.5 5.1s8.9 7.6 18.1 7.6c9.2 0 18.1-7.6 18.1-7.6s-8.4-2.7-11.5-5.1"/><g fill="#4c5359"><path d="M45.7 39.3c-.7.4-1.6.6-2.4.6c-.8-.1-1.6-.3-2.2-.8c-.6-.5-1.1-1.2-1.2-1.9l-.6-3.3l-.6 3.3c-.1.8-.6 1.4-1.2 1.9s-1.4.8-2.2.8c-.9 0-1.7-.1-2.4-.6c-.7-.4-1.4-1.1-1.7-2c0 1 .6 1.9 1.3 2.5c.7.6 1.8 1 2.7 1.1c1 .1 2-.2 2.9-.8c.5-.3.8-.7 1.2-1.2c.3.5.7.9 1.2 1.2c.9.6 1.9.9 2.9.8c1 0 2-.4 2.7-1.1c.8-.6 1.3-1.6 1.3-2.5c-.3.9-.9 1.6-1.7 2"/><path d="M42.4 33.1c-.6-.7-2.5-.8-3.1-.8c-.6 0-2.5.1-3.1.8c-.4.5-.1 1.8 1.1 3c.7.7 1.4.9 2 .9c.6 0 1.3-.2 2-.9c1.2-1.2 1.5-2.5 1.1-3"/></g><path fill="#fff" d="M39 59.6c0 1.1-2.3 1.9-5.2 1.9c-2.9 0-5.2-.9-5.2-1.9c0-1.1 2.3.1 5.2.1c2.8 0 5.2-1.1 5.2-.1m10.9 0c0 1.1-2.3 1.9-5.2 1.9c-2.9 0-5.2-.9-5.2-1.9c0-1.1 2.3.1 5.2.1c2.9 0 5.2-1.1 5.2-.1"/><path fill="#3e4347" d="m29.6 61.2l1.4-2.4l-.4 2.8zm3.5.8l.5-3.3l.5 3.3zm3.9-.4l-.4-2.6l1.4 2.3zm11 0l-.4-2.8l1.4 2.4zm-3.6.4l.5-3.3l.5 3.3zm-3.9-.7l1.4-2.3l-.4 2.6z"/></svg> </span>
                 <div class="flex-1"> 
                     <p> 
-                        其实经常会看到很多朋友疑惑为什么不穿袜子练习瑜伽，带防滑点的袜子不可以么？我个人的理解是，可以，但不建议。在瑜伽串联里袜子会变成阻碍练习的一个因素，有长期练习瑜伽经验的朋友就会知道，穿着袜子练习瑜伽，练着练着袜子就会跑走，多少还是会影响练习的质量和连贯性。
+                        
                     </P>
                 </div>
+            </div>
+        </div>
+
+        <!-- 写评论 -->
+        <div class="fixed bottom-0 w-full bg-white p-2">
+            <div class="flex items-center gap-2">
+                <input
+                type="text"
+                placeholder="善于结善缘，恶言伤人心"
+                class="flex-1 py-2 px-3 rounded-full bg-gray-100 focus:outline-none"
+                />
+                <div class="flex items-center gap-1">
+                    <svg @touchstart="likeOrCollect('like')" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48"><path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.987 10.987 0 0 0 15 8"/></svg>
+                    <span class='text-lg text-gray-500 font-bold'></span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <svg @touchstart="likeOrCollect('collect')" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="black" d="M5 21V5q0-.825.588-1.412T7 3h10q.825 0 1.413.588T19 5v16l-7-3zm2-3.05l5-2.15l5 2.15V5H7zM7 5h10z"/></svg>
+                    <span class='text-lg text-gray-500 font-bold'>2</span>
+                </div>
+
+                <button class="bg-blue-500 text-white rounded-full p-2"> 发送 </button>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import carousel from "@/components/carousel.vue";
+import { ref, onMounted, inject, watch, reactive} from "vue";
+import { useRoute } from 'vue-router';
+import { navigation } from '@/router/index';
+import {IndexDB, blogSharesTable, userTableStore, User} from "@/stores"
+
+const indexDb: IndexDB = inject('db') as IndexDB;
+const route = useRoute();
+const userDb = userTableStore()
+let noteId = ref();
+let note = ref<blogSharesTable>({} as blogSharesTable);
+let curUser = reactive<User>({} as User)
+
+watch(() => route.query.id, (newId) => {
+  noteId.value = newId;
+  initData();
+});
+
+onMounted(() => {
+    noteId.value = route.query.id;
+    initData();
+});
+
+const initData = () =>{
+    indexDb.getNoteById(noteId.value).then((res) => {
+        note.value = res;
+    })
+
+    let res =  userDb.getCurrentUserMessage()
+    if (res?.code != -1)  Object.assign(curUser, res!.data);
+    else navigation('login')
+
+}
+
+const likeOrCollect = (type: 'like' | 'collect') => {
+    console.log('likeOrCollect', type);
+    
+    userDb.likeAndCollect(curUser.id, note.value.author, noteId.value, type)
+}
+
+
+
+
 
 </script>
 <style lang="">

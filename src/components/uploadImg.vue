@@ -76,11 +76,11 @@ const imageChangeEnd = (e: any) => {
   if (e && e.y !== undefined) cutImg.y = e.y;
   if (e && e.w !== undefined) cutImg.w = e.w;
   if (e && e.h !== undefined) cutImg.h = e.h;
-  console.log('x:', cutImg.x, 'y:', cutImg.y, 'w:', cutImg.w, 'h:', cutImg.h);
+  // console.log('x:', cutImg.x, 'y:', cutImg.y, 'w:', cutImg.w, 'h:', cutImg.h);
   const cvs = document.createElement("canvas");
   const ctx  = cvs.getContext("2d");
-  cvs!.width = canvasCopy.value!.offsetWidth
-  cvs!.height = canvasCopy.value!.offsetHeight
+  cvs!.width = cutImg.canvasWidth
+  cvs!.height = cutImg.canvasHeight
   ctx!.drawImage(img.value, cutImg.x, cutImg.y, cutImg.w, cutImg.h, 0, 0, cutImg.canvasWidth, cutImg.canvasHeight);
   cvs.toBlob((blob) => {
     //blob 转换为file
@@ -105,7 +105,7 @@ const onFileChange = (e: any) => {
 };
 
 const resize = (e: any) => {
-  console.log(e);
+
 }
 
 </script>

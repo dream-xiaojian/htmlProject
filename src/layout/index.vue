@@ -12,24 +12,26 @@
 
 
         <router-view v-slot="{ Component, route}" >
-          <transition :name="transitionName">
-            <keep-alive>
+          <!-- <transition :name="transitionName"> -->
+            <!-- <keep-alive> -->
               <component :is="Component"/>
-            </keep-alive>
-          </transition>
+            <!-- </keep-alive> -->
+          <!-- </transition> -->
         </router-view>
         
         <!-- 底部的菜单栏 -->
-        <transition :name="transitionName">
+        <!-- <transition :name="transitionName"> -->
         <footer v-show="$route.meta.modulePage" class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white" style="z-index: 9999;">
-          <div class="w-full h-full flex justify-around">
-              <div @click="navigateTo(item.pathName)" class="flex flex-col justify-center items-center" v-for="(item, index) in menuList" :key="index">
-              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="black"><path stroke-linejoin="round" d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="7" r="3"/></g></svg>
-              <span class=" text-sm font-bold">{{ item.name }}</span>
+          <div class="w-full h-full flex justify-around ">
+              <div @touchstart="navigateTo(item.pathName, index)" class="flex flex-col justify-center items-center" v-for="(item, index) in menuList" :key="index">
+                <span v-if="index == 2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="3.2em" height="3.2em" viewBox="0 0 24 24"><path fill="#ee5353" d="M11 17h2v-4h4v-2h-4V7h-2v4H7v2h4zm-6 4q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21z"/></svg>
+                </span>
+                <span v-if="index != 2" :class="{'text-black':tableIndex == index, 'text-gray-500':tableIndex != index}" class="py-2 text-lg font-bold " >{{ item.name }}</span>
               </div>
           </div>
         </footer>
-      </transition>
+      <!-- </transition> -->
     </div>
 </template>
 <script setup>
@@ -39,6 +41,7 @@ const route = useRoute(); //当前路由对象，Url, 参数
 const router = useRouter(); //路由实例，操作路由
 
 let transitionName = ref('go')
+let tableIndex = ref(0)
 
 watch(
   () => route.meta,
@@ -59,7 +62,8 @@ watch(
   }
 )
 
-const navigateTo = (pathName) => {
+const navigateTo = (pathName, index) => {
+  tableIndex.value = index;
   router.push({ name: pathName });
 };
 
@@ -70,27 +74,22 @@ const goBack = () => {
 const menuList = ref([
     {
         name: '首页',
-        icon: 'user',
         pathName: 'findHomePage'
     },
     {
-        name: '对话',
-        icon: 'user',
+        name: '创意',
         pathName: 'chat'
     },
     {
         name: '创作',
-        icon: 'user',
         pathName: 'createPage'
     },
     {
         name: '消息',
-        icon: 'user',
-        pathName: 'chat'
+        pathName: 'messageIndex'
     },
     {
         name: '我',
-        icon: 'user',
         pathName: 'profile'
     }
 ])
