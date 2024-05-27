@@ -115,7 +115,7 @@ const handleFileChanged = (index:number,  file:File) => {
 
 //发布笔记
  const publishNote = async () => {
-    blogNote.imagesDataList = await convertFilesToDataUrls(blogImagesList.value) as string[];
+    blogNote.imagesDataList = await convertFilesToDataUrlsId(blogImagesList.value) as number[];
     blogNote.author = curUser.id; //绑定唯一的id
     blogNote.date = getTime();
 
@@ -131,19 +131,19 @@ const handleFileChanged = (index:number,  file:File) => {
     })
 }
 
-async function convertFilesToDataUrls(files: (File | null)[]) {
+async function convertFilesToDataUrlsId(files: (File | null)[]) {
   //删除最后一个null
   files = files.slice(0, files.length - 1);
   const promises = files.map(file => {
     if (file !== null) {
-      return db.readImage(file);
+      return db.storeImage(file);
     }
     return Promise.resolve(null);
   });
 
   // 同步等待所有图片转换完成
-  const dataUrls = await Promise.all(promises);
-  return dataUrls;
+  const dataUrlsId = await Promise.all(promises);
+  return dataUrlsId;
 }
 
 onMounted(() => {

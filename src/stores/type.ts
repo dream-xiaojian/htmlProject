@@ -31,7 +31,7 @@ export interface blogSharesTable {
     /**
      * 图片数据
      */
-    imagesDataList: string[]
+    imagesDataList: number[]
 
     /**
      * 作者id

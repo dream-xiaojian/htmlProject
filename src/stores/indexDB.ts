@@ -117,6 +117,11 @@ export class IndexDB {
         });
     }
 
+        //获取多个id下的note数据
+    async getImagesByIds(ids: number[]) {
+        return Promise.all(ids.map(id => this.getImage(id)));
+    }
+
     //blog分享表的操作
     async storeBlog(note: blogSharesTable) {
         return new Promise<number>((resolve, reject) => {

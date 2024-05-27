@@ -17,6 +17,6 @@ export const router = createRouter({
 export function navigation(pathName:string, query?:number) {
   console.log(pathName, query);
   
-  if (query)  router.push({name: pathName, query: {id: query}})
+  if (query != undefined)  router.push({name: pathName, query: {id: query}})
   else router.push({name: pathName})
 }

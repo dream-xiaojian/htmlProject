@@ -78,6 +78,7 @@ onMounted(() => {
 
 const initData = () =>{
     indexDb.getNoteById(noteId.value).then((res) => {
+        console.log("详情页", res);
         note.value = res;
     })
 

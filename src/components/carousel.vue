@@ -15,7 +15,7 @@
             class="mySwiper w-full h-full"
             ref="mySwiper"
         >
-            <swiper-slide class=" w-full h-full" v-for="(item, index) in props.imgList" :key="index">
+            <swiper-slide class=" w-full h-full" v-for="(item, index) in imageDateUrlList" :key="index">
                 <div class="flex w-full h-full">
                     <img
                         style="  
@@ -30,8 +30,8 @@
         </swiper>
     </div>
 </template>
-<script setup>
-import {ref, onActivated} from "vue"
+<script lang="ts" setup >
+import {ref, onMounted, inject, watch} from "vue"
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -39,6 +39,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+
+import {IndexDB, userTableStore} from '@/stores/index'
+const db: IndexDB = inject('db') as IndexDB;
+let imageDateUrlList = ref([])
+
 
 const props = defineProps({
     imgList: {
@@ -51,12 +56,23 @@ const props = defineProps({
 
 const modules = [Navigation, Pagination, Scrollbar, A11y];
 
-
-onActivated(() => {
-    
+watch(() => props.imgList, (newVal) => {
+    initData(newVal as number[])
 });
 
-const onSwiper = (swiper) => {
+onMounted(() => {
+    console.log('详细页面获取', props.imgList);
+    
+
+});
+
+const initData = (newVal: number[]) =>{
+    db.getImagesByIds(newVal).then((res:any) => {
+        imageDateUrlList.value = res
+    })
+}
+
+const onSwiper = (swiper:any) => {
 }
 
 const onSlideChange = () => {
