@@ -25,7 +25,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import {computed, inject, ref, onMounted} from 'vue';
+import { inject, ref, onMounted} from 'vue';
 import {IndexDB, userTableStore} from '@/stores/index'
 const db: IndexDB = inject('db') as IndexDB;
 let headerImage = ref("")

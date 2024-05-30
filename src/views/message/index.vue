@@ -19,7 +19,7 @@
                 <span class="p-1 bg-blue-200 flex justify-center items-center rounded-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="3em" viewBox="0 0 512 512"><path fill="#5755f7" d="M332.64 64.58C313.18 43.57 286 32 256 32c-30.16 0-57.43 11.5-76.8 32.38c-19.58 21.11-29.12 49.8-26.88 80.78C156.76 206.28 203.27 256 256 256s99.16-49.71 103.67-110.82c2.27-30.7-7.33-59.33-27.03-80.6M432 480H80a31 31 0 0 1-24.2-11.13c-6.5-7.77-9.12-18.38-7.18-29.11C57.06 392.94 83.4 353.61 124.8 326c36.78-24.51 83.37-38 131.2-38s94.42 13.5 131.2 38c41.4 27.6 67.74 66.93 76.18 113.75c1.94 10.73-.68 21.34-7.18 29.11A31 31 0 0 1 432 480"/></svg>
                 </span>
-                <span class="font-medium">新增关注</span>
+                <span class="font-medium">新增粉丝</span>
             </div>
             <div class="flex flex-col gap-2" @click="showDraw(2)">
                 <span class="p-1  bg-green-200 flex justify-center items-center rounded-xl">
@@ -45,46 +45,7 @@
             <!-- //更多的朋友的列表 -->
             <div class="mt-2">
                 <div> 
-                    <div class=" py-3 w-full border-b-2 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span> 
-                                <img ref="headerImage" style="width:40px; height:40px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
-                            </span>
-                            <span>
-                                喵星猫大帝
-                            </span>
-                        </div>
-                        <div>
-                            <button class="border border-red-400 text-red-400 px-4 py-1 rounded-lg text-sm">关注</button>
-                        </div>
-                    </div>
-
-                    <div class=" py-3 w-full border-b-2 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span> 
-                                <img ref="headerImage" style="width:40px; height:40px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
-                            </span>
-                            <span>
-                                喵星猫大帝1
-                            </span>
-                        </div>
-                        <div>
-                            <button class="border border-red-400 text-red-400 px-4 py-1 rounded-lg text-sm">关注</button>
-                        </div>
-                    </div>
-                    <div class=" py-3 w-full border-b-2 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span> 
-                                <img ref="headerImage" style="width:40px; height:40px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
-                            </span>
-                            <span>
-                                喵星猫大帝2
-                            </span>
-                        </div>
-                        <div>
-                            <button class="border border-red-400 text-red-400 px-4 py-1 rounded-lg text-sm">关注</button>
-                        </div>
-                    </div>
+                    <itemInterestList :randomUser='item' v-for="(item, index) in randomUser" :key="index" @follow="(whoId) => follow(whoId, index)"/>
                 </div>
             </div>
         </div>
@@ -121,25 +82,44 @@
     </div>
 </template>
 <script setup lang="ts">
-import {ref, reactive} from "vue"
+import {ref, reactive, onMounted} from "vue"
+import { userTableStore, User, verifyUser} from '@/stores/index'
+import {useRouter} from "vue-router"
 import bePround from "./components/bePround.vue"
 import beRemark from "./components/beRemark.vue"
 import havefans from "./components/havefans.vue"
+import itemInterestList from "./components/itemInterestList.vue"
 
-
+const userDb = userTableStore()
 let tabs = reactive({
     showDrawer:false,
     type: 0,
     title:"",
 })
+type UserWithoutPassword = Omit<User, "password"> & {isInter: boolean};
+let randomUser = ref<UserWithoutPassword[]>([])
 
 const showDraw = (index:number) => {
     tabs.type = index
     if (index == 0) tabs.title = "收到的赞和收藏"
-    if (index == 1) tabs.title = "新增关注"
+    if (index == 1) tabs.title = "新增粉丝"
     if (index == 20) tabs.title = "收到的评论和@"
-
     tabs.showDrawer = true;
+}
+
+onMounted(() => {
+    randomUser.value = userDb.getRandomUser(6) as UserWithoutPassword[]
+    
+    randomUser.value.forEach((item) => {
+        item['isInter'] = false //都表示没有关注
+    })
+
+    
+})
+
+const follow = (whoId:number, index:number) => {
+    randomUser.value[index].isInter = true;
+    userDb.follow(verifyUser().id ,whoId)
 }
 
 </script>

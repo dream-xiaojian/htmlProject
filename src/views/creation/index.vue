@@ -89,7 +89,6 @@ const showDrawer = ref(false);
 const visibleList = ref(['公开可见', '仅自己可见的'])
 
 let blogNote = reactive<blogSharesTable>({
-     id: 0,
      title: "",
      content: "",    
      visible: 1,
@@ -115,6 +114,10 @@ const handleFileChanged = (index:number,  file:File) => {
 
 //发布笔记
  const publishNote = async () => {
+    if (blogNote.title.length == 0 || blogNote.content.length == 0) {
+        console.log('标题和内容不能为空');
+        return;
+    }
     blogNote.imagesDataList = await convertFilesToDataUrlsId(blogImagesList.value) as number[];
     blogNote.author = curUser.id; //绑定唯一的id
     blogNote.date = getTime();
@@ -160,7 +163,6 @@ onMounted(() => {
 const reset = () => {
     console.log('数据清空');
     let obj: blogSharesTable= {
-        id: 0,
         title: "",
         content: "",    
         visible: 1,

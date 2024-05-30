@@ -36,8 +36,6 @@ let dataList = ref<(User & {title: string} & {noteId: string} & {type:'like' | '
 
 onMounted(() => {
     initData()
-    
-    
 })
 
 const initData = () =>{
@@ -46,7 +44,7 @@ const initData = () =>{
     if (res?.code != -1) {
         Object.assign(curUser, res!.data);
         let idList:string[] = []
-
+        
         
         //第一步将收到的赞和收藏的笔记构成一个map表
         if (curUser.beProudCon || curUser.beProudLike) {
@@ -98,6 +96,8 @@ const initData = () =>{
                         });
                     });
                 }
+                console.log("获得的赞和收藏",dataList.value);
+                
             })
         }
 

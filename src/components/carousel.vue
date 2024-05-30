@@ -31,7 +31,7 @@
     </div>
 </template>
 <script lang="ts" setup >
-import {ref, onMounted, inject, watch} from "vue"
+import {ref, inject, watch} from "vue"
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -58,12 +58,6 @@ const modules = [Navigation, Pagination, Scrollbar, A11y];
 
 watch(() => props.imgList, (newVal) => {
     initData(newVal as number[])
-});
-
-onMounted(() => {
-    console.log('详细页面获取', props.imgList);
-    
-
 });
 
 const initData = (newVal: number[]) =>{

@@ -12,7 +12,7 @@ export interface blogSharesTable {
     /**
      * 作品id
      */
-    id: number
+    // id: number
     /**
      * 标题
      */
