@@ -112,7 +112,7 @@ const editSome = (type: string) => {
 const updataUser = () => {
     
     //基础数据的更新
-    userDb.updataUserMessage(curUser)
+    userDb.updataUser(curUser)
     if (editData.type != 'backgroundImg' && editData.type != 'headerImg')
         editData.showDrawer = false;
     //图片类型的更新
@@ -124,7 +124,7 @@ const updataUser = () => {
                 db.storeImage(imageFile, curUser.backgroundImg).then(res => {
                     curUser[editData.type as 'backgroundImg'] = res;
                     editData.showDrawer = false;
-                    userDb.updataUserMessage(curUser);
+                    userDb.updataUser(curUser);
                     imageDataInit()
                 })
                 break;
@@ -132,7 +132,7 @@ const updataUser = () => {
                 db.storeImage(imageFile, curUser.headerImg).then(res => {
                     curUser[editData.type as 'headerImg'] = res;
                     editData.showDrawer = false;
-                    userDb.updataUserMessage(curUser);
+                    userDb.updataUser(curUser);
                     imageDataInit()
                 })
                 break;

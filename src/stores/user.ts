@@ -113,7 +113,7 @@ export const userTableStore = defineStore('userTable', {
          * 传入一个用户信息对象
          * 匹配到userTable中的哪一条数据，然后修改
          */
-        updataUserMessage(user: User): void {
+        updataUser(user: User): void {
             let index = this.userTable.findIndex(item => item.id === user.id);
             if (index === -1) {
                 throw new Error("用户不存在");

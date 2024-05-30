@@ -126,7 +126,7 @@ const handleFileChanged = (index:number,  file:File) => {
     db.storeBlog(blogNote).then((res: number) => {
         if (!curUser.noteList) curUser.noteList = [];
         curUser.noteList.push(res);
-        userDb.updataUserMessage(curUser);
+        userDb.updataUser(curUser);
         reset();
         
     }).catch((err:DOMException) => {

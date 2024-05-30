@@ -113,14 +113,14 @@
                 </div>
 
                 <div v-if="drawer.type != 0">
-                    <FollowAndFans />
+                    <FollowAndFans @back="() => {drawer.showDrawer=false}"/>
                 </div>
             </div>
         </transition>
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive, computed} from "vue";
+import { ref, onMounted, onUnmounted, reactive, computed, inject} from "vue";
 import { navigation } from '@/router/index';
 import noteCom from "./components/note.vue"
 import collectCom from "./components/collection.vue"
@@ -128,7 +128,6 @@ import likeCom from "./components/like.vue"
 import FollowAndFans from "./pages/followAndFans.vue";
 
 import { User, userTableStore, IndexDB} from '@/stores/index'
-import { inject } from 'vue'
 
 const userDb = userTableStore()
 const meHeader = ref();

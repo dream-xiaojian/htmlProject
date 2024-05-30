@@ -21,7 +21,7 @@
         
         <!-- 底部的菜单栏 -->
         <!-- <transition :name="transitionName"> -->
-        <footer v-show="$route.meta.modulePage" class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white" style="z-index: 9999;">
+        <footer v-show="$route.meta.modulePage" class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white z-40" >
           <div class="w-full h-full flex justify-around ">
               <div @touchstart="navigateTo(item.pathName, index)" class="flex flex-col justify-center items-center" v-for="(item, index) in menuList" :key="index">
                 <span v-if="index == 2">
