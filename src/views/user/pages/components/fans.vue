@@ -11,18 +11,22 @@
             </div>
 
             <div>
-                <itemFollowAndFansCom  @clickButton="(index, whoUser) => changeFollow(index, whoUser)" v-for="(item, index) in fansList" :key="index" :user="item"/>
+                <itemFollowAndFansCom  @clickButton="(index, whoUser) => goChat(index, whoUser)" v-for="(item, index) in fansList" :key="index" :user="item"/>
             </div>
     </div>
 </template>
 <script lang="ts" setup>
-import {ref, onMounted, reactive} from "vue"
-import { User, userTableStore} from '@/stores/index'
+import {ref, onMounted, reactive, inject} from "vue"
+import {  User, userTableStore, IndexDB, ChatListType} from '@/stores/index'
 import itemFollowAndFansCom from "./itemFollowAndFans.vue"
+import {navigation} from "@/router/index"
+
+
 type UserType = User & {type: string}
 let curUser = reactive<User>({} as User)
 let fansList = ref<UserType[]>([] as UserType[]);
 const userDb = userTableStore()
+const db: IndexDB = inject('db') as IndexDB;
 
 onMounted(() =>{
     initData()
@@ -44,27 +48,48 @@ const initData = () =>{
     }
 }
 
-const changeFollow = (indexType:number, whoUser: User) => {
-    console.log('关注');
-    
-    if (indexType == 0) {
-        //取消关注
-        let startIndex = curUser.InterestList!.indexOf(whoUser.id)
-        curUser.InterestList!.splice(startIndex, 1) 
-        startIndex = curUser.fansList!.indexOf(whoUser.id)
-
-        whoUser.fansList!.splice(startIndex, 1)
-        userDb.updataUser(whoUser)
-        userDb.updataUser(curUser)
-    } else {
-        //关注
-        curUser.InterestList!.push(whoUser.id) 
-        whoUser.fansList!.push(curUser.id)
-        userDb.updataUser(whoUser)
-        userDb.updataUser(curUser)
-    }
+const goChat = (indexType:number, whoUser: User) => {
+    console.log(indexType, whoUser);
+    newChatTable(whoUser.id)
 }
 
+const newChatTable = (whoId: number) => {
+    //这里要判断一下是否已经有了这个对话, 注意是双方的对话
+    let res = curUser.chatListNotAi?.find((item) => item.who == whoId) 
+    if (res != undefined) {
+        navigation("chatDetail", res.chatId);
+        return
+    }
+
+    const TabsData: ChatListType = {
+        who: whoId,
+        tabName: '新建标签页',
+        data: new Date().toLocaleString()
+    }
+  
+    db.storeChat({
+        bothId: [curUser.id as number, whoId],
+        chatBody:[]
+    }).then((res) => {
+        TabsData.chatId = res;
+
+        if (curUser.chatListNotAi == undefined) {
+            curUser.chatListNotAi = []
+        }
+
+        curUser.chatListNotAi?.push(TabsData)
+        
+        let sendUser = userDb.getUserById(whoId) as User
+        TabsData.who = curUser.id
+        sendUser.chatListNotAi?.push(TabsData)
+
+        userDb.updataUser(curUser)
+        userDb.updataUser(sendUser)
+
+        //前往详细的聊天页面
+        navigation("chatDetail", res);
+    })
+}
 
 </script>
 <style lang="scss" scoped> 

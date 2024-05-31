@@ -70,6 +70,13 @@ export const routes: RouteRecordRaw[] = [
                 name: 'messageIndex',
                 meta: { modulePage: true},
             },
+            { 
+                path: 'chatPage',
+                component: () => import('@/views/message/chatPage.vue'),
+                name: 'chatPage',
+                meta: { modulePage: false, hiddenTop: true},
+            },
+
         ]
     },
     { 

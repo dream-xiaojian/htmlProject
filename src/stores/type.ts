@@ -12,7 +12,8 @@ export interface blogSharesTable {
     /**
      * 作品id
      */
-    // id: number
+    id?: number
+    
     /**
      * 标题
      */
@@ -68,16 +69,12 @@ export interface blogSharesTable {
 /**
  * 发送信息的在右边（ui层面来做）
  */
-export interface chatTable {
+export interface ChatTable {
     /**
      * 唯一的id标识符
      */
-    // id: number
+    id?: number
 
-    /**
-     * 该聊天标签也的名字
-     */
-    name: string
     /**
      * 聊天双方的用户id
      * -1表示人工智能

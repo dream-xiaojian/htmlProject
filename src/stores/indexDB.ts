@@ -3,6 +3,8 @@
  */
 
 import {blogSharesTable} from "./type"
+import {ChatTable} from "./type"
+
 
 //后期修改成单例模式
 export class IndexDB {
@@ -55,15 +57,7 @@ export class IndexDB {
                 if (!this.db.objectStoreNames.contains('chatTable')) {
                   const blogShareStore = this.db.createObjectStore('chatTable', { keyPath: 'id', autoIncrement: true });
                   blogShareStore.createIndex('id', 'id', { unique: true }); //建立索引
-                  // blogShareStore.createIndex('title', 'title', { unique: false });
-                  // blogShareStore.createIndex('author', 'author', { unique: false });
-                  // blogShareStore.createIndex('visible', 'visible', { unique: false });
-                  
-                  // //检索用的索引
-                  // blogShareStore.createIndex('titleAndVisibility', ['title', 'visible']); 
-                  // //个人数据的索引
-                  // blogShareStore.createIndex('authorAndVisibility', ['author', 'visible']); 
-
+                
               }
             };
         });
@@ -132,7 +126,7 @@ export class IndexDB {
         });
     }
 
-        //获取多个id下的note数据
+   //获取多个id下的note数据
     async getImagesByIds(ids: number[]) {
         return Promise.all(ids.map(id => this.getImage(id)));
     }
@@ -232,6 +226,45 @@ export class IndexDB {
     //获取多个id下的note数据
     async getNotesByIds(ids: string[]) {
       return Promise.all(ids.map(id => this.getNoteById(id)));
+    }
+
+    //创建聊天信息
+    async storeChat(chat: ChatTable) {
+        return new Promise<number>((resolve, reject) => {
+          const transaction = this.db.transaction('chatTable', 'readwrite');
+          const store = transaction.objectStore('chatTable');
+          //添加一条数据
+          const request = store.add(JSON.parse(JSON.stringify(chat)));
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => resolve(request.result as number);
+        });
+    }
+
+    //修改聊天信息 -- 在页面退回时进行
+    async updataChat(chat: ChatTable){
+      return new Promise<number>((resolve, reject) => {
+          const transaction = this.db.transaction('chatTable', 'readwrite');
+          const store = transaction.objectStore('chatTable');
+          const request = store.put(JSON.parse(JSON.stringify(chat)));
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => resolve(request.result as number);
+      });
+    }
+
+    /**
+     * 获取聊天信息
+     * @param id 
+     * @returns 
+     */
+    async getChatById(id: string) {
+      return new Promise<ChatTable>((resolve, reject) => {
+        const transaction = this.db.transaction('chatTable', 'readonly');
+        const store = transaction.objectStore('chatTable');
+        const index = store.index('id');
+        const request = index.get(parseInt(id));
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+      });
     }
     
 }

@@ -5,6 +5,7 @@ import { verifyUser } from "./rightsVerification"
 import { result } from "./type"
 import { navigation } from "@/router/index"
 
+
 export interface User {
     id: number
 
@@ -54,6 +55,23 @@ export interface User {
      * 头像图片，和背景图片同理
      */
     headerImg?: number
+
+    /**
+     * 聊天列表，存储所有用户的聊天标签页
+     * 为了减少内存占用 + 检索速度
+     * 除了唯一性chatId + whoId (这个是为了去IndexDB中减少检索时间)
+     * 注意：对于成员之间的聊天，这个是双反的
+     */
+    chatListNotAi?: ChatListType[]
+
+    chatListAi?: ChatListType[]
+}
+
+export type ChatListType = {
+    who: number //谁和我聊天的唯一id
+    chatId?: number //聊天表中的唯一id
+    tabName: string //聊天页的名字
+    data: string //聊天页的创建时间
 }
 
 export type beProudType = {

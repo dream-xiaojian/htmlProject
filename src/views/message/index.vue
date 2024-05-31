@@ -30,8 +30,8 @@
         </div>
 
         <!-- 在关注的人中发信息 -->
-        <div>
-
+        <div class="mt-6">
+            <chatItemCom @touchstart="goChatPage(index)" v-for="(item, index) in historyChatTables" :key="index" :item="item"/>
         </div>
 
 
@@ -83,22 +83,18 @@
 </template>
 <script setup lang="ts">
 import {ref, reactive, onMounted} from "vue"
-import { userTableStore, User, verifyUser} from '@/stores/index'
+import { userTableStore, User, verifyUser, ChatListType} from '@/stores/index'
+import {navigation} from "@/router/index"
 import {useRouter} from "vue-router"
+
 import bePround from "./components/bePround.vue"
 import beRemark from "./components/beRemark.vue"
 import havefans from "./components/havefans.vue"
 import itemInterestList from "./components/itemInterestList.vue"
+import chatItemCom from "./components/chatItem.vue"
 
-const userDb = userTableStore()
-let tabs = reactive({
-    showDrawer:false,
-    type: 0,
-    title:"",
-})
 type UserWithoutPassword = Omit<User, "password"> & {isInter: boolean};
-let randomUser = ref<UserWithoutPassword[]>([])
-
+const userDb = userTableStore()
 const showDraw = (index:number) => {
     tabs.type = index
     if (index == 0) tabs.title = "收到的赞和收藏"
@@ -106,6 +102,17 @@ const showDraw = (index:number) => {
     if (index == 20) tabs.title = "收到的评论和@"
     tabs.showDrawer = true;
 }
+const router = useRouter()
+let tabs = reactive({
+    showDrawer:false,
+    type: 0,
+    title:"",
+})
+let historyChatTables = ref<ChatListType[]>([] as ChatListType[])
+let curUser = reactive<User>({} as User)
+let randomUser = ref<UserWithoutPassword[]>([])
+
+
 
 onMounted(() => {
     randomUser.value = userDb.getRandomUser(6) as UserWithoutPassword[]
@@ -113,13 +120,30 @@ onMounted(() => {
     randomUser.value.forEach((item) => {
         item['isInter'] = false //都表示没有关注
     })
-
+    initData()
     
 })
 
 const follow = (whoId:number, index:number) => {
     randomUser.value[index].isInter = true;
     userDb.follow(verifyUser().id ,whoId)
+}
+
+const goChatPage = (index: number) => {
+    router.push({name: 'chatPage', query: {
+        id: historyChatTables.value[index].chatId,
+        whoId: historyChatTables.value[index].who
+    }})
+}
+
+const initData = () =>{
+    //基本信息的获取
+    let res =  userDb.getCurrentUserMessage()
+    if (res?.code != -1) {
+        Object.assign(curUser, res!.data);
+        historyChatTables.value = curUser.chatListNotAi ?? []
+        console.log('聊天列表', historyChatTables);
+    }
 }
 
 </script>

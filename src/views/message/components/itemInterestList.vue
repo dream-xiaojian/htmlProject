@@ -2,7 +2,7 @@
      <div class=" py-3 w-full border-b-2 flex items-center justify-between">
         <div class="flex items-center gap-2">
              <span> 
-                 <img ref="headerImage" style="width:40px; height:40px;" class="object-cover rounded-full" :src="imgUrl" alt="">
+                 <img ref="headerImage" style="width:45px; height:45px;" class="object-cover rounded-full" :src="imgUrl" alt="">
              </span>
              <span>
                 {{props.randomUser.username}}
