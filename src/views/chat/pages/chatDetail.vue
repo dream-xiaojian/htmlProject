@@ -1,3 +1,4 @@
+<!-- 这个属于聊天标签页 -->
 <template lang="">
     <div class="px-2 relative mt-2">
         <!-- 聊天消息预览区域 -->

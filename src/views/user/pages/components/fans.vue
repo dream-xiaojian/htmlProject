@@ -2,7 +2,7 @@
     <div>
         <div class="mt-4 text-sm">
                 <header class="w-full flex justify-between items-center"> 
-                    <span>我的关注 （{{InterestList.length}}）</span>
+                    <span>我的粉丝 （{{fansList.length}}）</span>
                     <span>时间排序</span>
                 </header>
                 <section>
@@ -11,7 +11,7 @@
             </div>
 
             <div>
-                <itemFollowAndFansCom  @clickButton="(index, whoUser) => changeFollow(index, whoUser)" v-for="(item, index) in InterestList" :key="index" :user="item"/>
+                <itemFollowAndFansCom  @clickButton="(index, whoUser) => changeFollow(index, whoUser)" v-for="(item, index) in fansList" :key="index" :user="item"/>
             </div>
     </div>
 </template>
@@ -21,7 +21,7 @@ import { User, userTableStore} from '@/stores/index'
 import itemFollowAndFansCom from "./itemFollowAndFans.vue"
 type UserType = User & {type: string}
 let curUser = reactive<User>({} as User)
-let InterestList = ref<UserType[]>([] as UserType[]);
+let fansList = ref<UserType[]>([] as UserType[]);
 const userDb = userTableStore()
 
 onMounted(() =>{
@@ -33,10 +33,14 @@ const initData = () =>{
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         Object.assign(curUser, res!.data);
-        let list = curUser.InterestList ?? [];
+        let list = curUser.fansList ?? [];
+        console.log('粉丝数据', list);
+        
         list.forEach((item) => {
-            InterestList.value.push({ ...userDb.getUserById(item)!, type: 'follow'})
+            fansList.value.push({ ...userDb.getUserById(item)!, type: 'fans'})
         });
+        console.log('粉丝数据', fansList.value);
+        
     }
 }
 

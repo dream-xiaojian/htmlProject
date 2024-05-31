@@ -13,7 +13,7 @@
                   <button @click="clickButton(0)" v-show="user.type == 'follow' && change == false" class=" w-20 border border-gray-300 text-gray-400 px-3 py-1 rounded-2xl text-sm">已关注</button>
                   <button @click="clickButton(1)" v-show="user.type == 'follow' && change == true" class=" w-20 border border-red-300 text-red-400 px-3 py-1 rounded-2xl text-sm">关注</button>
                   <!-- 粉丝就是发消息 -->
-                  <!-- <button class=" w-20 border border-gray-300 text-gray-400 px-3 py-1 rounded-2xl text-sm" @click="navigation('profile_pageMe')">发信息</button> -->
+                  <button v-show="user.type == 'fans'" class=" w-20 border border-gray-300 text-gray-400 px-3 py-1 rounded-2xl text-sm" @click="navigation('profile_pageMe')">发信息</button>
              </div>
          </div>
          <ConfirmDialogCom v-model='ConfirmDialog' @confirm="handleConfirm" tittle="确定不再关注吗？" />

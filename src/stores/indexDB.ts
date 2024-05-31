@@ -50,6 +50,21 @@ export class IndexDB {
                     blogShareStore.createIndex('authorAndVisibility', ['author', 'visible']); 
 
                 }
+
+                //聊天信息表
+                if (!this.db.objectStoreNames.contains('chatTable')) {
+                  const blogShareStore = this.db.createObjectStore('chatTable', { keyPath: 'id', autoIncrement: true });
+                  blogShareStore.createIndex('id', 'id', { unique: true }); //建立索引
+                  // blogShareStore.createIndex('title', 'title', { unique: false });
+                  // blogShareStore.createIndex('author', 'author', { unique: false });
+                  // blogShareStore.createIndex('visible', 'visible', { unique: false });
+                  
+                  // //检索用的索引
+                  // blogShareStore.createIndex('titleAndVisibility', ['title', 'visible']); 
+                  // //个人数据的索引
+                  // blogShareStore.createIndex('authorAndVisibility', ['author', 'visible']); 
+
+              }
             };
         });
         

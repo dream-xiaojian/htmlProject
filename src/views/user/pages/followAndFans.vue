@@ -11,17 +11,17 @@
                     <div class="px-7 bg-white">
                         <div class="flex">
                             <div class="flex-2 group">
-                                <span href="#" :class="{ 'text-indigo-500': defaultHover }" class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500">
+                                <span href="#" @touchstart="changeMode(true)" :class="{ 'text-indigo-500': defaultHover }" class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500">
                                     <span class="block px-1 pb-1">
-                                        <span class="block text-base pb-2">粉丝</span>
+                                        <span class="block text-base pb-2">关注</span>
                                         <span :class="{ 'bg-indigo-500': defaultHover }" class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
                                     </span>
                                 </span>
                             </div>
                             <div class="flex-2 group">
-                                <span @click="defaultHover=false" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500">
+                                <span @touchstart="changeMode(false)" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-indigo-500">
                                     <span class="block px-1 pb-1">
-                                        <span class="block text-base pb-2">关注</span>
+                                        <span class="block text-base pb-2">粉丝</span>
                                         <span class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
                                     </span>
                                 </span>
@@ -37,7 +37,7 @@
 
             <form class="pt-2 relative w-full mx-auto text-gray-600">
                 <input class=" w-full border-2 border-gray-300 bg-gray-100 h-8 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-                    type="search" name="search" placeholder="搜索已关注的人">
+                    type="search" name="search" :placeholder="defaultHover==true? '搜索已关注的人': '搜索我的粉丝'">
                 <button type="submit" class="absolute right-0 top-0 mt-4 mr-4">
                 <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
@@ -52,13 +52,15 @@
 
         <!-- 内容部分 -->
         <div class="px-2">
-            <follow />
+            <followCom v-if="defaultHover==true"/>
+            <fansCom  v-else/>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import follow from "./components/follow.vue"
+import followCom from "./components/follow.vue"
+import fansCom from "./components/fans.vue"
 
 let defaultHover = ref(true);
 const emit = defineEmits(['back'])
@@ -66,6 +68,11 @@ const emit = defineEmits(['back'])
 const back = () => {
     emit('back')
 }
+
+const changeMode = (mode: boolean) => {
+    defaultHover.value = mode
+}
+
 </script>
 <style lang="">
 
