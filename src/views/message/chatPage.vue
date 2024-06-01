@@ -24,7 +24,7 @@
 import { ref, onMounted, inject, watch, reactive} from "vue";
 import { useRoute, useRouter} from 'vue-router';
 import robotLogin from "@/assets/image/robot.svg"
-import {ChatTable, IndexDB, User, userTableStore, ChatBodyType} from "@/stores/index";
+import {IndexDB, User, userTableStore} from "@/stores/index";
 import chatDetail from "@/views/chat/pages/chatDetail.vue";
 
 const route = useRoute();
@@ -36,7 +36,7 @@ let whoUser = reactive<User>({} as User)
 let meHeaderImg = ref(); //发送方头像
 
 watch(() => route.query.whoId, (newId: any) => {
-    whoId.value = newId;
+    whoId.value = newId; 
 });
 
 onMounted(() => {

@@ -57,13 +57,30 @@ export interface blogSharesTable {
     /**
      * 评论列表
      */
-    commentList: number[]
+    commentList: commitType[]
 
     /**
      * 收藏列表
      * 存储用户id
      */
     collectList:number[]
+}
+
+export interface commitType {
+    /**
+     * 评论内容
+     */
+    content: string
+
+    /**
+     * 评论者id
+     */
+    userId: number
+
+    /**
+     * 评论时间
+     */
+    date: string
 }
 
 /**

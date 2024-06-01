@@ -1,5 +1,24 @@
 <template lang="">
-    <div class="w-full h-full overflow-y-auto pb-20">
+    <div class="w-full h-screen overflow-y-auto pb-20">
+        <!-- 顶部栏 -->
+        <header class="px-2 py-1 sticky top-0 z-50 bg-white">
+            <div class="flex justify-between items-center">
+                <span @click="back()" class="flex items-center gap-2"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M8.293 12.707a1 1 0 0 1 0-1.414l5.657-5.657a1 1 0 1 1 1.414 1.414L10.414 12l4.95 4.95a1 1 0 0 1-1.414 1.414z"/></g></svg>
+                    <img ref="headerImage" style="width:40px; height:40px;" class="object-cover rounded-full" :src="imgUrl" alt="">
+                    <span>
+                        {{curUser.username}}
+                    </span>
+                </span>
+
+
+                <span style="" class="flex gap-2"> 
+                    <button @click="clickButton(1)" class="w-20 border border-red-500 text-red-400 px-3 py-1 rounded-2xl text-sm">关注</button>
+                    <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+            </div>
+        </header>
+
         <div class="w-full" style="height:55vh; position: relative;"> 
             <carousel :imgList="note.imagesDataList"></carousel>
         </div>
@@ -18,15 +37,11 @@
         </div>
 
         <!-- 评论部分, 先不实现回复 -->
-        <div class="p-2">
+        <div class="p-2 py-8">
             <div class=" text-sm py-2">共 {{note.commentList?.length}} 条评论</div>
-            <div class="flex gap-2" v-for="(item, index) in note.commentList">
-                <span class="flex-none"><svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 64 64"><g fill="#3e4347"><path d="M2.3 36.1c-.2-1-.3-2-.2-2.9c0-1.2.3-2.2.9-3.2c.6-1.1 1.6-2 2.7-2.5c1.1-.6 2.5-.8 3.8-.6c1.2.1 2.4.6 3.4 1.3c.9.6 1.7 1.4 2.4 2.3c1.1 1.5 1.9 3.3 2.3 5.4v.3c.2 1.3-.6 2.5-1.9 2.9c-.2.1-.4.1-.6.1c-.8.1-1.5-.1-2.1-.6c-.6-.5-1-1.1-1.1-1.9c-.2-1.4-.5-2.6-1.1-3.5c-.5-.9-1.3-1.6-2.1-1.8c-.3-.1-.7-.1-1 0c-.4.1-.7.4-.9.7c-.3.4-.5.8-.5 1.4c-.1.6-.1 1.2 0 1.8c.2 1.2.6 2.6 1.3 4c.3.6.7 1.3 1.1 2c.4.7.9 1.3 1.3 1.8c1.1 1.3 2.1 2.3 3.2 3.1c1.3.9 2.6 1.5 3.9 1.7c1.3.2 2.8.2 4.3-.3c1.2-.3 1.9.1 2.1.7c.2.5-.1 1.3-1.3 1.7h-.1c-1.8.6-3.7.8-5.4.5c-1.7-.2-3.5-1-5.2-2c-1.4-.9-2.6-2.1-3.9-3.5c-.5-.6-1-1.2-1.4-1.7L6 43c-.6-.7-1.1-1.4-1.5-2.1c-1.2-1.6-1.9-3.2-2.2-4.8m44.4 19.8c1.8 2.3 9.7 0 11-2.6c5.2-10.6 0-15.2 0-15.2l-11 1.5c0 .1-2.2 13.5 0 16.3"/><path d="M31.8 55.9c-1.8 2.3-9.7 0-11-2.6c-5.2-10.6 0-15.2 0-15.2l11 1.5c0 .1 2.3 13.5 0 16.3"/></g><path fill="#fff" d="M34.5 55.2c-.1 1.1-2.6 1.7-5.6 1.4c-3-.3-5.3-1.3-5.3-2.4c.1-1.1 2.4.3 5.4.5c3.1.4 5.6-.5 5.5.5m9.5 0c.1 1.1 2.6 1.7 5.6 1.4c3-.3 5.3-1.3 5.3-2.4c-.1-1.1-2.4.3-5.4.5c-3.1.4-5.6-.5-5.5.5"/><g fill="#4c5359"><path d="M39.2 60.4c2 2.2 8.9 2.1 11.1 0c3-3 2.9-16.7 3-23.3l-13-1.1c.1 0-3.6 21.5-1.1 24.4"/><path d="M39.3 60.4c-2 2.2-8.9 2.1-11.1 0c-3-3-2.9-16.7-3-23.3l13-1.1s3.6 21.5 1.1 24.4"/></g><path fill="#fff" d="m34 43.7l5.3 11.2l5.3-11.2z"/><path fill="#4c5359" d="M59.9 2.2C57.5.8 45.1 7.3 42.6 11.7l17.9 10.6c2.4-4.3 1.7-18.8-.6-20.1"/><path fill="#f7a4a4" d="M56.2 8.8c-.9-.5-8.2 2.8-9.6 5.2l10 5.9c1.3-2.3.4-10.6-.4-11.1"/><path fill="#4c5359" d="M18.7 2.2c-2.4 1.4-3.1 15.7-.6 20.1L36 11.7C33.6 7.4 21 .8 18.7 2.2"/><path fill="#f7a4a4" d="M22.5 8.8c-.9.5-1.8 8.7-.4 11.1L32 14c-1.3-2.3-8.7-5.7-9.5-5.2"/><path fill="#4c5359" d="M39.3 9.4C18.5 9.4 16.5 24 16.5 32.1c0 3.4 10.2 13.9 22.7 13.9C51.8 46 62 35.5 62 32.1C62 24 60 9.4 39.3 9.4"/><path fill="#bfffab" d="M33.5 28.5s-2.4 3.6-6.8 2.5s-4.6-5.4-4.6-5.4s2.4-3.6 6.8-2.5c4.4 1.2 4.6 5.4 4.6 5.4"/><path fill="#93e67f" d="M33 26.7S30.9 29 28 29c-3.1 0-5-4.4-5-4.4s2.1-2.4 5.8-1.4c3.5.8 4.2 3.5 4.2 3.5"/><path fill="#4c5359" d="M29.8 26.6c0 4.9-2.4 4.9-2.4 0s2.4-4.9 2.4 0"/><path fill="#bfffab" d="M45.1 28.5s2.4 3.6 6.8 2.5s4.6-5.4 4.6-5.4s-2.4-3.6-6.8-2.5c-4.4 1.2-4.6 5.4-4.6 5.4"/><path fill="#93e67f" d="M45.5 26.7s2.1 2.3 5 2.3c3.1 0 5-4.4 5-4.4s-2.1-2.4-5.8-1.4c-3.5.8-4.2 3.5-4.2 3.5"/><path fill="#4c5359" d="M48.7 26.6c0 4.9 2.4 4.9 2.4 0c.1-4.9-2.4-4.9-2.4 0"/><path fill="#fff" d="M45.9 32.5c-2-1.5-4.2-6.5-6.6-6.5s-4.7 5-6.6 6.5c-3.1 2.4-11.5 5.1-11.5 5.1s8.9 7.6 18.1 7.6c9.2 0 18.1-7.6 18.1-7.6s-8.4-2.7-11.5-5.1"/><g fill="#4c5359"><path d="M45.7 39.3c-.7.4-1.6.6-2.4.6c-.8-.1-1.6-.3-2.2-.8c-.6-.5-1.1-1.2-1.2-1.9l-.6-3.3l-.6 3.3c-.1.8-.6 1.4-1.2 1.9s-1.4.8-2.2.8c-.9 0-1.7-.1-2.4-.6c-.7-.4-1.4-1.1-1.7-2c0 1 .6 1.9 1.3 2.5c.7.6 1.8 1 2.7 1.1c1 .1 2-.2 2.9-.8c.5-.3.8-.7 1.2-1.2c.3.5.7.9 1.2 1.2c.9.6 1.9.9 2.9.8c1 0 2-.4 2.7-1.1c.8-.6 1.3-1.6 1.3-2.5c-.3.9-.9 1.6-1.7 2"/><path d="M42.4 33.1c-.6-.7-2.5-.8-3.1-.8c-.6 0-2.5.1-3.1.8c-.4.5-.1 1.8 1.1 3c.7.7 1.4.9 2 .9c.6 0 1.3-.2 2-.9c1.2-1.2 1.5-2.5 1.1-3"/></g><path fill="#fff" d="M39 59.6c0 1.1-2.3 1.9-5.2 1.9c-2.9 0-5.2-.9-5.2-1.9c0-1.1 2.3.1 5.2.1c2.8 0 5.2-1.1 5.2-.1m10.9 0c0 1.1-2.3 1.9-5.2 1.9c-2.9 0-5.2-.9-5.2-1.9c0-1.1 2.3.1 5.2.1c2.9 0 5.2-1.1 5.2-.1"/><path fill="#3e4347" d="m29.6 61.2l1.4-2.4l-.4 2.8zm3.5.8l.5-3.3l.5 3.3zm3.9-.4l-.4-2.6l1.4 2.3zm11 0l-.4-2.8l1.4 2.4zm-3.6.4l.5-3.3l.5 3.3zm-3.9-.7l1.4-2.3l-.4 2.6z"/></svg> </span>
-                <div class="flex-1"> 
-                    <p> 
-                        
-                    </P>
-                </div>
+            <!-- 每一条评论 -->
+            <div class="flex flex-col gap-6"> 
+                <commitItemCom :item='item' v-for="(item, index) in note.commentList" :key="index"/>
             </div>
         </div>
 
@@ -34,9 +49,10 @@
         <div class="fixed bottom-0 w-full bg-white p-2">
             <div class="flex items-center gap-2">
                 <input
-                type="text"
-                placeholder="善于结善缘，恶言伤人心"
-                class="flex-1 py-2 px-3 rounded-full bg-gray-100 focus:outline-none"
+                    v-model="comment"
+                    type="text"
+                    placeholder="善于结善缘，恶言伤人心"
+                    class="flex-1 py-2 px-3 rounded-full bg-gray-100 focus:outline-none"
                 />
                 <div class="flex items-center gap-1">
                     <svg @touchstart="likeOrCollect('like')" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48"><path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.987 10.987 0 0 0 15 8"/></svg>
@@ -47,7 +63,7 @@
                     <span class='text-lg text-gray-500 font-bold'>2</span>
                 </div>
 
-                <button class="bg-blue-500 text-white rounded-full p-2"> 发送 </button>
+                <button class="bg-blue-500 text-white rounded-full p-2" @touchstart="doCommit"> 发送 </button>
             </div>
         </div>
     </div>
@@ -55,9 +71,10 @@
 <script setup lang="ts">
 import carousel from "@/components/carousel.vue";
 import { ref, onMounted, inject, watch, reactive} from "vue";
-import { useRoute } from 'vue-router';
-import { navigation } from '@/router/index';
+import { useRoute} from 'vue-router';
+import { navigation, router } from '@/router/index';
 import {IndexDB, blogSharesTable, userTableStore, User} from "@/stores"
+import commitItemCom from "../components/commitItem.vue"
 
 const indexDb: IndexDB = inject('db') as IndexDB;
 const route = useRoute();
@@ -65,6 +82,8 @@ const userDb = userTableStore()
 let noteId = ref();
 let note = ref<blogSharesTable>({} as blogSharesTable);
 let curUser = reactive<User>({} as User)
+let comment = ref("")
+let imgUrl = ref("")
 
 watch(() => route.query.id, (newId) => {
   noteId.value = newId;
@@ -76,15 +95,32 @@ onMounted(() => {
     initData();
 });
 
+const doCommit = () => {
+    note.value.commentList = note.value.commentList || []
+    note.value.commentList?.push({
+        userId: curUser.id,
+        content: comment.value,
+        date: new Date().toLocaleDateString()
+    })
+    comment.value = ""
+    indexDb.updataNote(note.value)
+    initData();
+}
+
 const initData = () =>{
     indexDb.getNoteById(noteId.value).then((res) => {
-        console.log("详情页", res);
         note.value = res;
     })
 
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1)  Object.assign(curUser, res!.data);
     else navigation('login')
+
+    indexDb.getImage(curUser.headerImg!).then((res:any) => {
+        imgUrl.value = res
+    }).catch((err) => {
+        console.log(err);
+    })
 
 }
 
@@ -94,10 +130,9 @@ const likeOrCollect = (type: 'like' | 'collect') => {
     userDb.likeAndCollect(curUser.id, note.value.author, noteId.value, type)
 }
 
-
-
-
-
+const back = () => {
+    router.go(-1)
+}
 </script>
 <style lang="">
     

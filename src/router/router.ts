@@ -56,7 +56,7 @@ export const routes: RouteRecordRaw[] = [
                 path: 'blogDetail',
                 component: () => import('@/views/index/pages/blogDetail.vue'),
                 name: 'blogDetail',
-                meta: { modulePage: false, isBlog: true, showName: '详情'},
+                meta: { modulePage: false, isBlog: true, showName: '详情', hiddenTop: true},
             },
             { 
                 path: 'createPage',

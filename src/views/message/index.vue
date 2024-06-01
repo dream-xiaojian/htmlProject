@@ -21,12 +21,6 @@
                 </span>
                 <span class="font-medium">新增粉丝</span>
             </div>
-            <div class="flex flex-col gap-2" @click="showDraw(2)">
-                <span class="p-1  bg-green-200 flex justify-center items-center rounded-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="3em" viewBox="0 0 48 48"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path fill="#2eff7e" stroke="#2eff7e" d="M44.0001 24C44.0001 35.0457 35.0458 44 24.0001 44C18.0266 44 4.00006 44 4.00006 44C4.00006 44 4.00006 29.0722 4.00006 24C4.00006 12.9543 12.9544 4 24.0001 4C35.0458 4 44.0001 12.9543 44.0001 24Z"/><path stroke="#fff" d="M14 18L32 18"/><path stroke="#fff" d="M14 26H32"/><path stroke="#fff" d="M14 34H24"/></g></svg>
-                </span>
-                <span class="font-medium">评论和@</span>
-            </div>
         </div>
 
         <!-- 在关注的人中发信息 -->

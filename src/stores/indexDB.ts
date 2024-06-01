@@ -223,6 +223,17 @@ export class IndexDB {
       });
     }
 
+      //修改note信息 
+      async updataNote(note: blogSharesTable){
+          return new Promise<number>((resolve, reject) => {
+              const transaction = this.db.transaction('blogShares', 'readwrite');
+              const store = transaction.objectStore('blogShares');
+              const request = store.put(JSON.parse(JSON.stringify(note)));
+              request.onerror = () => reject(request.error);
+              request.onsuccess = () => resolve(request.result as number);
+          });
+      }
+
     //获取多个id下的note数据
     async getNotesByIds(ids: string[]) {
       return Promise.all(ids.map(id => this.getNoteById(id)));
