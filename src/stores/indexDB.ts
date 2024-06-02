@@ -161,7 +161,7 @@ export class IndexDB {
         const transaction = this.db.transaction('blogShares', 'readonly');
         const store = transaction.objectStore('blogShares');
         const index = store.index('authorAndVisibility');
-        const request = index.openCursor(IDBKeyRange.only([author, visible ? 1 : 0]));
+        const request = index.openCursor(IDBKeyRange.only([author, visible ? 1 : 2]));
     
         const results:blogSharesTable[] = [];
         let count = 0;

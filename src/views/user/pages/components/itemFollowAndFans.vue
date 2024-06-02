@@ -16,7 +16,7 @@
                   <button @click="clickButton(1)" v-show="user.type == 'fans'" class=" w-20 border border-gray-300 text-gray-400 px-3 py-1 rounded-2xl text-sm" >发信息</button>
              </div>
          </div>
-      <ConfirmDialogCom v-model='ConfirmDialog' @confirm="handleConfirm" tittle="确定不再关注吗？" />
+       <ConfirmDialogCom v-model='ConfirmDialog' @confirm="handleConfirm" tittle="确定不再关注吗？" />
 </template>
 <script lang="ts" setup>
 import { inject, onMounted, watch, ref} from 'vue';

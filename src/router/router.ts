@@ -76,6 +76,12 @@ export const routes: RouteRecordRaw[] = [
                 name: 'chatPage',
                 meta: { modulePage: false, hiddenTop: true},
             },
+            { 
+                path: 'other',
+                component: () => import('@/views/otherProfile/index.vue'),
+                name: 'otherPage',
+                meta: { modulePage: false, hiddenTop: true},
+            },
 
         ]
     },

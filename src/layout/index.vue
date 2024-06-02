@@ -43,24 +43,24 @@ const router = useRouter(); //路由实例，操作路由
 let transitionName = ref('go')
 let tableIndex = ref(0)
 
-watch(
-  () => route.meta,
-  (newValue, oldValue) => {
-    console.log(oldValue, newValue);
-    //不同的话 false -> true back true -> false go
-    if (newValue.modulePage != oldValue.modulePage) {
-      if (oldValue.modulePage == false) {
-        transitionName.value = 'back'
-      } else {
-        transitionName.value = 'go'
-      }
-    }
-    else { //false -> false: back true -> true: 空
-      transitionName.value = ''
-      if (newValue.modulePage == false) transitionName = 'back'
-    }
-  }
-)
+// watch(
+//   () => route.meta,
+//   (newValue, oldValue) => {
+//     console.log(oldValue, newValue);
+//     //不同的话 false -> true back true -> false go
+//     if (newValue.modulePage != oldValue.modulePage) {
+//       if (oldValue.modulePage == false) {
+//         transitionName.value = 'back'
+//       } else {
+//         transitionName.value = 'go'
+//       }
+//     }
+//     else { //false -> false: back true -> true: 空
+//       transitionName.value = ''
+//       if (newValue.modulePage == false) transitionName = 'back'
+//     }
+//   }
+// )
 
 const navigateTo = (pathName, index) => {
   tableIndex.value = index;

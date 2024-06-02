@@ -4,8 +4,8 @@
         <!-- 任务栏 -->
         <div class="w-full fixed left-0 top-0" style="z-index:999; transition: all 0.25s ease-out;" :style="{ backgroundColor: backgroundColor }"> 
             <div class="flex items-center justify-between p-3">
-                <div>
-                    <svg @click="router.go(-1)" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
+                <div style="visibility: hidden">
+                    <svg @touchstart="" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
                 </div>
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm-2-6h4v4h-4v-4z"/></svg>
@@ -45,8 +45,8 @@
                            <span class=" text-lg font-bold">{{score}}</span>
                            <span class="text-gray-200 text-xs">积分</span>
                        </div>
-                       <div class="flex flex-col items-center">
-                           <span class=" text-lg font-bold">{{beProudNumber}}</span>
+                       <div class="flex flex-col items-center" @touchstart.stop="showDialog=true">
+                           <span class=" text-lg font-bold">{{beProudAndLikeNumber}}</span>
                           <span class="text-gray-200 text-xs">获赞和收藏</span>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
                 <span @touchstart="tabIndex=2"  :class="{'font-bold text-black':tabIndex==2, 'text-gray-500':tabIndex!=2}">赞过</span>
             </div>
             <!-- 对应的部分：动画使用vueTransition-->
-            <noteCom v-if="tabIndex==0"></noteCom>
-            <collectCom v-if="tabIndex==1"></collectCom>
+            <noteCom :id="curUser.id" v-if="tabIndex==0"></noteCom>
+            <collectCom :id="curUser.id" v-if="tabIndex==1"></collectCom>
             <likeCom v-if="tabIndex==2"></likeCom>
 
         </section>
@@ -103,9 +103,23 @@
                 </header>
 
                 <!-- 设置选项区 type == 0 -->
-                <div class="mt-6" v-show="drawer.type == 0">
+                <div class="mt-6 px-3" v-show="drawer.type == 0">
                     <div class=" text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
-                            <div class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList" :key="index">
+                            <div class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList.general" :key="index">
+                                <span>{{item.title}}</span>
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
+                            </div>
+                    </div>
+
+                    <div class=" mt-4 text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
+                            <div class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList.about" :key="index">
+                                <span>{{item.title}}</span>
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
+                            </div>
+                    </div>
+
+                    <div class=" mt-4 text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
+                            <div @click="handleSetting(item.title)" class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList.user" :key="index">
                                 <span>{{item.title}}</span>
                                 <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
                             </div>
@@ -115,17 +129,49 @@
                 <div v-if="drawer.type != 0">
                     <FollowAndFans @back="() => {drawer.showDrawer=false}"/>
                 </div>
+                
             </div>
         </transition>
+        <dialogCom v-model:show="showDialog">
+            <div class="text-slate-800 min-w-72 flex flex-col ">
+                <h3 class="text-center text-xl py-4 border-slate-900/10 border-b">获赞和收藏</h3>
+                <div class="px-3 flex flex-col items-center gap-4 py-4">
+                    <span class="text-slate-500 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="#5d6cda" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm2-4h7v-2H7zm0-4h10v-2H7zm0-4h10V7H7z"/></svg>
+                        当前发布的笔记数 
+                        <span class="text-slate-800">{{noteNum}}</span> 
+                    </span>
+                    <span class="text-slate-500 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 48 48"><path fill="#f44336" d="M34 9c-4.2 0-7.9 2.1-10 5.4C21.9 11.1 18.2 9 14 9C7.4 9 2 14.4 2 21c0 11.9 22 24 22 24s22-12 22-24c0-6.6-5.4-12-12-12"/></svg>
+                        当前获得的赞数数
+                        <span class="text-slate-800">{{beProudNumber}}</span> 
+                    </span>
+                    <span class="text-slate-500 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 512 512"><path fill="#dac95d" d="M432.9 0H107.1C94.3 0 83.8 10.4 83.8 23.3V512L270 325.8L456.2 512V23.3c0-12.9-10.4-23.3-23.3-23.3m-46.5 186.2h-93.1v93.1h-46.5v-93.1h-93.1v-46.5h93.1V46.5h46.5v93.1h93.1z"/></svg>
+                        当前获得的收藏数
+                        <span class="text-slate-800">{{beLikeNumber}}</span> 
+                    </span>
+                </div>
+                <div class="px-10 pb-3">
+                    <span @touchstart="showDialog=false" class="block w-full bg-indigo-600 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2 text-center">
+                        我知道了
+                    </span>
+                </div>
+            </div>
+        </dialogCom>
+        <!-- 弹出框 -->
+        <ConfirmDialogCom v-model='ConfirmDialog' @confirm="handleConfirm" tittle="确定退出该账户吗？" />
     </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, reactive, computed, inject} from "vue";
 import { navigation } from '@/router/index';
+import ConfirmDialogCom from "@/components/ConfirmDialog.vue"
 import noteCom from "./components/note.vue"
 import collectCom from "./components/collection.vue"
 import likeCom from "./components/like.vue"
 import FollowAndFans from "./pages/followAndFans.vue";
+import dialogCom from "@/components/dialog.vue";
 
 import { User, userTableStore, IndexDB} from '@/stores/index'
 
@@ -138,21 +184,30 @@ let drawer = reactive({
     title: "设置",
     type:0
 });
+let ConfirmDialog = ref(false);
 let backgroundColor = ref('transparent');
 let curUser = reactive<User>({} as User)
 let tabIndex = ref(0)
+let showDialog = ref(false);
 const InterestListNumber = computed(() => {
     return curUser.InterestList?.length || 0;
 });
 const fansListNumber = computed(() => {
     return curUser.fansList?.length || 0;
 });
-//统计获得的赞和收藏数
-let beProudNumber = ref(0);
-
 const score = computed(() => {
     return curUser.score || 0
 });
+const noteNum = computed(() => {
+    return curUser.noteList?.length || 0
+});
+//统计获得的赞和收藏数
+let beProudAndLikeNumber = ref(0);
+let beLikeNumber = ref(0);
+let beProudNumber = ref(0);
+
+
+
 const db: IndexDB = inject('db') as IndexDB;
 
 const initData = () =>{
@@ -162,8 +217,12 @@ const initData = () =>{
         Object.assign(curUser, res!.data);
 
         //统计获得的赞和收藏数
-        beProudNumber.value = mapSum(curUser.beProudCon || null) + mapSum(curUser.beProudLike || null);
+        beLikeNumber.value = mapSum(curUser.beProudLike || null);
+        beProudNumber.value = mapSum(curUser.beProudCon || null);
+        beProudAndLikeNumber.value = beLikeNumber.value + beProudNumber.value;
         imageDataInit();
+    }else{
+        navigation('login')
     }
 }
 
@@ -195,33 +254,86 @@ const imageDataInit = () => {
     }
 }
 
-const settingsList = ref([
-  {
-    title: "账号与安全",
-    icon: "el-icon-s-operation",
-    pathName: "profile_pageMe",
-  },
-  {
-    title: "隐私设置",
-    icon: "el-icon-s-tools",
-    pathName: "login",
-  },
-  {
-    title: "深色模式",
-    icon: "el-icon-s-help",
-    pathName: "/profile/about",
-  },
-  {
-    title: "通用设置",
-    icon: "el-icon-s-help",
-    pathName: "/profile/about",
-  },
-  {
-    title: "少年猫模式",
-    icon: "el-icon-s-help",
-    pathName: "/profile/about",
-  },
-]);
+const handleConfirm = () =>{
+    userDb.logout();
+    navigation('login');
+}
+
+const handleSetting = (title:string) => {
+    if (title == "退出登入") {
+        ConfirmDialog.value = true;
+    }
+}
+
+const settingsList = reactive({
+    general:[
+        {
+            title: "账号与安全",
+            icon: "el-icon-s-operation",
+            pathName: "profile_pageMe",
+        },
+        {
+            title: "隐私设置",
+            icon: "el-icon-s-tools",
+            pathName: "login",
+        },
+        {
+            title: "深色模式",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "通用设置",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "少年猫模式",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+    ],
+    about: [
+        {
+            title: "关于我们",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "帮助与反馈",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "联系我们",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "用户协议",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "隐私政策",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+    ],
+    user: [
+        {
+            title: "退出登入",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+        {
+            title: "切换账号",
+            icon: "el-icon-s-help",
+            pathName: "/profile/about",
+        },
+    ]
+    }
+);
 
 const checkList = ref([
   {

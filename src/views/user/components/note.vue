@@ -3,11 +3,11 @@
     <div class="bg-slate-100 h-screen w-full">
 
         <!-- 公开和私密的选择框 -->
-        <header  class=" flex items-center justify-center gap-8 w-full p-2 bg-white border-t-2 sticky" style="z-index:999; top:110px;">
+        <header v-show="props.hidden==false"  class=" flex items-center justify-center gap-8 w-full p-2 bg-white border-t-2 sticky" style="z-index:999; top:110px;">
             <span  @touchstart="tabIndex=0" :class="{'font-bold text-black':tabIndex==0, 'text-gray-500':tabIndex!=0}">
                 公开 - {{noteList1.length}}
             </span>
-            <span @touchstart="tabIndex=1" :class="{'font-bold text-black':tabIndex==1, 'text-gray-500':tabIndex!=1}">
+            <span  @touchstart="tabIndex=1" :class="{'font-bold text-black':tabIndex==1, 'text-gray-500':tabIndex!=1}">
                 私密 - {{noteList2.length}}
             </span>
         </header>
@@ -55,7 +55,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import {ref, inject, onMounted, reactive} from 'vue';
+import {ref, inject, onMounted, reactive, watch} from 'vue';
 import waterfulLayoutVue from "@/components/waterfulLayout.vue";
 import itemBlogVue from "@/components/itemBlog.vue";
 import { User, userTableStore, IndexDB} from '@/stores/index'
@@ -75,17 +75,33 @@ onMounted(() => {
     initData()
 })
 
+const props = defineProps({
+    id: {
+      type: String,
+      required: true,
+    },
+    hidden: { //是否是本人看自己的 --别人也可以看，那就要控制一下
+        type: Boolean,
+        default: false,
+    }
+});
+
+watch(() => props.id, (newVal, oldVal) => {
+    initData()
+})
+
 const initData = () =>{
     //基本信息的获取
-    let res =  userDb.getCurrentUserMessage()
-    if (res?.code != -1) {
-        Object.assign(curUser, res!.data);
-    }else {
-        navigation('login')
+    if (props.id == null) return;
+    let res =  userDb.getUserById(parseInt(props.id))
+    console.log('当前用户', res);
+    
+    if (res != null) {
+        Object.assign(curUser, res);
     }
 
     getPublicNote()
-    getPrivacyNote()
+    if (props.hidden == false) getPrivacyNote()
 }
 
 const getPublicNote = () => {
@@ -97,6 +113,8 @@ const getPublicNote = () => {
 const getPrivacyNote = () => {
     db.getMyNote(curUser.id, false, page2.value, pageSize2).then((res:any) => {
         noteList2.value = res;
+        console.log(noteList2.value);
+        
     })
 }
 

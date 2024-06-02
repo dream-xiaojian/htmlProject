@@ -39,7 +39,6 @@ const initData = () => {
 
 const getHeader = () => {
     indexDb.getImage(commitUser.headerImg!).then((res:any) => {
-        console.log("图片数据加载", res);
         imgUrl.value = res
     }).catch((err) => {
         console.log(err);

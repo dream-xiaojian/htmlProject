@@ -107,6 +107,11 @@ export const userTableStore = defineStore('userTable', {
             return user
         },
 
+        logout() {
+            //清空cooike中的当前用户
+            document.cookie = `user=; path=/; max-age=0; secure; samesite=strict`;
+        },
+
         /**
          * @returns 
          * 问题：这里返回的数据是否也是相应式数据
@@ -168,7 +173,7 @@ export const userTableStore = defineStore('userTable', {
          * 
          * 收藏同理   
          */
-        likeAndCollect(me: number, who: number, noteId: number, type: "like" | "collect"): void {
+        likeAndCollect(me: number, who: number, noteId: number, type: "like" | "collect"): boolean | null {
             let meUser = this.getUserById(me) as User;
             let whoUser = this.getUserById(who) as User;
             console.log(meUser, whoUser);
@@ -176,7 +181,7 @@ export const userTableStore = defineStore('userTable', {
             if (me == who) {
                 console.log('不要给自己点赞哦');
                 new Error("不要给自己点赞哦")
-                return;
+                return null; 
             }
 
             if (!meUser.likeList) meUser.likeList = [];
@@ -191,6 +196,7 @@ export const userTableStore = defineStore('userTable', {
                     if (oldArray) {
                         whoUser.beProudLike?.set(noteId, oldArray.filter(item => item !== me))
                     }
+                    return false; 
                 }
                 else {
                     console.log('没有点赞，点赞');
@@ -205,7 +211,7 @@ export const userTableStore = defineStore('userTable', {
                         whoUser.beProudLike.set(noteId, []);
                     }
                     whoUser.beProudLike.get(noteId)!.push(me)
-
+                    return true; 
                 }
             } else {
                 //已经收藏过了，取消收藏
@@ -215,6 +221,7 @@ export const userTableStore = defineStore('userTable', {
                     if (oldArray) {
                         whoUser.beProudCon?.set(noteId, oldArray.filter(item => item !== me))
                     }
+                    return false;
                 }
                 else {
                     meUser.collectList?.push(noteId);
@@ -223,6 +230,7 @@ export const userTableStore = defineStore('userTable', {
                         whoUser.beProudCon.set(noteId, []);
                     }
                     whoUser.beProudCon.get(noteId)!.push(me)
+                    return true; 
                 }
             }
         },
