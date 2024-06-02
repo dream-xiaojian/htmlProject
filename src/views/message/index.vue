@@ -110,6 +110,7 @@ let randomUser = ref<UserWithoutPassword[]>([])
 
 onMounted(() => {
     randomUser.value = userDb.getRandomUser(6) as UserWithoutPassword[]
+    console.log("随机出来的用户", randomUser.value);
     
     randomUser.value.forEach((item) => {
         item['isInter'] = false //都表示没有关注

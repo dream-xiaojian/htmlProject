@@ -1,7 +1,7 @@
 <template lang="">
         <div class=" flex justify-between items-center py-3 gap-2">
             <div class="flex-1 flex items-center gap-2">
-                  <img  ref="headerImage" style="width:45px; height:45px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
+                  <img  ref="headerImage" style="width:45px; height:45px;" class="object-cover rounded-full" :src="imgUrl" alt="">
 
                 <div class="flex-1 flex flex-col">
                    <span class="text-lg">{{user.username}}</span>
@@ -45,6 +45,8 @@ onMounted(() => {
 
 
 const getHeader = () => {
+    console.log(props.user?.headerImg);
+    
     db.getImage(props.user?.headerImg).then((res:any) => {
         imgUrl.value = res
     })

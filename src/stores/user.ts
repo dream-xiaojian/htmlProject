@@ -68,7 +68,7 @@ export interface User {
 }
 
 export type ChatListType = {
-    who: number //谁和我聊天的唯一id
+    who: number //对话方的唯一id
     chatId?: number //聊天表中的唯一id
     tabName: string //聊天页的名字
     data: string //聊天页的创建时间
@@ -296,8 +296,9 @@ export const userTableStore = defineStore('userTable', {
             }
             
             let users = this.userTable.filter(user => user.id !== data.id && !data.InterestList?.includes(user.id));
-
+            
             let result = [];
+            if (num > users.length) return users.map(user => ({...user, password: ""}))
             for (let i = 0; i < num && i < users.length; i++) {
                 let index = Math.floor(Math.random() * users.length);
                 result.push(users[index]);

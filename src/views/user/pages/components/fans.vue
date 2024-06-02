@@ -38,13 +38,10 @@ const initData = () =>{
     if (res?.code != -1) {
         Object.assign(curUser, res!.data);
         let list = curUser.fansList ?? [];
-        console.log('粉丝数据', list);
         
         list.forEach((item) => {
             fansList.value.push({ ...userDb.getUserById(item)!, type: 'fans'})
-        });
-        console.log('粉丝数据', fansList.value);
-        
+        });     
     }
 }
 
@@ -55,17 +52,20 @@ const goChat = (indexType:number, whoUser: User) => {
 
 const newChatTable = (whoId: number) => {
     //这里要判断一下是否已经有了这个对话, 注意是双方的对话
+    console.log("和谁对话", whoId);
+    let TabsData: ChatListType = {
+        who: whoId,
+        tabName: '新建标签页',
+        data: new Date().toLocaleString()
+    }
+    
     let res = curUser.chatListNotAi?.find((item) => item.who == whoId) 
     if (res != undefined) {
         navigation("chatDetail", res.chatId);
         return
     }
 
-    const TabsData: ChatListType = {
-        who: whoId,
-        tabName: '新建标签页',
-        data: new Date().toLocaleString()
-    }
+
   
     db.storeChat({
         bothId: [curUser.id as number, whoId],
@@ -77,13 +77,26 @@ const newChatTable = (whoId: number) => {
             curUser.chatListNotAi = []
         }
 
+        //本人的更新
         curUser.chatListNotAi?.push(TabsData)
+        userDb.updataUser(curUser)
+        console.log('更新了本人的数据', TabsData);
+        
+        //对方的更新
+        let TabsData1: ChatListType = {
+            who: curUser.id,
+            tabName: '新建标签页',
+            data: new Date().toLocaleString(),
+            chatId: res
+        }
         
         let sendUser = userDb.getUserById(whoId) as User
-        TabsData.who = curUser.id
-        sendUser.chatListNotAi?.push(TabsData)
+        if (sendUser.chatListNotAi == undefined) {
+            sendUser.chatListNotAi = []
+        }
+        sendUser.chatListNotAi?.push(TabsData1)
+        console.log('更新了对方的数据', TabsData1);
 
-        userDb.updataUser(curUser)
         userDb.updataUser(sendUser)
 
         //前往详细的聊天页面

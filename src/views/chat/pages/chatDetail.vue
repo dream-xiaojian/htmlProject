@@ -10,7 +10,7 @@
                     <div class="bg-blue-500 p-3 rounded-lg">
                     <p class="text-sm text-white">{{item.content}}</p>
                     </div>
-                    <img :src="whoHeaderImg" alt="Other User Avatar" class="w-8 h-8 rounded-full" />
+                    <img :src="meHeaderImg" alt="Other User Avatar" class="w-8 h-8 rounded-full" />
                 </div>
 
                 <!-- 左边接受方 -->
