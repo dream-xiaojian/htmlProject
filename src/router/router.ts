@@ -82,7 +82,12 @@ export const routes: RouteRecordRaw[] = [
                 name: 'otherPage',
                 meta: { modulePage: false, hiddenTop: true},
             },
-
+            { 
+                path: 'search',
+                component: () => import('@/views/search/searchPage.vue'),
+                name: 'searchPage',
+                meta: { modulePage: false, hiddenTop: true},
+            }
         ]
     },
     { 

@@ -65,6 +65,8 @@ export interface User {
     chatListNotAi?: ChatListType[]
 
     chatListAi?: ChatListType[]
+
+    searchHistory?: string[] //搜索历史
 }
 
 export type ChatListType = {
