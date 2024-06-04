@@ -23,3 +23,7 @@ export function navigation(pathName:string, query?:number) {
 
 //这里导出一个返回上一页的函数，也就是router.go(-1)
 //但是这个要做一个事，设置一下返回时的动画Transition的样式
+
+export function goBack() {
+  router.go(-1)
+}

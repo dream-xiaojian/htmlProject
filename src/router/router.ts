@@ -87,6 +87,12 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/search/searchPage.vue'),
                 name: 'searchPage',
                 meta: { modulePage: false, hiddenTop: true},
+            },
+            { 
+                path: 'searchResult',
+                component: () => import('@/views/search/searchResult.vue'),
+                name: 'searchResult',
+                meta: { modulePage: false, hiddenTop: true},
             }
         ]
     },
