@@ -11,9 +11,9 @@
                     </span>
                 </span>
 
-
                 <span style="" class="flex gap-2"> 
-                    <button @click="clickButton(1)" class="w-20 border border-red-500 text-red-400 px-3 py-1 rounded-2xl text-sm">关注</button>
+                    <button v-show="isFollow==false && isMeNote==false" @click="changeFollow(1)" class="w-20 border border-red-500 text-red-400 px-3 py-1 rounded-2xl text-sm">关注</button>
+                    <button v-show="isFollow==true && isMeNote==false" @click="changeFollow(0)" class=" w-20 border border-gray-300 text-gray-400 px-3 py-1 rounded-2xl text-sm">已关注</button>
                     <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </span>
             </div>
@@ -96,6 +96,11 @@ const likeNumber = computed(() => {
 const collectNumber = computed(() => {
     return note.value.collectList?.length || 0;
 });
+let isMeNote = ref(false); //是否是自己的文章
+
+const isFollow = computed(() => {
+    return curUser.InterestList?.includes(authorUser.id) || false;
+});
 
 watch(() => route.query.id, (newId) => {
   noteId.value = newId;
@@ -124,6 +129,8 @@ const initData = () =>{
         note.value = res;
         console.log(note.value);
         Object.assign(authorUser, userDb.getUserById(note.value.author!));
+        isMeNote.value = curUser?.id == authorUser.id;
+
         indexDb.getImage(authorUser.headerImg!).then((res:any) => {
             imgUrl.value = res
         }).catch((err) => {
@@ -131,13 +138,38 @@ const initData = () =>{
         })
     })
     let res =  userDb.getCurrentUserMessage()
+
+    
     if (res?.code != -1)  Object.assign(curUser, res!.data);
     else navigation('login')
 
+ 
     //初始化现在是否已经点赞或者是收藏
     if (curUser.likeList?.includes(noteId.value)) isLike.value = true;
     if (curUser.collectList?.includes(noteId.value)) isCollect.value = true;
 
+}
+
+//关注
+const changeFollow = (indexType:number) => {
+    curUser.InterestList = curUser.InterestList ?? [];
+    authorUser.fansList = authorUser.fansList ?? [];
+    if (indexType == 0) {
+        //取消关注
+        let startIndex = curUser.InterestList!.indexOf(authorUser.id)
+        curUser.InterestList!.splice(startIndex, 1) 
+        startIndex = curUser.fansList!.indexOf(authorUser.id)
+        
+        authorUser.fansList!.splice(startIndex, 1)
+        userDb.updataUser(curUser)
+        userDb.updataUser(authorUser)
+    } else {
+        //关注
+        curUser.InterestList!.push(authorUser.id) 
+        authorUser.fansList!.push(curUser.id)
+        userDb.updataUser(curUser)
+        userDb.updataUser(authorUser)
+    }
 }
 
 const likeOrCollect = (type: 'like' | 'collect') => {
