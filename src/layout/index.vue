@@ -32,7 +32,7 @@
           </div>
         </footer> -->
 
-        <footer class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white z-40">
+        <footer v-show="$route.meta.modulePage" class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white z-40">
           <div class="px-7 bg-white shadow-lg rounded-2xl">
             <div class="flex">
                 <div class="flex-1 group">

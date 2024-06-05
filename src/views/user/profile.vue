@@ -80,7 +80,7 @@
         <!-- 创作的内容部分 笔记，收藏，赞过-->
         <section class="bg-white" style="border-radius: 10px 10px 0 0; transform: translateY(-1rem);"> 
             <!-- tab部分 -->
-            <div class=" text-lg sticky top-16 w-full flex justify-center gap-8 p-3 bg-white" style="border-radius: 10px 10px 0 0;"> 
+            <div class=" text-lg sticky top-16 z-50 w-full flex justify-center gap-8 p-3 bg-white" style="border-radius: 10px 10px 0 0;"> 
                 <span @touchstart="tabIndex=0"  :class="{'font-bold text-black':tabIndex==0, 'text-gray-500':tabIndex!=0}">笔记</span>
                 <span @touchstart="tabIndex=1"  :class="{'font-bold text-black':tabIndex==1, 'text-gray-500':tabIndex!=1}">收藏</span>
                 <span @touchstart="tabIndex=2"  :class="{'font-bold text-black':tabIndex==2, 'text-gray-500':tabIndex!=2}">赞过</span>

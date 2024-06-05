@@ -4,7 +4,7 @@
         <waterfulLayoutVue :items="noteList" :columnsCount="2"> 
                 <template #default="{ item }">
                     <div>
-                        <itemBlogVue @touchstart="navigation('blogDetail', item.id)" :imgUrl="item.imagesDataList" :tittle="item.title" :author="item.author" :likeNum="item.likeList.length"> </itemBlogVue>
+                        <itemBlogVue @touchstart="navigation('blogDetail', item.id)" :imgUrl="item.imagesDataList" :tittle="item.title" :author="item.author" :likeNum="item.likeList.length" :username="item.username"> </itemBlogVue>
                     </div>
                 </template>
         </waterfulLayoutVue>
