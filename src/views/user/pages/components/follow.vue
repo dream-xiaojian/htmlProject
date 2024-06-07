@@ -42,7 +42,6 @@ const initData = () =>{
 
 const changeFollow = (indexType:number, whoUser: User) => {
     console.log('关注');
-    
     if (indexType == 0) {
         //取消关注
         let startIndex = curUser.InterestList!.indexOf(whoUser.id)

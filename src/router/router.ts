@@ -25,6 +25,18 @@ export const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/index/pages/findPage.vue'),
                         name: 'findHomePage',
                         meta: { modulePage: true, showName: '发现页'},
+                    },
+                    {
+                        path: 'follow',
+                        component: () => import('@/views/index/pages/followPage.vue'),
+                        name: 'findFollowPage',
+                        meta: { modulePage: true, showName: '关注页'},
+                    },
+                    {
+                        path: 'local',
+                        component: () => import('@/views/index/pages/localPage.vue'),
+                        name: 'findLocalPage',
+                        meta: { modulePage: true, showName: '附近页'},
                     }
                 ]
             },

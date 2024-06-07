@@ -227,6 +227,11 @@ export class IndexDB {
     });
   }
 
+  //获取关注列表的作者的所有的文章
+  async getNoteFromInterest(interest: number[], page: number, pageSize: number) {
+    
+  }
+
   //获取某个id下的note数据
   async getNoteById(id: string) {
     return new Promise<blogSharesTable>((resolve, reject) => {
@@ -238,6 +243,9 @@ export class IndexDB {
       request.onsuccess = () => resolve(request.result);
     });
   }
+
+  
+
 
   //修改note信息 
   async updataNote(note: blogSharesTable) {

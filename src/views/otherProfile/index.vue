@@ -51,8 +51,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button class=" border border-red-500 bg-red-500 px-7 py-1 rounded-2xl text-sm" @click="navigation('profile_pageMe')">关注</button>
-                        <button class=" border border-white text-white px-3 py-1 rounded-2xl text-sm" @click="navigation('profile_pageMe')">
+                        <button class=" border border-red-500 bg-red-500 px-7 py-1 rounded-2xl text-sm" @click="changeFollow(1)" v-show="isFollow==false">关注</button>
+                        <button class=" border border-red-500 bg-red-500 px-7 py-1 rounded-2xl text-sm" @click="changeFollow(0)" v-show="isFollow==true">已关注</button>
+                        <button class=" border border-white text-white px-3 py-1 rounded-2xl text-sm" @click="sendMessage">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><g fill="white"><path d="m4 19l-.93-.37a1 1 0 0 0 1.125 1.35zm4.706-.936l.474-.881l-.317-.17l-.352.07l.195.98zm-3.082-3.147l.93.37l.163-.414l-.196-.399zM19 12c0 3.246-2.853 6-6.53 6v2c4.641 0 8.53-3.514 8.53-8zM5.941 12c0-3.246 2.854-6 6.53-6V4C7.83 4 3.94 7.514 3.94 12h2zm6.53-6C16.147 6 19 8.754 19 12h2c0-4.486-3.889-8-8.53-8zm0 12c-1.205 0-2.328-.3-3.291-.817l-.948 1.761A8.934 8.934 0 0 0 12.471 20zm-8.276 1.98l4.706-.936l-.39-1.961l-4.706.936l.39 1.962zm2.326-5.506A5.564 5.564 0 0 1 5.94 12h-2c0 1.2.282 2.338.786 3.36zm-1.826.073L3.07 18.631l1.858.738l1.624-4.083l-1.858-.739z"/><circle cx="9" cy="12" r="1"/><circle cx="12.5" cy="12" r="1"/><circle cx="16" cy="12" r="1"/></g></svg>
                         </button>
                     </div>
@@ -130,7 +131,7 @@ import likeCom from "../user/components/like.vue"
 import FollowAndFans from "../user/pages/followAndFans.vue";
 import dialogCom from "@/components/dialog.vue";
 
-import { User, userTableStore, IndexDB} from '@/stores/index'
+import { User, userTableStore, IndexDB, ChatListType} from '@/stores/index'
 
 const router = useRouter();
 const route = useRoute();
@@ -145,26 +146,28 @@ let drawer = reactive({
 });
 let ConfirmDialog = ref(false);
 let backgroundColor = ref('transparent');
+let lookUser = reactive<User>({} as User)
 let curUser = reactive<User>({} as User)
 let tabIndex = ref(0)
 let showDialog = ref(false);
 const InterestListNumber = computed(() => {
-    return curUser.InterestList?.length || 0;
+    return lookUser.InterestList?.length || 0;
 });
 const fansListNumber = computed(() => {
-    return curUser.fansList?.length || 0;
+    return lookUser.fansList?.length || 0;
 });
 const score = computed(() => {
-    return curUser.score || 0
+    return lookUser.score || 0
 });
 const noteNum = computed(() => {
-    return curUser.noteList?.length || 0
+    return lookUser.noteList?.length || 0
 });
 //统计获得的赞和收藏数
 let beProudAndLikeNumber = ref(0);
 let beLikeNumber = ref(0);
 let beProudNumber = ref(0);
 let userId = ref()
+let isFollow = ref(false);
 
 watch(() => route.query.id, (newId) => {
     userId.value = newId;
@@ -176,17 +179,47 @@ const db: IndexDB = inject('db') as IndexDB;
 const initData = () =>{
     //基本信息的获取
     userId.value = route.query.id;
+    let ans = userDb.getCurrentUserMessage()
+    if (ans?.code != -1) {
+        Object.assign(curUser, ans!.data);
+    }
+
     let res =  userDb.getUserById(parseInt(userId.value))
-    console.log(userId.value, res);
     
     if (res != null) {
-        Object.assign(curUser, res!);
+        Object.assign(lookUser, res!);
 
         //统计获得的赞和收藏数
-        beLikeNumber.value = mapSum(curUser.beProudLike || null);
-        beProudNumber.value = mapSum(curUser.beProudCon || null);
+        beLikeNumber.value = mapSum(lookUser.beProudLike || null);
+        beProudNumber.value = mapSum(lookUser.beProudCon || null);
         beProudAndLikeNumber.value = beLikeNumber.value + beProudNumber.value;
         imageDataInit();
+    }
+
+    if (lookUser.id == curUser.id) {
+        navigation("profile");
+    }
+
+    //判断一下是否关注过看的这个人
+    curUser.InterestList?.includes(lookUser.id) ? isFollow.value = true : isFollow.value = false;
+}
+
+const changeFollow = (indexType:number) => {
+    if (indexType == 0) {
+        //取消关注
+        let startIndex = curUser.InterestList!.indexOf(lookUser.id)
+        curUser.InterestList!.splice(startIndex, 1) 
+        startIndex = curUser.fansList!.indexOf(lookUser.id)
+
+        lookUser.fansList!.splice(startIndex, 1)
+        userDb.updataUser(lookUser)
+        userDb.updataUser(curUser)
+    } else {
+        //关注
+        curUser.InterestList!.push(lookUser.id) 
+        lookUser.fansList!.push(curUser.id)
+        userDb.updataUser(lookUser)
+        userDb.updataUser(curUser)
     }
 }
 
@@ -201,18 +234,65 @@ const openDrawer = (type:number) => {
 }
 
 const imageDataInit = () => {
-    if (curUser.backgroundImg != null) {
-        db.getImage(curUser.backgroundImg!).then((res) => {
+    if (lookUser.backgroundImg != null) {
+        db.getImage(lookUser.backgroundImg!).then((res) => {
           meHeader.value.style.backgroundImage = `url(${res})`;
         }).catch((err:DOMException) => {
         });
     }
-    if (curUser.headerImg != null) {
-        db.getImage(curUser.headerImg!).then((res) => {
+    if (lookUser.headerImg != null) {
+        db.getImage(lookUser.headerImg!).then((res) => {
             headerImage.value.src = res;
         }).catch((err:DOMException) => {
         });
     }
+}
+
+const sendMessage = () => {
+    let TabsData: ChatListType = {
+        who: userId.value as number,
+        tabName: '新建标签页',
+        data: new Date().toLocaleString()
+    }
+    
+    let res = curUser.chatListNotAi?.find((item) => item.who == userId.value) 
+    if (res != undefined) {
+        navigation("chatDetail", res.chatId);
+        return
+    }
+
+    db.storeChat({
+        bothId: [curUser.id as number, userId.value as number],
+        chatBody:[]
+    }).then((res) => {
+        TabsData.chatId = res;
+
+        if (curUser.chatListNotAi == undefined) {
+            curUser.chatListNotAi = []
+        }
+
+        //本人的更新
+        curUser.chatListNotAi?.push(TabsData)
+        userDb.updataUser(curUser)
+        
+        //对方的更新
+        let TabsData1: ChatListType = {
+            who: curUser.id,
+            tabName: '新建标签页',
+            data: new Date().toLocaleString(),
+            chatId: res
+        }
+
+        if (lookUser.chatListNotAi == undefined) {
+            lookUser.chatListNotAi = []
+        }
+        lookUser.chatListNotAi?.push(TabsData1)
+
+        userDb.updataUser(lookUser)
+
+        //前往详细的聊天页面
+        navigation("chatDetail", res);
+    })
 }
 
 const goBack = () => {
