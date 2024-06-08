@@ -1,6 +1,6 @@
 <template>
   <div class="waterfall pb-6 px-2 py-2">
-    <div class="waterfall-column pb-10" v-for="(column, i) in columns" :key="i">
+    <div class="waterfall-column" v-for="(column, i) in columns" :key="i">
       <div class="waterfall-item" v-for="item in column" :key="item.id">
         <slot :item="item"></slot>
       </div>

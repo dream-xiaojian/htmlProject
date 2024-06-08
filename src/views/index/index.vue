@@ -18,11 +18,11 @@
         <!-- //首页中的内容, 通过滑动来修改动画, 这里的高度要计算出来-->
         <div class=" w-full overflow-y-auto" style="height:calc(100vh - 100px)"> 
             <router-view v-slot="{Component}" >
-            <transition> 
+            <!-- <transition>  -->
                 <keep-alive>
                 <component :is="Component"/>
                 </keep-alive>
-            </transition>
+            <!-- </transition> -->
             </router-view>
         </div>
 
