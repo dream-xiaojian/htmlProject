@@ -37,9 +37,10 @@
  * 支持图片文件和回显
  * 同时支持裁剪
  */
-import { ref, reactive} from 'vue';
+import { ref, reactive, watch, onMounted, inject} from 'vue';
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-
+import {IndexDB, blogSharesTable, userTableStore, User} from "@/stores"
+const indexDb: IndexDB = inject('db') as IndexDB;
 const props = defineProps({
     tailor: { //是否启动裁剪功能
       type: Boolean,
@@ -51,7 +52,33 @@ const props = defineProps({
       required: false,
       validator: (value) => ['circle', 'square'].includes(value as string),
     },
+    dataImageUrlId : {
+      type: [Number, File],
+      required: false,
+      default: -1
+    }
 });
+
+watch(() => props.dataImageUrlId, (newVal) => {
+  if (newVal != -1 && newVal != null) {
+    initData();
+  }
+});
+
+const initData = () => {
+    if (props.dataImageUrlId instanceof File) return;
+    indexDb.getImage(props.dataImageUrlId).then(res => {
+      imgUrl.value = res; //之前的进行重新
+    }).catch(err => {
+      console.log(err);
+    })
+}
+
+onMounted(() => {
+  if (props.dataImageUrlId != -1 && props.dataImageUrlId != null) {
+    initData()
+  }
+})
 
 const emit = defineEmits(['file-changed', 'file-tailor-changed'])
 const fileInput = ref();

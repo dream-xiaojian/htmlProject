@@ -74,6 +74,12 @@ export const routes: RouteRecordRaw[] = [
                 path: 'createPage',
                 component: () => import('@/views/creation/index.vue'),
                 name: 'createPage',
+                meta: { modulePage: false, showName: '笔记创建'},
+            },
+            { 
+                path: 'changeNote',
+                component: () => import('@/views/user/components/changeMessage.vue'),
+                name: 'changeNote',
                 meta: { modulePage: false, showName: '笔记编辑'},
             },
             { 

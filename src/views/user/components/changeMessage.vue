@@ -6,7 +6,7 @@
         <div class="p-2 mt-2 scroll-smooth overflow-x-auto flex items-center gap-2">
             <div v-for="(item, index) in blogImagesList">
                 <div style="width:10rem; height:10rem">
-                    <uploadImgCom @file-changed="file => handleFileChanged(index, file)"> </uploadImgCom>
+                    <uploadImgCom :dataImageUrlId="item" @file-changed="file => handleFileChanged(index, file)"> </uploadImgCom>
                 </div> 
             </div> 
         </div>
@@ -55,7 +55,7 @@
                 @click="publishNote"
                 class="text-base middle none center mr-4  rounded-3xl bg-red-500 py-2 px-28 font-sans font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 data-ripple-light="true">
-                发布笔记
+                保存编辑
             </button>
         </div>
 
@@ -123,23 +123,24 @@
 </template>
 <script setup lang="ts">
 import uploadImgCom from "@/components/uploadImg.vue"
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, watch } from "vue";
 import { navigation } from '@/router/index';
+import { createRouter, useRoute} from 'vue-router';
 import { blogSharesTable, IndexDB, userTableStore, User } from "@/stores/index"
 import { getTime } from "@/utils/time"
 import { inject } from 'vue'
 import robotLogin from "@/assets/image/robot.svg"
 
+const route = useRoute();
 const db: IndexDB = inject('db') as IndexDB;
 let curUser = reactive<User>({} as User)
 const userDb = userTableStore()
 const visibleList = ref(['公开可见', '仅自己可见的'])
-
 let drawer = reactive({
     showDrawer: false,
     type: 0
 });
-
+let noteId = ref();
 let blogNote = reactive<blogSharesTable>({
     title: "",
     content: "",
@@ -152,7 +153,12 @@ let blogNote = reactive<blogSharesTable>({
     commentList: [],
     collectList: []
 } as blogSharesTable);
-let blogImagesList = ref<(File | null)[]>([null]);
+//这里的要改成File类型
+let blogImagesList = ref<(number | File | null)[]>([null]);
+
+//记录一个修改下标数组, 修改的最后我才进行编辑修改
+let changeIndexArray = ref<number[]>([]);
+let lastNum = 0;
 type messageType = {
     whoId: number,
     content: string,
@@ -161,6 +167,21 @@ let userImg = ref("");
 let whoHeaderImg = ref("");
 let msg = ref("");
 let mssageList = ref<messageType[]>([]);
+
+watch(() => route.query.id, (newId) => {
+  noteId.value = newId;
+  initData();
+});
+
+const initData = () => {
+    db.getNoteById(noteId.value).then((res: blogSharesTable) => {
+        Object.assign(blogNote, res);
+        console.log('当前修改的笔记', blogNote);
+        blogImagesList.value = blogNote.imagesDataList
+        lastNum = blogNote.imagesDataList.length - 1; //没修改之前的下标
+        blogImagesList.value.push(-1)
+    });
+}
 
 const sentMsg = () => {
     if (msg.value.length == 0) return;
@@ -183,31 +204,64 @@ const openDrawer = (index: number) => {
     drawer.type = index;
 }
 
+//文件修改
 const handleFileChanged = (index: number, file: File) => {
+    changeIndexArray.value.push(index); //修改的文件
     blogImagesList.value[index] = file;
-    if (index == blogImagesList.value.length - 1) blogImagesList.value.push(null);
+    if (index == blogImagesList.value.length - 1) blogImagesList.value.push(-1);
 }
 
 //发布笔记
 const publishNote = async () => {
+
+    //将修改的数组 -- 进行分离
+    //没有修改过的
+    //之前已经有的 ， 新加的
+    let changeId =  await convertFilesToDataUrlsId();
+    for (let i = 0; i < changeId.length; i ++ ) {
+        let index = changeIndexArray.value[i]
+        blogImagesList.value[index] = changeId[i];
+    }
+
+    blogNote.imagesDataList = blogImagesList.value as number[];
+    blogNote.imagesDataList = blogNote.imagesDataList.filter(item => item !== -1);
+
+    console.log(blogNote.imagesDataList);
+    
     if (blogNote.title.length == 0 || blogNote.content.length == 0) {
-        console.log('标题和内容不能为空');
         return;
     }
-    blogNote.imagesDataList = await convertFilesToDataUrlsId(blogImagesList.value) as number[];
-    blogNote.author = curUser.id; //绑定唯一的id
-    blogNote.date = getTime();
+   
+    db.updataNote(blogNote)
+}
 
-    blogNote.place = blogNote.place.length == 0 ? '未知喵星' : blogNote.place;
-    db.storeBlog(blogNote).then((res: number) => {
-        if (!curUser.noteList) curUser.noteList = [];
-        curUser.noteList.push(res);
-        userDb.updataUser(curUser);
-        reset();
 
-    }).catch((err: DOMException) => {
-        console.log("发布失败", err);
-    })
+async function convertFilesToDataUrlsId() {
+    //删除最后一个null
+
+    const promises = []
+    for (let i = 0; i < blogImagesList.value.length; i ++ ) {
+        if (blogImagesList.value[i] instanceof File) {
+            if (blogImagesList.value[i] != -1) {
+                if (i <= lastNum) //修改
+                {
+                    promises.push(db.storeImage(
+                        blogImagesList.value[i] as File,
+                        blogNote.imagesDataList[i]
+                    ))
+                }
+                else {
+                    promises.push(db.storeImage(
+                        blogImagesList.value[i] as File
+                    ))
+                }
+            } 
+        }
+    }
+
+    // 同步等待所有图片转换完成
+    const dataUrlsId = await Promise.all(promises);
+    return dataUrlsId;
 }
 
 const copyText = (index:number) =>{
@@ -220,19 +274,9 @@ const copyText = (index:number) =>{
     });
 }
 
-async function convertFilesToDataUrlsId(files: (File | null)[]) {
-    //删除最后一个null
-    files = files.slice(0, files.length - 1);
-    const promises = files.map(file => {
-        if (file !== null) {
-            return db.storeImage(file);
-        }
-        return Promise.resolve(null);
-    });
-
-    // 同步等待所有图片转换完成
-    const dataUrlsId = await Promise.all(promises);
-    return dataUrlsId;
+type ChangeType = {
+    file: File
+    imgId?: number
 }
 
 onMounted(() => {
@@ -243,7 +287,8 @@ onMounted(() => {
     } else {
         navigation('login')
     }
-
+    noteId.value = route.query.id as string;
+    initData();
     db.getImage(curUser.headerImg!).then((res) => {
         userImg.value = res;
         whoHeaderImg.value = robotLogin;
