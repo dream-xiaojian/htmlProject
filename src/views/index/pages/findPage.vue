@@ -77,8 +77,8 @@ onMounted(() => {
 
 const initData = () => {
     indexDb.getNoteByVisible(true, page.value, pageSize.value).then((res) => {
-            noteList.value = res;
-            isDataLoaded.value = true; // 数据已经加载过了
+        noteList.value = res;
+        isDataLoaded.value = true; // 数据已经加载过了
     });
 }
 

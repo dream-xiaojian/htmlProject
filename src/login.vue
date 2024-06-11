@@ -20,8 +20,11 @@
                 <input v-model="form.password" class="pl-2 w-full outline-none border-none" type="password" name="password" id="password" placeholder="请您输入您的密码" />     
               </div>
               <span @click="login" class="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2 text-center">登入</span>
+              <div class="w-full ">
+                <p v-show="errors.login" class="text-red-500 text-center">{{ errors.login }}</p>
+              </div>
               <div class="flex justify-between mt-4">
-                <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">忘记密码</span>
+                <!-- <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">忘记密码</span> -->
                 <a @click="navigation('register')" href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">没有账号?</a>
               </div>  
             </form>
@@ -41,9 +44,14 @@ const form = reactive({
     password:'',
 })
 
+const errors = reactive({
+    login: false as String | Boolean,
+})
+
 const login = () => {
   if (form.username.length == 0 || form.password.length == 0) {
-    throw new Error('登入信息为空')
+    errors.login = '请您填写完整信息哦！';
+    return;
   }
   try {
     let userToken = store.login(form.username, form.password)
@@ -55,6 +63,7 @@ const login = () => {
     navigation('findHomePage')
 
   } catch (error) {
+    errors.login = '用户密码错误哦！请您重新输入！';
     console.log(error)
   }
 }

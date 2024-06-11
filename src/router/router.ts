@@ -111,6 +111,24 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/search/searchResult.vue'),
                 name: 'searchResult',
                 meta: { modulePage: false, hiddenTop: true},
+            },
+            { 
+                path: 'history',
+                component: () => import('@/views/user/pages/history.vue'),
+                name: 'history',
+                meta: { modulePage: false, hiddenTop: true},
+            },
+            { 
+                path: 'scoreManage',
+                component: () => import('@/views/score/index.vue'),
+                name: 'scoreManage',
+                meta: { modulePage: false, hiddenTop: true, showName: '我的账户'},
+            },
+            { 
+                path: 'reCharge',
+                component: () => import('@/views/score/reCharge.vue'),
+                name: 'reCharge',
+                meta: { modulePage: false, hiddenTop: true, showName: '充值'},
             }
         ]
     },

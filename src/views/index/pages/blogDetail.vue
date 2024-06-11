@@ -131,6 +131,13 @@ const initData = () =>{
         Object.assign(authorUser, userDb.getUserById(note.value.author!));
         isMeNote.value = curUser?.id == authorUser.id;
 
+        if (!isMeNote.value) {
+            curUser.history = curUser.history ?? [];
+            if (!curUser.history.includes(noteId.value)) {
+                curUser.history.push(noteId.value);
+                userDb.updataUser(curUser)
+            }
+        }
         indexDb.getImage(authorUser.headerImg!).then((res:any) => {
             imgUrl.value = res
         }).catch((err) => {
@@ -140,7 +147,9 @@ const initData = () =>{
     let res =  userDb.getCurrentUserMessage()
 
     
-    if (res?.code != -1)  Object.assign(curUser, res!.data);
+    if (res?.code != -1) {
+        Object.assign(curUser, res!.data);
+    }
     else navigation('login')
 
  

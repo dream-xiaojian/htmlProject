@@ -61,7 +61,6 @@ onMounted(() => {
     db.getImage(props.imgUrl[0] as number).then((res: any) => {
         coverImage.value = res
     })
-
     userName.value = userDb.getUserById(props.author)!.username
 })
 

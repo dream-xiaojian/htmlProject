@@ -47,7 +47,20 @@
                                 <uploadImgCom @file-tailor-changed="uploadImg" :tailor="true"> </uploadImgCom>
                             </div>
                         </div>
-                   
+                    </div>
+
+                    <!-- 性别，年龄，所在地 -->
+                    <div v-show="editData.type == 'sex'"> 
+                        <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
+                    </div>
+
+                    <div v-show="editData.type == 'age'"> 
+                        <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
+                    </div>
+
+                    <div v-show="editData.type == 'place'"> 
+                        <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
+                    
                     </div>
                 </div>
             </div>
@@ -82,8 +95,8 @@ const tips = {
     email: "请您编辑你的邮箱",
     resume: "有趣的简历可以吸引其它小猫",
     sex: "请您选择您的性别吧",
-    age: "选择年龄",
-    place: "选择你所在的地区",
+    age: "请您输入您的年龄",
+    place: "编辑您的所在地区",
     backgroundImg: "背景图",
 }
 

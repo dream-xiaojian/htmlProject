@@ -33,15 +33,15 @@
             <div class=" py-3 px-4 pb-3">
                 <div class=" flex justify-between">
                     <div class="flex items-center gap-6">
-                        <div class="flex flex-col items-center">
+                        <div class="flex flex-col items-center" @click="openDrawer(1)">
                              <span class=" text-lg font-bold">{{InterestListNumber}}</span>
-                            <span class="text-gray-200 text-xs" @click="openDrawer(1)">关注</span>
+                            <span class="text-gray-200 text-xs">关注</span>
                         </div>
-                        <div class="flex flex-col items-center">
+                        <div class="flex flex-col items-center" @click="openDrawer(1)">
                            <span class=" text-lg font-bold">{{fansListNumber}}</span>
-                           <span class="text-gray-200 text-xs" @click="openDrawer(1)">粉丝</span>
+                           <span class="text-gray-200 text-xs" >粉丝</span>
                        </div>
-                       <div class="flex flex-col items-center">
+                       <div class="flex flex-col items-center" @click="navigation('scoreManage')">
                            <span class=" text-lg font-bold">{{score}}</span>
                            <span class="text-gray-200 text-xs">积分</span>
                        </div>
@@ -67,7 +67,7 @@
                     </div>
                     <span class="text-sm text-gray-300">AI助手找灵感</span>
                 </div>
-                <div class="text-container rounded-md flex flex-col px-5 py-1"> 
+                <div class="text-container rounded-md flex flex-col px-5 py-1" @click="navigation('history')"> 
                     <div class="text-center flex items-center">
                         <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="white" d="M12 21q-3.45 0-6.012-2.287T3.05 13H5.1q.35 2.6 2.313 4.3T12 19q2.925 0 4.963-2.037T19 12t-2.037-4.962T12 5q-1.725 0-3.225.8T6.25 8H9v2H3V4h2v2.35q1.275-1.6 3.113-2.475T12 3q1.875 0 3.513.713t2.85 1.924t1.925 2.85T21 12t-.712 3.513t-1.925 2.85t-2.85 1.925T12 21m2.8-4.8L11 12.4V7h2v4.6l3.2 3.2z"/></svg></span>
                         <span class="">浏览记录</span>

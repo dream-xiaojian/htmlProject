@@ -27,19 +27,23 @@
 
         </div>
          <!-- 消息输入区域 -->
-         <div class="mt-4 flex items-center w-full fixed bottom-3 left-0 px-2">
-            <input
+         <div class="mt-4 flex flex-col w-full fixed bottom-3 left-0 px-2">
+            <span class="absolute bottom-12 text-sm text-gray-400">当前积分值(每次使用将会消耗5点积分值): {{curUser.score}}</span>
+            <div class="w-full flex">
+                <input
+                :disabled="isDisabled"
                 type="text"
-                placeholder="输入您的问题"
+                :placeholder="{'isDisabled': '积分不足', '': '请输入消息'}[isDisabled ? 'isDisabled' : '']"
                 v-model="msg"
                 class="flex-1 py-2 px-3 rounded-full bg-gray-100 focus:outline-none"
             />
             <button class="bg-blue-500 text-white px-4 py-2 rounded-full ml-3 hover:bg-blue-600" @touchstart="sentMsg()">发送</button>
+            </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, inject, watch, reactive} from "vue";
+import { ref, computed, onMounted, inject, watch, reactive} from "vue";
 import { useRoute} from 'vue-router';
 import robotLogin from "@/assets/image/robot.svg"
 import {ChatTable, IndexDB, User, userTableStore, ChatBodyType} from "@/stores/index";
@@ -57,6 +61,7 @@ let meHeaderImg = ref(); //发送方头像
 let whoHeaderImg = ref(); //接收方头像
 let msg = ref();
 
+let isDisabled = computed(() => curUser.score! < 5);
 
 watch(() => route.query.id, (newId: any) => {
     chatId.value = newId;
@@ -82,6 +87,8 @@ const addChat = (msg: string, id: number) => {
 const sentMsg = () => {
     if (msg.value == "") return;
     addChat(msg.value, curUser.id as number);
+    curUser.score! -= 5;
+    userDb.updataUser(curUser);
     msg.value = "";
 }
 
@@ -93,6 +100,7 @@ const initData = () =>{
      let res =  userDb.getCurrentUserMessage()
      if (res?.code != -1) {
         Object.assign(curUser, res!.data);
+        curUser.score = curUser.score ?? 0;
      }
     
      db.getChatById(chatId.value).then((res) => {

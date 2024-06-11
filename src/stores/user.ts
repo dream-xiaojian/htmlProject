@@ -9,7 +9,9 @@ import { navigation } from "@/router/index"
 export interface User {
     id: number
 
-    username: string
+    onlyUserName?: string //唯一用户名, 判断不能重复
+
+    username: string //昵称
 
     password: string
 
@@ -67,6 +69,8 @@ export interface User {
     chatListAi?: ChatListType[]
 
     searchHistory?: string[] //搜索历史
+
+    history?: string[] //浏览历史
 }
 
 export type ChatListType = {

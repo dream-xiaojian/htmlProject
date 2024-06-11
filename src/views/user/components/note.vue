@@ -64,8 +64,8 @@ import { navigation } from '@/router/index';
 const userDb = userTableStore()
 let curUser = reactive<User>({} as User)
 const db: IndexDB = inject('db') as IndexDB;
-const pageSize1 = 10; const page1 = ref(1);
-const pageSize2 = 10; const page2 = ref(1);
+const pageSize1 = 100; const page1 = ref(1);
+const pageSize2 = 100; const page2 = ref(1);
 
 let noteList1 = ref([])
 let noteList2 = ref([])
@@ -114,7 +114,6 @@ const getPrivacyNote = () => {
     db.getMyNote(curUser.id, false, page2.value, pageSize2).then((res:any) => {
         noteList2.value = res;
         console.log(noteList2.value);
-        
     })
 }
 

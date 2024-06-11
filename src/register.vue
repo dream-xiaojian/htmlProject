@@ -37,9 +37,13 @@
                 <p v-show="errors.rePassword" class="text-red-500 absolute top-11">{{ errors.rePassword }}</p>
               </div>
               <span @click="register" class="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2 text-center">注册</span>
+              <div class="w-full ">
+                <p v-show="errors.register" class="text-red-500 text-center">{{ errors.register }}</p>
+              </div>
               <div class="flex justify-between mb-5">
                 <a @click="navigation('login')"href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">已经有账号?</a>
               </div>  
+              
             </form>
         </div>
       </div>
@@ -65,6 +69,7 @@ const errors = reactive({
     username:false as String | Boolean,
     password: false as String | Boolean,
     rePassword:false as String | Boolean,
+    register: false as String | Boolean,
 })
 
 watchEffect(() => {
@@ -90,9 +95,10 @@ watchEffect(() => {
 const register = () => {
   //不为空
   if (form.email.length == 0 || form.username.length == 0 || form.password.length == 0) {
-    throw new Error('请填写完整信息')
+    errors.register = '请您填写完整信息哦！';
     return
   }
+  errors.register = false;
   if (!Object.values(errors).every(value => value === false)) {
     return
   }
@@ -104,6 +110,7 @@ const register = () => {
   }
   try {
     store.register(user)
+    navigation('login')
   } catch (error) {
     console.log(error)
   }
