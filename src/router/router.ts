@@ -4,6 +4,7 @@ import register from '@/register.vue'
 import home from "@/views/index/index.vue"
 import profile from "@/views/user/profile.vue"
 import chat from "@/views/chat/index.vue"
+import GuidePage from '@/views/guide/index.vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 
@@ -135,13 +136,17 @@ export const routes: RouteRecordRaw[] = [
     { 
         path: '/login', 
         component: login,
-        name: 'login',
-        
+        name: 'login', 
     },
     { 
         path: '/register', 
         component: register,
         name: 'register',
+    },
+    { 
+        path: '/guide', 
+        component: GuidePage,
+        name: 'guide',
     }
 ]
  

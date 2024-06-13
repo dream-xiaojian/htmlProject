@@ -14,8 +14,8 @@ const db = new IndexDB('coffeeCatDatabase', 4);
 await db.openDB();
 
 const app = createApp(App)
-app.use(router)
 app.use(pinia)
 // 在根组件的 setup 函数中提供 db 实例
 app.provide('db', db);
+app.use(router)
 app.mount('#app')

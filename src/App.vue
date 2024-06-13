@@ -1,5 +1,16 @@
-<script setup>
+<script setup lang="ts">
+import {onMounted} from "vue"
+import {settingsStore} from "@/stores"
+import {navigation} from "@/router"
 
+const settings = settingsStore()
+
+onMounted(() => {
+   if (settings.firstCome) {
+      settings.setFirstCome(false)
+      navigation("guide")
+   }
+})
 </script>
 
 <template>
@@ -7,6 +18,7 @@
     <router-view></router-view>
   </div>
 </template>
+
 
 <style lang="scss">
 .app{

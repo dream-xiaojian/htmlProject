@@ -19,17 +19,18 @@ export function persistedPlugin (context: any) {
    //存 --- 是否需要全局存取要权衡一下
    window.addEventListener('beforeunload', () => {
           let stateCopy = { ...store.$state };
-          stateCopy.userTable = stateCopy.userTable.map((user: any) => {
-          let userCopy = { ...user };
-          if (userCopy.beProudLike) {
-               userCopy.beProudLike = Array.from(userCopy.beProudLike.entries());
+          if (store.$id === 'userStore') {
+               stateCopy.userTable = stateCopy.userTable.map((user: any) => {
+                    let userCopy = { ...user };
+                    if (userCopy.beProudLike) {
+                         userCopy.beProudLike = Array.from(userCopy.beProudLike.entries());
+                    }
+                    if (userCopy.beProudCon) {
+                         userCopy.beProudCon = Array.from(userCopy.beProudCon.entries());
+                    }
+                    return userCopy;
+               });
           }
-          if (userCopy.beProudCon) {
-               userCopy.beProudCon = Array.from(userCopy.beProudCon.entries());
-          }
-          return userCopy;
-          });
-     
           localStorage.setItem(key, JSON.stringify(stateCopy));
    });
 
@@ -38,16 +39,17 @@ export function persistedPlugin (context: any) {
           const localData = localStorage.getItem(key);
           if (localData) {
                let parsedData = JSON.parse(localData);
-          
-               parsedData.userTable = parsedData.userTable.map((user: User) => {
-                    if (user.beProudLike) {
-                      user.beProudLike = new Map(user.beProudLike);
-                    }
-                    if (user.beProudCon) {
-                      user.beProudCon = new Map(user.beProudCon);
-                    }
-                    return user;
-               });
+               if (store.$id === 'userStore') {
+                    parsedData.userTable = parsedData.userTable.map((user: User) => {
+                         if (user.beProudLike) {
+                           user.beProudLike = new Map(user.beProudLike);
+                         }
+                         if (user.beProudCon) {
+                           user.beProudCon = new Map(user.beProudCon);
+                         }
+                         return user;
+                    });
+               }
                store.$patch(parsedData);
           }
      }

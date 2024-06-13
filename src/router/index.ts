@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import {routes} from "./router"
+import {verifyUser} from "@/stores"
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -23,7 +24,15 @@ export function navigation(pathName:string, query?:number) {
 
 //这里导出一个返回上一页的函数，也就是router.go(-1)
 //但是这个要做一个事，设置一下返回时的动画Transition的样式
-
 export function goBack() {
   router.go(-1)
 }
+
+//全局拦截一下
+router.beforeEach((to) => {
+  let res = verifyUser()
+  if (res.id == -1) { //没有登入
+     if (to.path == '/login' || to.path=="/guide" || to.path=="/register") return true
+     else return '/login'
+  }
+})

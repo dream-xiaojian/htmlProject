@@ -6,7 +6,6 @@ export function verifyUser() {
     const token = userCookie ? userCookie.split('=')[1] : null;
 
     if (!token) { 
-        navigation('login')
         return { id: -1 }
     }
 

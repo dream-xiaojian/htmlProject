@@ -4,7 +4,7 @@
       <div class="h-full w-full bg-white m-auto">
         <img src="https://image.freepik.com/free-vector/app-development-illustration_52683-47931.jpg" alt=""class="rounded-t-2xl lg:w-full  object-cover"/>
         <div class="">
-          <h2 class="text-center text-gray-800 text-2xl font-bold pt-6">咖啡猫的社区</h2>
+          <h2 class="text-center text-gray-800 text-2xl font-bold pt-6">创意分享平台</h2>
           <form class="bg-white rounded-md p-5">
               <h1 class="text-gray-800 font-bold text-2xl mb-6">加入我们!</h1>
               <div class="flex items-center relative border-2 h-11 mb-7 py-2 px-3 rounded-2xl ">
@@ -112,7 +112,7 @@ const register = () => {
     store.register(user)
     navigation('login')
   } catch (error) {
-    console.log(error)
+    errors.register = '用户名重复哦！';
   }
 }
 
