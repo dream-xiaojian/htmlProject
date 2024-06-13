@@ -1,6 +1,6 @@
 <template lang="">
     <!-- 发现页面 这里后期改成瀑布流-->
-    <div class="" ref="viewBox">
+    <div class="" ref="viewBox" >
         <waterfulLayoutVue :items="noteList" :columnsCount="2"> 
             <template #default="{ item }">
                 <div>

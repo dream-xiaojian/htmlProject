@@ -192,6 +192,8 @@ export const userTableStore = defineStore('userTable', {
 
             if (!meUser.likeList) meUser.likeList = [];
             if (!meUser.collectList) meUser.collectList = [];
+            if (!whoUser.beProudLike) whoUser.beProudLike = new Map<number, number[]>();
+            if (!whoUser.beProudCon) whoUser.beProudCon = new Map<number, number[]>();
 
             if (type === "like") {
                 //已经点赞过了，取消点赞
@@ -220,6 +222,8 @@ export const userTableStore = defineStore('userTable', {
                     return true; 
                 }
             } else {
+                console.log('收藏功能');
+                
                 //已经收藏过了，取消收藏
                 if (this.isLikeOrColl(meUser.collectList!, noteId)) {
                     meUser.collectList = meUser.collectList?.filter(item => item !== noteId);
@@ -231,7 +235,11 @@ export const userTableStore = defineStore('userTable', {
                 }
                 else {
                     meUser.collectList?.push(noteId);
-                    if (!whoUser.beProudCon) whoUser.beProudCon = new Map<number, number[]>();
+                    console.log(whoUser.beProudCon); // 输出 whoUser.beProudCon 的值
+                    console.log(typeof whoUser.beProudCon); // 输出 whoUser.beProudCon 的类型
+                    if (!whoUser.beProudCon) {
+                        whoUser.beProudCon = new Map<number, number[]>();
+                    }
                     if (!whoUser.beProudCon.has(noteId)) {
                         whoUser.beProudCon.set(noteId, []);
                     }

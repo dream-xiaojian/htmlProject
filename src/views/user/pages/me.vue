@@ -1,8 +1,8 @@
 <template lang="">
-    <div style="z-index:999" class="relative p-2 h-screen overflow-y-auto w-full flex flex-col gap-3">
+    <div style="z-index:999" class="dark:bg-slate-900 relative p-2 h-screen overflow-y-auto w-full flex flex-col gap-3">
 
         <!-- 头像部分 -->
-        <div class="w-full flex justify-center items-center"> 
+        <div class="w-full flex justify-center items-center dark:text-white"> 
             <div class=" relative flex flex-col items-center justify-center gap-2"> 
                 <img ref="headerImage" style="width:104px; height:104px;" class="object-cover rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="">
                 <span @click="editSome('headerImg')" class="absolute bottom-0 right-0 "><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2"/></svg></span>
@@ -10,7 +10,7 @@
         </div>
 
         <!-- 基本信息部分 -->
-        <div class="text-slate-600 text-base p-4 w-full mx-auto flex flex-col gap-4">
+        <div class="text-slate-600 text-base p-4 w-full mx-auto flex flex-col gap-4 dark:text-white">
                <div @click="editSome(item)" class="flex justify-between items-center border-b-2 text-base py-2" v-for="(item, index) in keyList" :key="index"> 
                     <div style="max-width:20%">{{keyMap[item]}}</div>
                     <div class="flex justify-between items-center gap-2 "  style="max-width:80%">
@@ -23,7 +23,7 @@
 
         <!-- 修改区 -->
         <transition name="slide-up">
-            <div v-if="editData.showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2">
+            <div v-if="editData.showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2 dark:text-white">
                 <!-- 顶部栏 -->
                 <header class=" text-lg flex items-center justify-between px-2 py-1">
                     <span class=" text-gray-400" @click="editData.showDrawer=false">取消</span>
@@ -51,6 +51,7 @@
 
                     <!-- 性别，年龄，所在地 -->
                     <div v-show="editData.type == 'sex'"> 
+                        
                         <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
                     </div>
 
@@ -59,20 +60,24 @@
                     </div>
 
                     <div v-show="editData.type == 'place'"> 
-                        <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
-                    
+                        <div class="flex items-center">
+                            <span @click="getLocal"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48"><rect width="48" height="48" fill="none"/><g fill="none" stroke="black" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M9.858 32.757C6.238 33.843 4 35.343 4 37c0 3.314 8.954 6 20 6s20-2.686 20-6c0-1.657-2.239-3.157-5.858-4.243"/><path d="M24 35s13-8.496 13-18.318C37 9.678 31.18 4 24 4S11 9.678 11 16.682C11 26.504 24 35 24 35Z"/><path d="M24 22a5 5 0 1 0 0-10a5 5 0 0 0 0 10Z"/></g></svg> </span>
+                            <input v-model="curUser[editData.type]" id="username" class=" text-lg rounded-md pl-2 w-full outline-none border-none p-2" type="text" name="username" :placeholder="tips[editData.type]" />
+                        </div>
                     </div>
                 </div>
             </div>
         </transition>
+        <div id="allmap" style="visible:hidden"></div>
     </div>
 </template>
 <script setup lang="ts">
-import {ref, reactive, onMounted} from "vue"
-import { User, userTableStore, IndexDB} from '@/stores/index'
+import { ref, reactive, onMounted } from "vue"
+import { User, userTableStore, IndexDB } from '@/stores/index'
 import { navigation } from '@/router/index';
 import uploadImgCom from "@/components/uploadImg.vue"
 import { inject } from 'vue'
+import loadBMap from "@/utils/map"
 const db: IndexDB = inject('db') as IndexDB;
 
 const userDb = userTableStore();
@@ -111,7 +116,36 @@ let imageFile: File | null = null
 
 //文件上传
 const uploadImg = (file: any) => {
-    imageFile = file  
+    imageFile = file
+}
+
+const getLocal = () => {
+    curUser['place'] = "江西省南昌市青山湖区"
+    // var map = new BMap.Map("container");
+    // var point = new BMap.Point(116.331398, 39.897445);;
+    // map.centerAndZoom(point, 12);
+    // var geoc = new BMap.Geocoder();
+    // var geolocation = new BMap.Geolocation();
+    // geolocation.getCurrentPosition(function (r) {
+    //     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //         var mk = new BMap.Marker(r.point);
+    //         map.addOverlay(mk);
+    //         map.panTo(r.point);
+    //         console.log('您的位置：' + r.point.lng + ',' + r.point.lat);
+
+    //         var pt = r.point;
+    //         geoc.getLocation(pt, function (rs) {
+    //             var addComp = rs.addressComponents;
+    //             let address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
+    //             console.log(address);
+
+    //         });
+
+
+    //     } else {
+    //         console.log('failed' + this.getStatus());
+    //     }
+    // }, { enableHighAccuracy: true })
 }
 
 //启动编辑页
@@ -123,7 +157,7 @@ const editSome = (type: string) => {
 
 //更新数据
 const updataUser = () => {
-    
+
     //基础数据的更新
     userDb.updataUser(curUser)
     if (editData.type != 'backgroundImg' && editData.type != 'headerImg')
@@ -158,8 +192,8 @@ onMounted(() => {
     initData();
 })
 
-const initData = () =>{
-    let res =  userDb.getCurrentUserMessage()
+const initData = () => {
+    let res = userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         //对于一个curUser是指向一个响应式对象
         //如果直接curUser = res.data,则curUser不是响应式对象，指向的就不是相应式对象
@@ -167,7 +201,7 @@ const initData = () =>{
         Object.assign(curUser, res!.data);
         keyList.value = Object.keys(keyMap) as any
         imageDataInit();
-    }else {
+    } else {
         navigation('login')
     }
 }
@@ -177,7 +211,7 @@ const imageDataInit = () => {
         //背景图片的获取
         db.getImage(curUser.headerImg!).then((res) => {
             headerImage.value.src = res;
-        }).catch((err:DOMException) => {
+        }).catch((err: DOMException) => {
             console.log("获取数据失败", err);
         });
     }
@@ -185,25 +219,25 @@ const imageDataInit = () => {
 </script>
 <style lang="scss" scoped>
 .drawer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 .slide-up-enter-from {
-  opacity: 0;
-  transform: translateY(100vh);
+    opacity: 0;
+    transform: translateY(100vh);
 }
 
 .slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(200vh);
+    opacity: 0;
+    transform: translateY(200vh);
 }
 </style>

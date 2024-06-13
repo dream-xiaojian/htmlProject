@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="relative h-screen w-full bg-slate-100 overflow-y-auto" ref="profileContent">
+    <div class="relative h-screen w-full dark:bg-slate-900 bg-slate-100 overflow-y-auto" ref="profileContent">
 
         <!-- 任务栏 -->
         <div class="w-full fixed left-0 top-0" style="z-index:999; transition: all 0.25s ease-out;" :style="{ backgroundColor: backgroundColor }"> 
@@ -16,7 +16,7 @@
 
 
         <!-- 头部的介绍: 背景(可以切换背景图) 和基本信息 -->
-        <header class="text-white " ref="meHeader" id="meHeader"> 
+        <header class="text-white dark:bg-slate-900 " ref="meHeader" id="meHeader"> 
 
             <!-- 基本信息 -->
             <div class="pt-12 px-6 w-full mx-auto flex items-center space-x-4">
@@ -94,7 +94,7 @@
         
         <!-- //弹框设置页面 -->
         <transition name="slide-up">
-            <div v-if="drawer.showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2">
+            <div v-if="drawer.showDrawer" style="z-index:999" class="drawer bg-slate-100 p-2 dark:bg-slate-900">
                 <!-- 顶部栏 -->
                 <header v-show="drawer.type == 0"  class=" text-lg flex items-center justify-between px-2 py-1">
                     <span class=" text-gray-400" @click="drawer.showDrawer=false"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M8.293 12.707a1 1 0 0 1 0-1.414l5.657-5.657a1 1 0 1 1 1.414 1.414L10.414 12l4.95 4.95a1 1 0 0 1-1.414 1.414z"/></g></svg></span>
@@ -104,27 +104,32 @@
 
                 <!-- 设置选项区 type == 0 -->
                 <div class="mt-6 px-3" v-show="drawer.type == 0">
-                    <div class=" text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
+                    <div class=" text-slate-600 text-lg p-4 dark:text-white w-full mx-auto dark:bg-slate-800 bg-white rounded-lg flex flex-col gap-2">
                             <div class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList.general" :key="index">
                                 <span>{{item.title}}</span>
-                                <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
+                                <button v-if="item.title=='深色模式'" @click="changeMode()" type="button" aria-label="Color Mode" class="flex justify-center p-2 text-gray-500 transition duration-150 ease-in-out bg-gray-100 border border-transparent rounded-md lg:bg-white lg:dark:bg-gray-900 dark:text-gray-200 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50">
+                                    <svg v-show="theme=='dark'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                                    <svg v-show="theme=='light'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 transform -rotate-90"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                                </button>
+                                <span v-else><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
                             </div>
                     </div>
 
-                    <div class=" mt-4 text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
+                    <div class=" mt-4 text-slate-600 dark:text-white text-lg p-4 w-full mx-auto dark:bg-slate-800 bg-white rounded-lg flex flex-col gap-2">
                             <div class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList.about" :key="index">
                                 <span>{{item.title}}</span>
                                 <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
                             </div>
                     </div>
 
-                    <div class=" mt-4 text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
+                    <div class="dark:bg-slate-800 mt-4 dark:text-white text-slate-600 text-lg p-4 w-full mx-auto bg-white rounded-lg flex flex-col gap-2">
                             <div @click="handleSetting(item.title)" class="flex justify-between py-2 items-center" v-for="(item, index) in settingsList.user" :key="index">
                                 <span>{{item.title}}</span>
                                 <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="black" d="M15.707 11.293a1 1 0 0 1 0 1.414l-5.657 5.657a1 1 0 1 1-1.414-1.414l4.95-4.95l-4.95-4.95a1 1 0 0 1 1.414-1.414z"/></g></svg></span>
                             </div>
                     </div>
-                </div>
+                
+                    </div>
 
                 <div v-if="drawer.type != 0">
                     <FollowAndFans @back="() => {drawer.showDrawer=false}"/>
@@ -161,10 +166,11 @@
         </dialogCom>
         <!-- 弹出框 -->
         <ConfirmDialogCom v-model='ConfirmDialog' @confirm="handleConfirm" tittle="确定退出该账户吗？" />
+
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive, computed, inject} from "vue";
+import { ref, onMounted, onUnmounted, reactive, computed, inject } from "vue";
 import { navigation } from '@/router/index';
 import ConfirmDialogCom from "@/components/ConfirmDialog.vue"
 import noteCom from "./components/note.vue"
@@ -172,9 +178,11 @@ import collectCom from "./components/collection.vue"
 import likeCom from "./components/like.vue"
 import FollowAndFans from "./pages/followAndFans.vue";
 import dialogCom from "@/components/dialog.vue";
+import {settingsStore} from "@/stores"
+import { User, userTableStore, IndexDB } from '@/stores/index'
 
-import { User, userTableStore, IndexDB} from '@/stores/index'
 
+const settings = settingsStore()
 const userDb = userTableStore()
 const meHeader = ref();
 const headerImage = ref();
@@ -182,13 +190,31 @@ const profileContent = ref();
 let drawer = reactive({
     showDrawer: false,
     title: "设置",
-    type:0
+    type: 0
 });
 let ConfirmDialog = ref(false);
+let theme = ref('light');
+ 
 let backgroundColor = ref('transparent');
 let curUser = reactive<User>({} as User)
 let tabIndex = ref(0)
 let showDialog = ref(false);
+
+const changeMode = () => {
+    console.log('修改主题', theme.value);
+    
+    if (theme.value === 'light') { //表示切换为dark模式
+        document.documentElement.classList.add('dark');
+        settings.changeMode()
+        theme.value = 'dark';
+    } else {
+        console.log('修改为light');
+        
+        theme.value = 'light';
+        document.documentElement.classList.remove('dark');
+        settings.changeMode()
+    }
+}
 const InterestListNumber = computed(() => {
     return curUser.InterestList?.length || 0;
 });
@@ -210,9 +236,9 @@ let beProudNumber = ref(0);
 
 const db: IndexDB = inject('db') as IndexDB;
 
-const initData = () =>{
+const initData = () => {
     //基本信息的获取
-    let res =  userDb.getCurrentUserMessage()
+    let res = userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         Object.assign(curUser, res!.data);
 
@@ -221,9 +247,11 @@ const initData = () =>{
         beProudNumber.value = mapSum(curUser.beProudCon || null);
         beProudAndLikeNumber.value = beLikeNumber.value + beProudNumber.value;
         imageDataInit();
-    }else{
+    } else {
         navigation('login')
     }
+
+    theme.value = settings.theme;
 }
 
 const mapSum = (map: Map<number, number[]> | null) => {
@@ -231,42 +259,42 @@ const mapSum = (map: Map<number, number[]> | null) => {
     return Array.from(map.values()).reduce((total, currentArray: number[]) => total + currentArray.length, 0);
 }
 
-const openDrawer = (type:number) => {
+const openDrawer = (type: number) => {
     drawer.showDrawer = true;
     drawer.type = type;
 }
 
 const imageDataInit = () => {
     if (curUser.backgroundImg != null) {
-        
+
         db.getImage(curUser.backgroundImg!).then((res) => {
-          meHeader.value.style.backgroundImage = `url(${res})`;
-        }).catch((err:DOMException) => {
+            meHeader.value.style.backgroundImage = `url(${res})`;
+        }).catch((err: DOMException) => {
             console.log("获取数据失败", err);
         });
     }
     if (curUser.headerImg != null) {
         db.getImage(curUser.headerImg!).then((res) => {
             headerImage.value.src = res;
-        }).catch((err:DOMException) => {
+        }).catch((err: DOMException) => {
             console.log("获取数据失败", err);
         });
     }
 }
 
-const handleConfirm = () =>{
+const handleConfirm = () => {
     userDb.logout();
     navigation('login');
 }
 
-const handleSetting = (title:string) => {
+const handleSetting = (title: string) => {
     if (title == "退出登入") {
         ConfirmDialog.value = true;
     }
 }
 
 const settingsList = reactive({
-    general:[
+    general: [
         {
             title: "账号与安全",
             icon: "el-icon-s-operation",
@@ -332,22 +360,22 @@ const settingsList = reactive({
             pathName: "/profile/about",
         },
     ]
-    }
+}
 );
 
 const checkList = ref([
-  {
-    flag: false,
-    time: "5/15",
-  },
-  {
-    flag: false,
-    time: "5/16",
-  },
-  {
-    flag: true,
-    time: "5/17",
-  },
+    {
+        flag: false,
+        time: "5/15",
+    },
+    {
+        flag: false,
+        time: "5/16",
+    },
+    {
+        flag: true,
+        time: "5/17",
+    },
 ]);
 
 
@@ -361,46 +389,48 @@ onMounted(() => {
 //     profileContent.value.removeEventListener('scroll', handleScroll)
 // })
 
-const handleScroll = (event:any) => {
-     const scrollTop = profileContent.value.scrollTop || document.body.scrollTop;
-     backgroundColor.value = scrollTop > 20 ? 'rgba(0, 0, 0, 0.9)' : 'transparent'; 
+const handleScroll = (event: any) => {
+    const scrollTop = profileContent.value.scrollTop || document.body.scrollTop;
+    backgroundColor.value = scrollTop > 20 ? 'rgba(0, 0, 0, 0.9)' : 'transparent';
 };
 
 
 </script>
 <style scoped lang="scss">
 #meHeader {
-  background-image: url(../../assets/image/meback.png);
-  background-repeat: no-repeat;
-  background-size: cover; // 让背景图片占满整个元素
-  background-position: center center; // 让背景图片居中显示
+    background-image: url(../../assets/image/meback.png);
+    background-repeat: no-repeat;
+    background-size: cover; // 让背景图片占满整个元素
+    background-position: center center; // 让背景图片居中显示
 }
 
 .text-container {
-  background-color: rgba(0, 0, 0, 0.3); /* 黑色背景，50% 不透明度 */
-  color: white; /* 白色文字 */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* 黑色背景，50% 不透明度 */
+    color: white;
+    /* 白色文字 */
 }
+
 .drawer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 .slide-up-enter-from {
-  opacity: 0;
-  transform: translateY(100vh);
+    opacity: 0;
+    transform: translateY(100vh);
 }
 
 .slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(200vh);
+    opacity: 0;
+    transform: translateY(200vh);
 }
-
 </style>

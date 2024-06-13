@@ -5,11 +5,15 @@ import { defineStore } from 'pinia'
 export const settingsStore = defineStore('settingsStore', {
     state: () => ({
         firstCome: true,
+        theme: 'light', //默认是Light
     }),
 
     actions: {
         setFirstCome(type: boolean) {
             this.firstCome = type
+        },
+        changeMode() {
+            this.theme = this.theme === 'light' ? 'dark' : 'light'
         }
     }
 })

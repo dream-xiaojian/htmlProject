@@ -16,10 +16,29 @@ export function persistedPlugin (context: any) {
    const { store } = context
    const key = KEY_PREFIX + store.$id
    
+   console.log('key', key);
+   
+   if (key === "PINIA_STORE_settingsStore") {
+        window.addEventListener('beforeunload', () => {
+          let stateCopy = { ...store.$state };
+          localStorage.setItem(key, JSON.stringify(stateCopy));
+       })
+      try {
+               const localData = localStorage.getItem(key);
+               if (localData) {
+                let parsedData = JSON.parse(localData);
+                store.$patch(parsedData);
+               }
+           }
+           catch (error) {
+               console.log('localStorage error', error);
+          }
+   }
+   else {
    //存 --- 是否需要全局存取要权衡一下
    window.addEventListener('beforeunload', () => {
           let stateCopy = { ...store.$state };
-          if (store.$id === 'userStore') {
+
                stateCopy.userTable = stateCopy.userTable.map((user: any) => {
                     let userCopy = { ...user };
                     if (userCopy.beProudLike) {
@@ -30,7 +49,7 @@ export function persistedPlugin (context: any) {
                     }
                     return userCopy;
                });
-          }
+          
           localStorage.setItem(key, JSON.stringify(stateCopy));
    });
 
@@ -39,7 +58,7 @@ export function persistedPlugin (context: any) {
           const localData = localStorage.getItem(key);
           if (localData) {
                let parsedData = JSON.parse(localData);
-               if (store.$id === 'userStore') {
+               
                     parsedData.userTable = parsedData.userTable.map((user: User) => {
                          if (user.beProudLike) {
                            user.beProudLike = new Map(user.beProudLike);
@@ -49,11 +68,12 @@ export function persistedPlugin (context: any) {
                          }
                          return user;
                     });
-               }
+               
                store.$patch(parsedData);
           }
      }
    catch (error) {
         console.log('localStorage error', error);
+   }
    }
 }

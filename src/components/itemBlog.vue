@@ -1,7 +1,7 @@
 <template lang="">
     <div class="flex flex-col overflow-hidden text-slate-600 text-base w-full mx-auto bg-white gap-1">
         <!-- 封面 -->
-        <div class="relative block mb-2 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95">
+        <div class="relative block rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95">
             <img :src="coverImage" class="w-full h-full" />
             <div class="absolute bottom-0 p-5 w-full">
                 <!-- <div class="h-32"></div> -->

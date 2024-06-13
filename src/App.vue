@@ -10,6 +10,16 @@ onMounted(() => {
       settings.setFirstCome(false)
       navigation("guide")
    }
+   console.log('初始化主题');
+   
+   if (settings.theme === "dark") { //当前是dark模式
+      console.log('初始化主题是dark');
+    
+      document.documentElement.classList.add('dark')
+   } else {
+      console.log('初始化主题是light'); 
+      document.documentElement.classList.remove('dark')
+   }
 })
 </script>
 

@@ -48,7 +48,7 @@
             </div>
 
             <div class="mt-3 w-full flex flex-wrap px-2">
-                <span class="w-1/2 py-1">普刊推荐</span>
+                <span class="w-1/2 py-1">小猫推荐</span>
                 <span class="w-1/2 py-1">江西财经大学</span>
                 <span class="w-1/2 py-1">壁纸</span>
                 <span class="w-1/2 py-1">江西人才</span>
@@ -78,51 +78,51 @@
                 <div class="flex justify-between items-center py-2"> 
                     <div class="flex items-center gap-2 flex-2"> 
                         <span class="w-3 h-3 bg-red-600 rounded-full z-10 border border-white"></span>
-                        <span>永远不要好奇后脑勺长什么样子</span>
+                        <span>水果在失去本来的味道</span>
                     </div>
            
                     <div class="flex-1 flex justify-end">
-                        <span class=" text-gray-400">1100.5w</span>
+                        <span class=" text-gray-400">593.5w</span>
                     </div>
                 </div>
                 <div class="flex justify-between items-center py-2"> 
                     <div class="flex items-center gap-2 flex-2"> 
                         <span class="w-3 h-3 bg-red-600 rounded-full z-10 border border-white"></span>
-                        <span>永远不要好奇后脑勺长什么样子</span>
+                        <span>下雨天不要背碱水背包</span>
                     </div>
            
                     <div class="flex-1 flex justify-end">
-                        <span class=" text-gray-400">1100.5w</span>
+                        <span class=" text-gray-400">132.5w</span>
                     </div>
                 </div>
                 <div class="flex justify-between items-center py-2"> 
                     <div class="flex items-center gap-2 flex-2"> 
                         <span class="w-3 h-3 bg-red-600 rounded-full z-10 border border-white"></span>
-                        <span>永远不要好奇后脑勺长什么样子</span>
+                        <span>美丽的公主</span>
                     </div>
            
                     <div class="flex-1 flex justify-end">
-                        <span class=" text-gray-400">1100.5w</span>
+                        <span class=" text-gray-400">102.5w</span>
                     </div>
                 </div>
                 <div class="flex justify-between items-center py-2"> 
                     <div class="flex items-center gap-2 flex-2"> 
                         <span class="w-3 h-3 bg-red-600 rounded-full z-10 border border-white"></span>
-                        <span>永远不要好奇后脑勺长什么样子</span>
+                        <span>内阁公主</span>
                     </div>
            
                     <div class="flex-1 flex justify-end">
-                        <span class=" text-gray-400">1100.5w</span>
+                        <span class=" text-gray-400">123.5w</span>
                     </div>
                 </div>
                 <div class="flex justify-between items-center py-2"> 
                     <div class="flex items-center gap-2 flex-2"> 
                         <span class="w-3 h-3 bg-red-600 rounded-full z-10 border border-white"></span>
-                        <span>永远不要好奇后脑勺长什么样子</span>
+                        <span>北京暴雨</span>
                     </div>
            
                     <div class="flex-1 flex justify-end">
-                        <span class=" text-gray-400">1100.5w</span>
+                        <span class=" text-gray-400">12.5w</span>
                     </div>
                 </div>
             </div>

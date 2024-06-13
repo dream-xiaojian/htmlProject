@@ -80,7 +80,18 @@ const addChat = (msg: string, id: number) => {
         content: msg,
         data: new Date().toLocaleString()
     }
+    
     chatTable.chatBody.push(data);
+
+     //虚拟一个回复
+    setTimeout(() => {
+        chatTable.chatBody.push({ 
+            senderId: -1, content: '你好！我是您的私人创作助理，请问有什么可以帮助你的吗？',
+            data: new Date().toLocaleString() 
+        });
+        db.updataChat(chatTable)
+    }, 500);
+
     db.updataChat(chatTable)
 }
 
@@ -89,6 +100,8 @@ const sentMsg = () => {
     addChat(msg.value, curUser.id as number);
     curUser.score! -= 5;
     userDb.updataUser(curUser);
+
+
     msg.value = "";
 }
 

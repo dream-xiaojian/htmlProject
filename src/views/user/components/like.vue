@@ -15,7 +15,7 @@
                 <waterfulLayoutVue :items="noteList" :columnsCount="2"> 
                     <template #default="{ item }">
                         <div>
-                            <itemBlogVue :imgUrl="item.imagesDataList" :tittle="item.title" :author="item.author" :likeNum="item.likeList.length"> </itemBlogVue>
+                            <itemBlogVue @click.stop="navigation('blogDetail', item.id)" :imgUrl="item.imagesDataList" :tittle="item.title" :author="item.author" :likeNum="item.likeList.length"> </itemBlogVue>
                         </div>
                     </template>
                 </waterfulLayoutVue>
