@@ -19,20 +19,29 @@ export function persistedPlugin (context: any) {
    console.log('key', key);
    
    if (key === "PINIA_STORE_settingsStore") {
-        window.addEventListener('beforeunload', () => {
-          let stateCopy = { ...store.$state };
+     let stateCopy = { ...store.$state };
+
+     console.log('stateCopy', stateCopy);
+     
+     if (stateCopy.persistance === false) {
+          return;
+     }
+     window.addEventListener('beforeunload', () => {
+          
+   
           localStorage.setItem(key, JSON.stringify(stateCopy));
-       })
+      })
+
       try {
-               const localData = localStorage.getItem(key);
-               if (localData) {
-                let parsedData = JSON.parse(localData);
-                store.$patch(parsedData);
-               }
+             const localData = localStorage.getItem(key);
+             if (localData) {
+               let parsedData = JSON.parse(localData);
+               store.$patch(parsedData);
+              }
            }
-           catch (error) {
-               console.log('localStorage error', error);
-          }
+     catch (error) {
+          console.log('localStorage error', error);
+     }
    }
    else {
    //存 --- 是否需要全局存取要权衡一下

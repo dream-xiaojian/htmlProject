@@ -4,10 +4,10 @@ import { defineStore } from 'pinia'
 
 export const settingsStore = defineStore('settingsStore', {
     state: () => ({
-        firstCome: true,
+        firstCome: false, //是不是第一次到来
         theme: 'light', //默认是Light
+        persistance:true,
     }),
-
     actions: {
         setFirstCome(type: boolean) {
             this.firstCome = type
