@@ -99,7 +99,7 @@ const initData = () => {
 
 const moneys = ref([
     {
-        score: 600,
+        score: 100,
         money: 6
     },
     {

@@ -276,7 +276,7 @@ const sendMessage = () => {
     }
 
     db.storeChat({
-        bothId: [curUser.id as number, userId.value as number],
+        bothId: [curUser.id as number, parseInt(userId.value) as number],
         chatBody:[]
     }).then((res) => {
         TabsData.chatId = res;

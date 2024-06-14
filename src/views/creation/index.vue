@@ -187,7 +187,7 @@ const sentMsg = () => {
 
     //虚拟一个回复
     setTimeout(() => {
-        mssageList.value.push({ whoId: -1, content: '魔镜,魔镜, 世界上最handSom的Man是哪一个man?' });
+        mssageList.value.push({ whoId: -1, content: '在这个瞬息万变的世界，每一步都是新的开始。我们相信，无论您的梦想多么宏伟，或是目标多么遥远，都有一条通往成功的路径。我们在这里，为您提供支持，为您的旅程增添色彩。' });
     }, 1000);
 }
 
