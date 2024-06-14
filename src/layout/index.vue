@@ -33,50 +33,105 @@
         </footer> -->
 
         <footer v-show="$route.meta.modulePage" class="fixed bottom-0 left-0 w-screen px-2 py-1 border-t-2 border-black-500 text-black bg-white z-40">
-          <div class="px-7 bg-white shadow-lg rounded-2xl">
-            <div class="flex">
-                <div class="flex-1 group">
-                    <span @touchstart="navigateTo('findHomePage')" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-1 w-full text-gray-400 group-hover:text-indigo-500">
-                        <span class=" flex flex-col items-center px-1 pt-1 pb-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707l-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13m7 7v-5h4v5zm2-15.586l6 6V15l.001 5H16v-5c0-1.103-.897-2-2-2h-4c-1.103 0-2 .897-2 2v5H6v-9.586z"/></svg>
-                            <span class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
-                        </span>
-                    </span>
-                </div>
-                <div class="flex-1 group">
-                    <span @touchstart="navigateTo('chat')" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-1 w-full text-gray-400 group-hover:text-indigo-500">
-                        <span class="block px-1 pt-1 pb-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M5.143 14A7.8 7.8 0 0 1 4 9.919C4 5.545 7.582 2 12 2s8 3.545 8 7.919A7.8 7.8 0 0 1 18.857 14M7.383 17.098c-.092-.276-.138-.415-.133-.527a.6.6 0 0 1 .382-.53c.104-.041.25-.041.54-.041h7.656c.291 0 .436 0 .54.04a.6.6 0 0 1 .382.531c.005.112-.041.25-.133.527c-.17.511-.255.767-.386.974a2 2 0 0 1-1.2.869c-.238.059-.506.059-1.043.059h-3.976c-.537 0-.806 0-1.043-.06a2 2 0 0 1-1.2-.868c-.131-.207-.216-.463-.386-.974M15 19l-.13.647c-.14.707-.211 1.06-.37 1.34a2 2 0 0 1-1.113.912C13.082 22 12.72 22 12 22s-1.082 0-1.387-.1a2 2 0 0 1-1.113-.913c-.159-.28-.23-.633-.37-1.34L9 19"/><path d="m12.308 12l-1.461-4.521A.72.72 0 0 0 10.154 7a.72.72 0 0 0-.693.479L8 12m7-5v5m-6.462-1.5h3.231"/></g></svg>
-                            <span class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
-                        </span>
-                    </span>
-                </div>
-                <div class="flex-1 group">
-                    <span @touchstart="navigateTo('createPage')" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-1 w-full text-gray-400 group-hover:text-indigo-500">
-                        <span class="block px-1 pt-1 pb-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 32 32"><g fill="none"><circle cx="16" cy="16" r="16" fill="#00bfec"/><g fill="#fff"><path d="M15.971 23.15c-3.957 0-7.176-3.199-7.176-7.13c0-3.932 3.22-7.13 7.176-7.13c3.957 0 7.176 3.198 7.176 7.13c0 3.931-3.219 7.13-7.176 7.13m0-12.864c-3.181 0-5.77 2.572-5.77 5.734c0 3.161 2.589 5.733 5.77 5.733c3.182 0 5.77-2.572 5.77-5.733c0-3.162-2.588-5.734-5.77-5.734m5.025-2.415a9.638 9.638 0 0 0-5.025-1.406a9.67 9.67 0 0 0-4.666 1.198l-.684-1.22a11.083 11.083 0 0 1 5.35-1.376c2.04 0 4.032.558 5.761 1.614zm2.095 16.51l-.909-1.067a9.519 9.519 0 0 0 3.405-7.294h1.406c0 3.226-1.422 6.273-3.902 8.36zm-7.12 2.59c-2.557 0-5.049-.89-7.016-2.505l.896-1.076a9.667 9.667 0 0 0 6.12 2.185c1.56 0 3.048-.36 4.422-1.068l.647 1.24a11.107 11.107 0 0 1-5.069 1.225z"/><path d="M25.35 13.425a9.558 9.558 0 0 0-1.896-3.59l.9-.746a10.71 10.71 0 0 1 2.125 4.025zM6.86 21.976a10.742 10.742 0 0 1-1.793-5.956c0-2.962 1.18-5.728 3.323-7.789l.814.837a9.564 9.564 0 0 0-2.966 6.952c0 1.899.554 3.737 1.6 5.316z" opacity="0.5"/></g></g></svg>
-                            <span class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
-                        </span>
-                    </span>
-                </div>
-                <div class="flex-1 group">
-                    <span @touchstart="navigateTo('messageIndex')" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-1 w-full text-gray-400 group-hover:text-indigo-500">
-                        <span class="block px-1 pt-1 pb-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48"><rect width="48" height="48" fill="none"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M44 24c0 11.046-8.954 20-20 20H4V24C4 12.954 12.954 4 24 4s20 8.954 20 20m-30-6h18m-18 8h18m-18 8h10"/></svg>
-                            <span class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
-                        </span>
-                    </span>
-                </div>
-                <div class="flex-1 group">
-                    <span @touchstart="navigateTo('profile')" href="#" class="flex items-end justify-center text-center mx-auto px-4 pt-1 w-full text-gray-400 group-hover:text-indigo-500">
-                        <span class="block px-1 pt-1 pb-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 16 16"><path fill="currentColor" d="M8 8a3 3 0 1 0 0-6a3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0a2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1s1-4 6-4s6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
-                            <span class="block w-5 mx-auto h-1 group-hover:bg-indigo-500 rounded-full"></span>
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
+                    <div class=" pt-1 bg-white">
+                            <div class="flex flex-row space-x-3 justify-center gap-2">
+                                <!-- Item #1 -->
+                                <div class="flex group">
+                                    <span @touchstart="navigateTo('findHomePage', 0)" href="#" class="px-3 " :class="{ 'text-yellow-500': nav==0 , 'text-gray-400':nav != 0}">
+                                        <span class="flex flex-col items-center">
+                                            <!-- Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707l-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13m7 7v-5h4v5zm2-15.586l6 6V15l.001 5H16v-5c0-1.103-.897-2-2-2h-4c-1.103 0-2 .897-2 2v5H6v-9.586z"/></svg>
+
+                                            <!-- Text -->
+                                            <span class="text-xs  transition-all duration-200">
+                                                主页
+                                            </span>
+
+                                            <!-- Focus Dot -->
+                                            <span class="h-2 w-2 rounded-full 
+                                            transition-all duration-150 delay-100" :class="{ 'bg-yellow-500': nav==0 }"></span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Item #2 -->
+                                <div class="flex group">
+                                    <span @touchstart="navigateTo('chat', 1)" href="#" class="px-3 " :class="{ 'text-yellow-500': nav==1 , 'text-gray-400':nav != 1}">
+                                        <span class="flex flex-col items-center">
+                                            <!-- Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M5.143 14A7.8 7.8 0 0 1 4 9.919C4 5.545 7.582 2 12 2s8 3.545 8 7.919A7.8 7.8 0 0 1 18.857 14M7.383 17.098c-.092-.276-.138-.415-.133-.527a.6.6 0 0 1 .382-.53c.104-.041.25-.041.54-.041h7.656c.291 0 .436 0 .54.04a.6.6 0 0 1 .382.531c.005.112-.041.25-.133.527c-.17.511-.255.767-.386.974a2 2 0 0 1-1.2.869c-.238.059-.506.059-1.043.059h-3.976c-.537 0-.806 0-1.043-.06a2 2 0 0 1-1.2-.868c-.131-.207-.216-.463-.386-.974M15 19l-.13.647c-.14.707-.211 1.06-.37 1.34a2 2 0 0 1-1.113.912C13.082 22 12.72 22 12 22s-1.082 0-1.387-.1a2 2 0 0 1-1.113-.913c-.159-.28-.23-.633-.37-1.34L9 19"/><path d="m12.308 12l-1.461-4.521A.72.72 0 0 0 10.154 7a.72.72 0 0 0-.693.479L8 12m7-5v5m-6.462-1.5h3.231"/></g></svg>
+
+                                            <!-- Text -->
+                                            <span class="text-xs  transition-all duration-200">
+                                                AI
+                                            </span>
+
+                                            <!-- Focus Dot -->
+                                            <span class="h-2 w-2 rounded-full 
+                                            transition-all duration-150 delay-100" :class="{ 'bg-yellow-500': nav==1 }"></span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Item #3 Active -->
+                                <div class="flex group">
+                                    <span @touchstart="navigateTo('createPage', 2)" href="#" class="px-3 " :class="{ 'text-yellow-500': nav==2 , 'text-gray-400':nav != 2}">
+                                        <span class="flex flex-col items-center">
+                                            <!-- Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 32 32"><g fill="none"><circle cx="16" cy="16" r="16" fill="#00bfec"/><g fill="#fff"><path d="M15.971 23.15c-3.957 0-7.176-3.199-7.176-7.13c0-3.932 3.22-7.13 7.176-7.13c3.957 0 7.176 3.198 7.176 7.13c0 3.931-3.219 7.13-7.176 7.13m0-12.864c-3.181 0-5.77 2.572-5.77 5.734c0 3.161 2.589 5.733 5.77 5.733c3.182 0 5.77-2.572 5.77-5.733c0-3.162-2.588-5.734-5.77-5.734m5.025-2.415a9.638 9.638 0 0 0-5.025-1.406a9.67 9.67 0 0 0-4.666 1.198l-.684-1.22a11.083 11.083 0 0 1 5.35-1.376c2.04 0 4.032.558 5.761 1.614zm2.095 16.51l-.909-1.067a9.519 9.519 0 0 0 3.405-7.294h1.406c0 3.226-1.422 6.273-3.902 8.36zm-7.12 2.59c-2.557 0-5.049-.89-7.016-2.505l.896-1.076a9.667 9.667 0 0 0 6.12 2.185c1.56 0 3.048-.36 4.422-1.068l.647 1.24a11.107 11.107 0 0 1-5.069 1.225z"/><path d="M25.35 13.425a9.558 9.558 0 0 0-1.896-3.59l.9-.746a10.71 10.71 0 0 1 2.125 4.025zM6.86 21.976a10.742 10.742 0 0 1-1.793-5.956c0-2.962 1.18-5.728 3.323-7.789l.814.837a9.564 9.564 0 0 0-2.966 6.952c0 1.899.554 3.737 1.6 5.316z" opacity="0.5"/></g></g></svg>
+
+                                            <!-- Text -->
+                                            <span class="text-xs  transition-all duration-200">
+                                                创作
+                                            </span>
+
+                                            <!-- Focus Dot -->
+                                            <span class="h-2 w-2 rounded-full 
+                                            transition-all duration-150 delay-100" :class="{ 'bg-yellow-500': nav==2 }"></span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Item #4 -->
+                                <div class="flex group">
+                                    <span  @touchstart="navigateTo('messageIndex', 3)" href="#" class="px-3 " :class="{ 'text-yellow-500': nav==3 , 'text-gray-400':nav != 3}">
+                                        <span class="flex flex-col items-center">
+                                            <!-- Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48"><rect width="48" height="48" fill="none"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M44 24c0 11.046-8.954 20-20 20H4V24C4 12.954 12.954 4 24 4s20 8.954 20 20m-30-6h18m-18 8h18m-18 8h10"/></svg>
+
+                                            <!-- Text -->
+                                            <span class="text-xs  transition-all duration-200">
+                                                信息
+                                            </span>
+
+                                            <!-- Focus Dot -->
+                                            <span class="h-2 w-2 rounded-full 
+                                            transition-all duration-150 delay-100" :class="{ 'bg-yellow-500': nav==3 }"></span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Item #5 -->
+                                <div class="flex group">
+                                    <span @touchstart="navigateTo('profile', 4)" href="#" class="px-3 " :class="{ 'text-yellow-500': nav==4 , 'text-gray-400':nav != 4}">
+                                        <span class="flex flex-col items-center">
+                                            <!-- Icon -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 16 16"><path fill="currentColor" d="M8 8a3 3 0 1 0 0-6a3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0a2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1s1-4 6-4s6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+
+                                            <!-- Text -->
+                                            <span class="text-xs  transition-all duration-200">
+                                                我的
+                                            </span>
+
+                                            <!-- Focus Dot -->
+                                            <span class="h-2 w-2 rounded-full 
+                                            transition-all duration-150 delay-100" :class="{ 'bg-yellow-500': nav==4 }"></span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                 
         </footer>
         
       <!-- </transition> -->
@@ -90,7 +145,7 @@ const route = useRoute(); //当前路由对象，Url, 参数
 const router = useRouter(); //路由实例，操作路由
 
 let transitionName = ref('go')
-let tableIndex = ref(0)
+let nav = ref(0)
 
 // watch(
 //   () => route.meta,
@@ -112,7 +167,7 @@ let tableIndex = ref(0)
 // )
 
 const navigateTo = (pathName, index) => {
-  tableIndex.value = index;
+  nav.value = index;
   router.push({ name: pathName });
 };
 
