@@ -41,18 +41,17 @@ const initData = () =>{
 }
 
 const changeFollow = (indexType:number, whoUser: User) => {
-    console.log('关注');
     if (indexType == 0) {
         //取消关注
         let startIndex = curUser.InterestList!.indexOf(whoUser.id)
         curUser.InterestList!.splice(startIndex, 1) 
-        startIndex = curUser.fansList!.indexOf(whoUser.id)
 
+        startIndex = whoUser.fansList!.indexOf(curUser.id)
         whoUser.fansList!.splice(startIndex, 1)
+
         userDb.updataUser(whoUser)
         userDb.updataUser(curUser)
     } else {
-        //关注
         curUser.InterestList!.push(whoUser.id) 
         whoUser.fansList!.push(curUser.id)
         userDb.updataUser(whoUser)

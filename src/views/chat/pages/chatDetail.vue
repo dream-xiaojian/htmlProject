@@ -28,7 +28,7 @@
         </div>
          <!-- 消息输入区域 -->
          <div class="mt-4 flex flex-col w-full fixed bottom-3 left-0 px-2">
-            <span class="absolute bottom-12 text-sm text-gray-400">当前积分值(每次使用将会消耗5点积分值): {{curUser.score}}</span>
+            <span class="absolute bottom-12 text-sm text-gray-400" v-show="whoUser.id == -1">当前积分值(每次使用将会消耗5点积分值): {{curUser.score}}</span>
             <div class="w-full flex">
                 <input
                 :disabled="isDisabled"
@@ -61,12 +61,13 @@ let meHeaderImg = ref(); //发送方头像
 let whoHeaderImg = ref(); //接收方头像
 let msg = ref();
 
-let isDisabled = computed(() => curUser.score! < 5);
+let isDisabled = computed(() => whoUser.id==-1 && curUser.score! < 5);
 
 watch(() => route.query.id, (newId: any) => {
     chatId.value = newId;
     initData();
 });
+
 
 onMounted(() => {
     chatId.value = route.query.id;
@@ -84,13 +85,17 @@ const addChat = (msg: string, id: number) => {
     chatTable.chatBody.push(data);
 
      //虚拟一个回复
-    setTimeout(() => {
-        chatTable.chatBody.push({ 
-            senderId: -1, content: '你好！我是您的私人创作助理，请问有什么可以帮助你的吗？',
-            data: new Date().toLocaleString() 
-        });
+    if (whoUser.id == -1) {
+        //机器人虚拟回复
+        setTimeout(() => {
+            chatTable.chatBody.push({ 
+                senderId: -1, content: '你好！我是您的私人创作助理，请问有什么可以帮助你的吗？',
+                data: new Date().toLocaleString() 
+            });
         db.updataChat(chatTable)
-    }, 500);
+        }, 500);
+    }
+
 
     db.updataChat(chatTable)
 }
@@ -98,10 +103,13 @@ const addChat = (msg: string, id: number) => {
 const sentMsg = () => {
     if (msg.value == "") return;
     addChat(msg.value, curUser.id as number);
-    curUser.score! -= 5;
+    curUser.score = curUser.score ?? 0;
+    if (curUser.score! < 5) {
+        msg.value = ""; //无法发送
+        return;
+    }
+    curUser.score = curUser.score! - 5;
     userDb.updataUser(curUser);
-
-
     msg.value = "";
 }
 
@@ -120,6 +128,8 @@ const initData = () =>{
          Object.assign(chatTable, res);
          
          //加载双方用户数据 --- 判断哪一个对方
+         console.log("聊天信息", chatTable);
+         
          let k = chatTable.bothId.indexOf(curUser.id as number);
          let whoId = chatTable.bothId[1 - k];
          if (whoId == -1) //机器人
@@ -128,16 +138,23 @@ const initData = () =>{
             whoUser.headerImg = -1; //机器人头像
         }
         else{
+            console.log('查找用户', whoId);
+            
             let res = userDb.getUserById(whoId);
+            console.log('查找到的用户', res);
+            
             if (res != null) {
                 Object.assign(whoUser, res!);
             }
          }
 
+         console.log(curUser, whoUser);
+         
          //加载头像
          db.getImage(curUser.headerImg!).then((res) => {
             meHeaderImg.value = res;
          });
+
 
          if (whoUser.headerImg != -1) {
             db.getImage(whoUser.headerImg!).then((res) => {

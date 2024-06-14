@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <span class=" text-slate-500 flex-none">
-                        <span @touchstart="search()">搜索</span>
+                        <span @touchstart.stop="search()">搜索</span>
                     </span>
                 </div>
                 <!-- <div class="flex items-center py-2 justify-center gap-3">
@@ -21,6 +21,9 @@
 
             <!-- 搜索结果 -->
             <div class="mt-2">
+                <div v-show="noteList.length == 0">
+                    暂无数据
+                </div>
                 <waterfulLayoutVue :items="noteList" :columnsCount="2"> 
                     <template #default="{ item }">
                         <div>
@@ -59,12 +62,18 @@ const initData = () => {
 }
 
 const goSearch = () =>{
+    searchQuery.value = route.query.searchQuery as string;
+    searchNote()
+}
+
+const searchNote = () => {
     indexDb.searchNote(searchQuery.value, true, page.value, pageSize.value).then((res) => {
         noteList.value = res;
     });
 }
 
 const initUser = () =>{
+    
     let res =  userDb.getCurrentUserMessage()
     if (res?.code != -1) {
         Object.assign(curUser, res!.data);
@@ -77,9 +86,11 @@ const search = () => {
         if (curUser.searchHistory == undefined) {
             curUser.searchHistory = []
         }
-        curUser.searchHistory.unshift(searchQuery.value)
-        userDb.updataUser(curUser)
-        goSearch();
+        if (!curUser.searchHistory.includes(searchQuery.value)) {
+            curUser.searchHistory.unshift(searchQuery.value)
+            userDb.updataUser(curUser)
+        }
+        searchNote();
     }
 }
 

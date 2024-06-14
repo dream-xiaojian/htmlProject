@@ -23,6 +23,7 @@
 import {onMounted, ref, reactive, inject} from "vue"
 import {navigation} from "@/router/index"
 import { User, userTableStore, IndexDB, ChatListType} from '@/stores/index'
+import { send } from "process";
 
 const userDb = userTableStore()
 const db: IndexDB = inject('db') as IndexDB;
@@ -44,8 +45,12 @@ onMounted(() => {
 
 const initData = () => {
     //获取发送者的信息
-    sendUser = userDb.getUserById(props.item!.who) ?? {} as User
+    sendUser = userDb.getUserById(parseInt(props.item!.who)) ?? {} as User
+    if (sendUser == undefined) {
+        return
+    }
     console.log(sendUser);
+    console.log('聊天对方的头像', sendUser.headerImg);
     
     //假设一定是有头像
     db.getImage(sendUser.headerImg!).then(( res:any ) => {

@@ -6,7 +6,6 @@ import { blogSharesTable } from "./type"
 import { ChatTable } from "./type"
 
 
-//后期修改成单例模式
 export class IndexDB {
   //数据库名称
   private dbName: string;

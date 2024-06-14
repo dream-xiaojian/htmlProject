@@ -19,7 +19,7 @@
 import {ref, onMounted, reactive, inject} from "vue"
 import {  User, userTableStore, IndexDB, ChatListType} from '@/stores/index'
 import itemFollowAndFansCom from "./itemFollowAndFans.vue"
-import {navigation} from "@/router/index"
+import {navigation, router} from "@/router/index"
 
 
 type UserType = User & {type: string}
@@ -60,9 +60,13 @@ const newChatTable = (whoId: number) => {
     }
     
     let res = curUser.chatListNotAi?.find((item) => item.who == whoId) 
+    
     if (res != undefined) {
-        navigation("chatDetail", res.chatId);
-        return
+        router.push({name: 'chatPage', query: {
+            id: res.chatId,
+            whoId: whoId, //和谁对话
+        }})
+        return;
     }
 
 
@@ -100,7 +104,10 @@ const newChatTable = (whoId: number) => {
         userDb.updataUser(sendUser)
 
         //前往详细的聊天页面
-        navigation("chatDetail", res);
+        router.push({name: 'chatPage', query: {
+            id: res,
+            whoId: whoId, //和谁对话
+        }})
     })
 }
 

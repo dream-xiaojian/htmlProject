@@ -19,16 +19,16 @@
         <div class="mt-2">
             <div class="flex items-center justify-between px-2 text-slate-500">
                 <span class="text-black">历史记录</span>
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg></span>
+                <span @touchstart.stop="deleteAll"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg></span>
             </div>
 
             <div class="mt-2 flex gap-2 flex-wrap" :style="{ 'max-height': expanded ? '12em' : '4.2em', overflow: 'hidden' }">
                 <!-- 搜索内容展示 -->
-                <div v-for="(item, index) in curUser.searchHistory" class="center border-b border-slate-900/10  relative inline-block select-none whitespace-nowrap rounded-lg bg-gray-100 py-2 px-3.5 align-baseline font-sans text-xs uppercase leading-none">
+                <div @click.stop="historySearch(item)" v-for="(item, index) in curUser.searchHistory" class="center border-b border-slate-900/10  relative inline-block select-none whitespace-nowrap rounded-lg bg-gray-100 py-2 px-3.5 align-baseline font-sans text-xs uppercase leading-none">
                     <div class="mt-px">{{item}}</div>
                 </div>
-                <div class="center border-b border-slate-900/10  relative inline-block select-none whitespace-nowrap rounded-lg bg-gray-100 py-2 px-3.5 align-baseline font-sans text-xs uppercase leading-none">
-                    <div class="mt-px" v-show="historyShow==false">暂无内容</div>
+                <div v-if="historyShow==false" class="center border-b border-slate-900/10  relative inline-block select-none whitespace-nowrap rounded-lg bg-gray-100 py-2 px-3.5 align-baseline font-sans text-xs uppercase leading-none">
+                    <div class="mt-px" >暂无内容</div>
                 </div>
 
             
@@ -158,16 +158,29 @@ const initData = () =>{
     }
 }
 
+const historySearch = (query:string) =>{
+    searchQuery.value = query
+    search()
+}
+
 const search = () => {
     if (searchQuery.value) {
         if (curUser.searchHistory == undefined) {
             curUser.searchHistory = []
         }
-        curUser.searchHistory.unshift(searchQuery.value)
-        userDb.updataUser(curUser)
+        if (!curUser.searchHistory.includes(searchQuery.value)) {
+            curUser.searchHistory.unshift(searchQuery.value)
+            userDb.updataUser(curUser)
+        }
         historyShow.value = true
         router.push({name: 'searchResult', query: {searchQuery: searchQuery.value}})
     }
+}
+
+const deleteAll = () => {
+    curUser.searchHistory = []
+    userDb.updataUser(curUser)
+    historyShow.value = false
 }
 
 onMounted(() => {

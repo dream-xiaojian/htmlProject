@@ -6,7 +6,7 @@
         <div class="w-full fixed left-0 top-0" style="z-index:999; transition: all 0.25s ease-out;" :style="{ backgroundColor: backgroundColor }"> 
             <div class="flex items-center justify-between p-3">
                 <div>
-                    <svg @click="goBack()" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
+                    <svg @click.stop="goBack()" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="white" d="M20 11H7.41l5.3-5.29a1 1 0 0 0-1.42-1.42l-7 7a1 1 0 0 0 0 1.42l7 7a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"/></svg>
                 </div>
                 <div>
                     <svg width="24" height="24" fill="none" aria-hidden="true"><path d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" stroke="#ffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -25,7 +25,7 @@
                 <div>
                     <div class="text-xl font-medium text-white" >{{curUser.username}}</div>
                     <p  v-if="curUser.resume != null" class= "text-gray-200">{{curUser.resume}}</p>
-                    <p  v-else class= "text-gray-200" @click="navigation('profile_pageMe')">点击编辑个人简介</p>
+                    <p  v-else class= "text-gray-200">该用户暂无将它的简介贴出</p>
                 </div>
             </div>
 
@@ -205,21 +205,32 @@ const initData = () =>{
 }
 
 const changeFollow = (indexType:number) => {
+    curUser.InterestList = curUser.InterestList || []
+    lookUser.fansList = lookUser.fansList || []
+    
     if (indexType == 0) {
+        console.log('取消关注');
+        
         //取消关注
         let startIndex = curUser.InterestList!.indexOf(lookUser.id)
         curUser.InterestList!.splice(startIndex, 1) 
-        startIndex = curUser.fansList!.indexOf(lookUser.id)
 
+        startIndex = lookUser.fansList!.indexOf(curUser.id)
         lookUser.fansList!.splice(startIndex, 1)
+
         userDb.updataUser(lookUser)
         userDb.updataUser(curUser)
+        isFollow.value = false;
+
     } else {
+        console.log('取消关注');
         //关注
         curUser.InterestList!.push(lookUser.id) 
         lookUser.fansList!.push(curUser.id)
         userDb.updataUser(lookUser)
         userDb.updataUser(curUser)
+        isFollow.value = true;
+
     }
 }
 
@@ -250,14 +261,17 @@ const imageDataInit = () => {
 
 const sendMessage = () => {
     let TabsData: ChatListType = {
-        who: userId.value as number,
+        who: parseInt(userId.value) as number,
         tabName: '新建标签页',
         data: new Date().toLocaleString()
     }
     
     let res = curUser.chatListNotAi?.find((item) => item.who == userId.value) 
-    if (res != undefined) {
-        navigation("chatDetail", res.chatId);
+    if (res != undefined) { //表示已经有了这个聊天
+        router.push({name: 'chatPage', query: {
+            id: res.chatId as number,
+            whoId: userId.value
+        }})
         return
     }
 
@@ -291,7 +305,10 @@ const sendMessage = () => {
         userDb.updataUser(lookUser)
 
         //前往详细的聊天页面
-        navigation("chatDetail", res);
+        router.push({name: 'chatPage', query: {
+            id: res,
+            whoId: userId.value
+        }})
     })
 }
 

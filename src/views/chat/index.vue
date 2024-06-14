@@ -92,7 +92,7 @@ const newChatTable = () => {
         curUser.chatListAi?.push(TabsData)
         userDb.updataUser(curUser)
         //前往详细的聊天页面
-        navigation( "chatDetail", res);
+        navigation("chatDetail", res);
         initData()
     })
 }

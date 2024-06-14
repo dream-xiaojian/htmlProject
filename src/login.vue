@@ -2,7 +2,7 @@
     <!-- component -->
     <div class="h-screen w-screen">
       <div class="h-full w-full bg-white m-auto">
-        <img src="https://image.freepik.com/free-vector/app-development-illustration_52683-47931.jpg" alt=""class="rounded-t-2xl lg:w-full  object-cover"/>
+        <img src="https://image.freepik.com/free-vector/app-development-illustration_52683-47931.jpg" alt=""class=" lg:w-full  object-cover"/>
         <div class="">
           <h2 class="text-center text-gray-800 text-2xl font-bold pt-6">创意分享平台</h2>
           <form class="bg-white rounded-md p-5">
